@@ -5,8 +5,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Veci k Projektu", "Veci k Projektu", "{80979518-DAA5-4F61-8FC1-AC75DC2B189B}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\Desktop\navod\key = ..\..\..\..\Desktop\navod\key
-		..\..\..\..\Desktop\navod\key.ppk = ..\..\..\..\Desktop\navod\key.ppk
+		key = key
+		key.ppk = key.ppk
 		navod_a_poznamky.txt = navod_a_poznamky.txt
 		readme.txt = readme.txt
 	EndProjectSection
