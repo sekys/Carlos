@@ -1,0 +1,17 @@
+Kroky na naclonovanie repozitaru:
+	- na Windows nainstalovat Git Extensions (alebo ine co vam vyhovuje)
+	- v Git Extensions dat clone repository:
+		Repository tu clone : team03-13@team03-13.ucebne.fiit.stuba.sk:/home/team03-13/git/CarlosAR_VW.git
+		Destination         : napriklad C:\Users\Martin\Documents\Visual Studio 2010\Projects
+		Branch              : develop
+		Repository type     : Personal repository 
+		Load SSH key        : vybrat key.ppk (pricom treba mat nastavene v Settings - > SSH ... Putty
+		                    : pripadne ti co su na linuxe tak treba vlozit key a mat v Settings -> SSH ... OpenSSH - nie je k dispozicii Putty na linuxe (asi)
+	- v Remotes treba mat nastavene Origin na team03-13@team03-13.ucebne.fiit.stuba.sk:/home/team03-13/git/CarlosAR_VW.git a spravne nacitany ten SSH kluc
+	- Vsetci budeme pushovat do Branchu Develop
+	- Branch master bude len na nejake stabilnejsie verzie
+	- Niekto teraz este vytvori jeden (alebo prida uz existijuci) projekt, v nom sa nastavia vsetky potrebne veci (OpenCV, dll) a s tym budu uz vsetci pracovat, samozrejme ak uz budete mat projekt naklonovyn tak treba dat pull. Pull sa bude aj tak pouzivat vzdy.
+
+Dalsie pripadne poznamky piste do kometarov. Ja este tiez presne neviem ako to vsetko funguje v Gite.
+
+Ten user by mal spravne byt git, ale nieco mi tam neslo tak som sa s tym nechcel velmi hrat, kedze som uz vcera zabil vela casu zo serverom a ssh.
