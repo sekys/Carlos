@@ -1,6 +1,6 @@
 #include <windows.h>
-#include "DllExports.h"
-#include "modules\class.ModulSpracovania.hpp"
+#include "../Carlos/architecture/DllExports.h"
+#include "../Carlos/architecture/modules/class.ModulSpracovania.hpp"
 #include <iostream>
 
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {

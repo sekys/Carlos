@@ -1,12 +1,23 @@
 #include "class.Carlos.hpp"
-
+#include "../architecture/configuration/class.Configuration.h"
 using namespace Architecture;
 
-void Carlos::spracujJedenSnimok(Image& image) {
+Carlos::Carlos() {
+	db = new DBService();
+	controller = new ModulesController();
+}
 
-	// Za gps suradnicov sa musi synchronizovane pockat, potom sa moze ist dalej
+Carlos::~Carlos() {
+	controller->stop();
+	SAFE_DELETE(controller);
+	SAFE_DELETE(db);
+}
+
+//
+void Carlos::spracujJedenSnimok(Image& image) {
+	// Z gps suradnic sa musi synchronizovane pockat, potom sa moze ist dalej
 	// Lebo ked snimka meska, tak gps moze byt uz o par metrov dalej
-	GPS gps = controller->android->getAktualnaPozicia();
+	GPS gps = controller->android->getGPS();
 	Rotation rotaciaHlavy = controller->kinect->getAktualnaRotaciaHlavy();
 
 	// Modul preprocessingu
@@ -18,10 +29,8 @@ void Carlos::spracujJedenSnimok(Image& image) {
 	spracovanie.recepts = recepts;
 	ModulSpracovania::Out vysledokSpracovania = controller->spracovania->detekujObjekty(spracovanie);
 
-	//! Tu uz je potrebna rotaciaHlavy
-
 	// Modul vypoctu polohy
-	vector<Position> najdenePozicie; // sycnhronizovane
+	vector<Position> najdenePozicie; // synchronizovane
 	for(uint i=0; i < vysledokSpracovania.objects.size(); i++) {
 		ModulVypocitaniaPolohy::In vypocetPolohy;
 		vypocetPolohy.gps = gps;
@@ -44,26 +53,29 @@ void Carlos::spracujJedenSnimok(Image& image) {
 }
 
 
-void Carlos::spracujSnimky() {
+void Carlos::Init() {
+	db->selectObjects();
+	Configuration::getInstance();
+	cout << "Configuration title '" << Configuration::getInstance().getTitle() << "'\n";
+	controller->start();
 	namedWindow("Test",1);
-	Image frame;
 	frame.frame = 0;
-	
-	while(1)
-	{
-		ControllerCommands command = controller->android->getActualCommand();
-		// input->getActualCommand();
-		
-		// threads
-		// while s pevnym deltacasom
-		// GameLogic triedu
-		// cele toto dat do view co sa prave ukazuje
+}
+bool Carlos::Run() {
+	controller->callPreFrames();
+	nacitajDalsiuSnimku();
+	return true;
+}
 
-		controller->kamera->readNext(frame);
-		spracujJedenSnimok(frame);
-		frame.frame++;
-		// Bum ! Hotovo mozme ist na dalsi snimok
-	}
+void Carlos::nacitajDalsiuSnimku() {
+	ControllerCommands command = controller->android->getActualCommand();
+	// threads
+	// while s pevnym deltacasom
+	// GameLogic triedu
+	// cele toto dat do view co sa prave ukazuje
 
-	// Android podystem ovladania bude bezat v inej funkcii a v inom threade
+	controller->kamera->readNext(frame);
+	spracujJedenSnimok(frame);
+	frame.frame++;
+	// Bum ! Hotovo mozme ist na dalsi snimok
 }

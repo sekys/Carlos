@@ -209,11 +209,15 @@ public:
 							break;
 										  }
 						case SQLITE_TEXT: {
-							const std::string& str = 
-								reinterpret_cast<const char*>(
+							const char* cchar =	reinterpret_cast<const char*>(
 								sqlite3_column_text(stmt,i)
-								);
-							cm.attr->setString(it, str);
+								); 
+							if(cchar == NULL) {
+								throw std::logic_error("Atribute should not be nullable");
+							} else {
+								const std::string& str = cchar;
+								cm.attr->setString(it, str);
+							}
 							break;
 										  }
 						default: {
@@ -295,6 +299,10 @@ public:
 
 	~SqliteDB() {
 		sqlite3_close(db);
+	}
+
+	sqlite3* getConnection() {
+		return db;
 	}
 
 	template<typename S>
@@ -411,9 +419,10 @@ private:
 				&stmt, NULL
 				);
 			if(rsltCode == SQLITE_ERROR) {
+				const char* error = sqlite3_errmsg(db);
 				throw std::logic_error(std::string("Select Statment:\"") +
 					stmtStr + "\" failed with error:\"" +
-					sqlite3_errmsg(db) + "\"");
+					error+ "\"");
 			}
 			return std::make_pair(
 				SqliteDB::Iterator<S>(rsltCode, stmt),

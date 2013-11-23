@@ -28,9 +28,8 @@ namespace Architecture
 
 	class Image {
 	public:
-		uint frame;
+		unsigned long frame;
 		cv::Mat data;
-		//uint width, height;
 
 		friend ostream& operator<< (ostream& out, Image& object) {
 			out << "Image(frame:" << object.frame << ")";

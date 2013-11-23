@@ -7,6 +7,7 @@
 #include "..\architecture\modules\class.ModulSpracovania.hpp"
 #include "..\architecture\modules\class.ModulVykreslovania.hpp"
 #include "..\architecture\modules\class.ModulVypocitaniaPolohy.hpp"
+#include "..\architecture\modules\fake\class.FakeModulAndroid.hpp"
 
 namespace Architecture {
 	using namespace std;
@@ -62,9 +63,9 @@ namespace Architecture {
 
 		virtual void installModules() {
 			// Zatial chceme pouzit fake moduly
-			android = new ModulAndroid();
+			android = new FakeModulAndroid("data/video/2013-10-20-12-25-52.txt");
 			databaza = new ModulDatabaza();
-			kamera = new ModulKamera("7.avi");
+			kamera = new ModulKamera("data/video/2013-10-20-12-25-52.avi");
 			kinect = new ModulKinect();
 			//spracovania = new ModulSpracovania();
 			vykreslovania = new ModulVykreslovania();
@@ -97,6 +98,17 @@ namespace Architecture {
 			callDeconstructors();
 			dropDlls();
 		}
+
+		void callPreFrames() {
+			android->preFrame();
+			databaza->preFrame();
+			kamera->preFrame();
+			kinect->preFrame();
+			spracovania->preFrame();
+			vykreslovania->preFrame();
+			vyppolohy->preFrame();
+		}
+
 	};
 
 }

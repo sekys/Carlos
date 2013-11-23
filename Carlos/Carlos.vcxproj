@@ -14,13 +14,18 @@
     <ClInclude Include="architecture\DllExports.h" />
     <ClInclude Include="architecture\entities\baseTypes.h" />
     <ClInclude Include="architecture\entities\class.IModul.hpp" />
+    <ClInclude Include="architecture\entities\class.Time.hpp" />
     <ClInclude Include="architecture\entities\entities.h" />
-    <ClInclude Include="db\dbService.hpp" />
+    <ClInclude Include="architecture\modules\fake\class.FakeModulAndroid.hpp" />
+    <ClInclude Include="architecture\modules\fake\class.GPSLogFile.hpp" />
+    <ClInclude Include="db\class.DBService.hpp" />
     <ClInclude Include="db\sqlite\sqlite3.h" />
     <ClInclude Include="db\sqlite\sqlite3ext.h" />
     <ClInclude Include="db\sweetql.hpp" />
+    <ClInclude Include="main\class.App.hpp" />
     <ClInclude Include="main\class.Carlos.hpp" />
     <ClInclude Include="main\class.Dll.hpp" />
+    <ClInclude Include="main\CThread.h" />
     <ClInclude Include="main\utilities.hpp" />
     <ClInclude Include="architecture\modules\class.ModulAndroid.hpp" />
     <ClInclude Include="architecture\modules\class.ModulDatabaza.hpp" />
@@ -30,14 +35,17 @@
     <ClInclude Include="architecture\modules\class.ModulSpracovania.hpp" />
     <ClInclude Include="architecture\modules\class.ModulVykreslovania.hpp" />
     <ClInclude Include="architecture\modules\class.ModulVypocitaniaPolohy.hpp" />
+    <ClInclude Include="architecture\configuration\class.Configuration.h" />
+    <ClInclude Include="architecture\configuration\tinyxml2\tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="db\entities.hpp" />
-    <ClCompile Include="db\sqlite\shell.c" />
     <ClCompile Include="db\sqlite\sqlite3.c" />
     <ClCompile Include="main\class.Carlos.cpp" />
+    <ClCompile Include="main\CThread.cpp" />
     <ClCompile Include="main\main.cpp" />
     <ClCompile Include="main\utilities.cpp" />
+    <ClCompile Include="architecture\configuration\tinyxml2\tinyxml2.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A790E001-D16E-45D1-AEA4-AA55E9BFF759}</ProjectGuid>
@@ -48,7 +56,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
