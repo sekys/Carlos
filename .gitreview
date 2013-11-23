@@ -1,0 +1,7 @@
+[gerrit]
+host=team03-13.ucebne.fiit.stuba.sk
+port=8888
+project=CarlosAR_VW.git
+defaultbranch=develop
+defaultremote=review
+defaultrebase=0
