@@ -69,12 +69,14 @@ namespace Architecture
 	class DetekovanyObjekt {
 	public:
 		WorldObject objekt;
-		Position position; // na obrazku
+		Position position1; // lavy horny roh na obrazku
+		Position position2; // pravy dolny roh na obrazku
 
 		friend ostream& operator<< (ostream& out, DetekovanyObjekt& object) {
 			out << "DetekovanyObjekt(";
 			out << "objekt: " << object.objekt << ",";
-			out << "Position:" << object.position; 
+			out << "Position upper-left:" << object.position1;
+			out << "Position bottom-right:" << object.position2; 
 			out << ")";
 			return out;
 		}
