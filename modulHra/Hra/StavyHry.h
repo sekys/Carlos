@@ -1,0 +1,9 @@
+#pragma once
+
+enum StavyHry {
+	UVODNA_OBRAZOVKA,
+	PRIPRAVA_NA_HRU,
+	HRAJE_HRU,
+	OBRAZOVKA_PREHRAL,
+	OBRAZOVKA_SKORE
+};
