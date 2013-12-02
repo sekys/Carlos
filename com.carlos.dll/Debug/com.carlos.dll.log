@@ -1,0 +1,35 @@
+﻿Build started 2. 12. 2013 20:44:20.
+     1>Project "C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\com.carlos.dll\com.carlos.dll.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\opencv 2.4.6\build\x86\vc11\..\..\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt DllMain.cpp
+         DllMain.cpp
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(84): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(100): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(135): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(136): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(137): warning C4101: 'e' : unreferenced local variable
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(150): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(164): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(179): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(181): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(217): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(209): warning C4101: 'e' : unreferenced local variable
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(229): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(255): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(266): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(299): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(399): warning C4018: '>' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(401): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(416): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(410): warning C4101: 'e' : unreferenced local variable
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\com.carlos.dll\dllmain.cpp(450): warning C4018: '<' : signed/unsigned mismatch
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\Debug\com.carlos.dll.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\opencv 2.4.6\build\x86\vc11\lib" opencv_calib3d246d.lib opencv_contrib246d.lib opencv_core246d.lib opencv_features2d246d.lib opencv_flann246d.lib opencv_gpu246d.lib opencv_haartraining_engined.lib opencv_highgui246d.lib opencv_imgproc246d.lib opencv_legacy246d.lib opencv_ml246d.lib opencv_nonfree246d.lib opencv_objdetect246d.lib opencv_ocl246d.lib opencv_photo246d.lib opencv_stitching246d.lib opencv_superres246d.lib opencv_ts246d.lib opencv_video246d.lib opencv_videostab246d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\Debug\com.carlos.dll.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\Debug\com.carlos.dll.lib" /MACHINE:X86 /DLL Debug\DllMain.obj
+            Creating library C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\Debug\com.carlos.dll.lib and object C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\Debug\com.carlos.dll.exp
+         com.carlos.dll.vcxproj -> C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\Debug\com.carlos.dll.exe
+     1>Done Building Project "C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\com.carlos.dll\com.carlos.dll.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.70

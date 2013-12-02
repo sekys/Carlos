@@ -1,0 +1,60 @@
+﻿Build started 2. 12. 2013 20:43:46.
+     1>Project "C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\Carlos\Carlos.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\opencv 2.4.6\build\x86\vc11\..\..\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt db\entities.hpp main\class.Carlos.cpp main\main.cpp
+         main.cpp
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\architecture\modules\class.modulandroid.hpp(4): fatal error C1083: Cannot open include file: 'boost/bimap.hpp': No such file or directory
+         class.Carlos.cpp
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\architecture\modules\class.modulandroid.hpp(4): fatal error C1083: Cannot open include file: 'boost/bimap.hpp': No such file or directory
+         entities.hpp
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\sweetql.hpp(141): error C2143: syntax error : missing ',' before '...'
+                 c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\sweetql.hpp(157) : see reference to class template instantiation 'SqlTable<T>' being compiled
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\sweetql.hpp(142): error C2061: syntax error : identifier 'Col'
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\sweetql.hpp(147): error C2143: syntax error : missing ',' before '...'
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\sweetql.hpp(148): error C2061: syntax error : identifier 'Col'
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\entities.hpp(18): error C2780: 'SqlTable<T> SqlTable<T>::sqlTable(const std::string &)' : expects 1 arguments - 4 provided
+                 with
+                 [
+                     T=DB::Question
+                 ]
+                 c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\sweetql.hpp(148) : see declaration of 'SqlTable<T>::sqlTable'
+                 with
+                 [
+                     T=DB::Question
+                 ]
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\entities.hpp(36): error C2780: 'SqlTable<T> SqlTable<T>::sqlTable(const std::string &)' : expects 1 arguments - 5 provided
+                 with
+                 [
+                     T=DB::Answer
+                 ]
+                 c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\sweetql.hpp(148) : see declaration of 'SqlTable<T>::sqlTable'
+                 with
+                 [
+                     T=DB::Answer
+                 ]
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\entities.hpp(56): error C2780: 'SqlTable<T> SqlTable<T>::sqlTable(const std::string &)' : expects 1 arguments - 6 provided
+                 with
+                 [
+                     T=DB::Object
+                 ]
+                 c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\sweetql.hpp(148) : see declaration of 'SqlTable<T>::sqlTable'
+                 with
+                 [
+                     T=DB::Object
+                 ]
+     1>c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\entities.hpp(76): error C2780: 'SqlTable<T> SqlTable<T>::sqlTable(const std::string &)' : expects 1 arguments - 4 provided
+                 with
+                 [
+                     T=DB::recept_file_info
+                 ]
+                 c:\users\patrik\documents\tp\project\develop\carlosar_vw\carlos\db\sweetql.hpp(148) : see declaration of 'SqlTable<T>::sqlTable'
+                 with
+                 [
+                     T=DB::recept_file_info
+                 ]
+         Generating Code...
+     1>Done Building Project "C:\Users\Patrik\Documents\TP\Project\develop\CarlosAR_VW\Carlos\Carlos.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:06.85
