@@ -9,7 +9,7 @@ namespace Architecture
 		class In {
 		public:
 			Image image;
-			vector<Position> najdenePozicie; // pozicie pre text
+			vector<Point2f> najdenePozicie; // pozicie pre text
 
 			friend ostream& operator<< (ostream& out, In& object) {
 				out << "ModulVykreslovaniaIn(";
@@ -27,7 +27,7 @@ namespace Architecture
 			Image obrazokNaPozadie = in.image; // tento obrazok je potrebne vykreslit na pozadi
 
 			for(uint i=0; i < in.najdenePozicie.size(); i++) {
-				Position poziciaTextu = in.najdenePozicie.at(i);
+				Point2f poziciaTextu = in.najdenePozicie.at(i);
 			}
 		}
 	};

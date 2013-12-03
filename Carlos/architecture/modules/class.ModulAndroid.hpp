@@ -1,8 +1,8 @@
 #pragma once
 #include "..\entities\entities.h"
 #include "..\entities\class.IModul.hpp"
-#include <boost/bimap.hpp>
 #include "opencv2/opencv.hpp"
+#include <boost/thread/mutex.hpp>
 
 namespace Architecture
 {
@@ -11,31 +11,43 @@ namespace Architecture
 	class ModulAndroid : public IModul  {
 	private:
 		ControllerCommands actualCommand;
+		boost::mutex actualCommand_mtx;
 		GPS gps;
+		boost::mutex gps_mtx;
 
 	public:
 		ModulAndroid() {
 			actualCommand = ControllerCommands::NO_ACTION;
 		}
 
-		// TODO: synchornizovat
+		// synchronizovane na urovni setter a getter
 		virtual void setGPS(GPS gps) {
+			gps_mtx.lock();
 			this->gps = gps;
+			gps_mtx.unlock();
 		}
 
-		// TODO: synchornizovat
+		// synchronizovane na urovni setter a getter
 		virtual GPS getGPS() {
-			return gps;
+			gps_mtx.lock();
+			GPS tempGps = gps;
+			gps_mtx.unlock();
+			return tempGps;
 		}
 
-		// TODO: synchornizovat
+		// synchronizovane na urovni setter a getter
 		virtual void setActualCommand(ControllerCommands command) {
+			actualCommand_mtx.lock();
 			actualCommand = command;
+			actualCommand_mtx.unlock();
 		}
 
-		// TODO: synchornizovat
+		// synchronizovane na urovni setter a getter
 		virtual ControllerCommands getActualCommand() {
-			return actualCommand;
+			actualCommand_mtx.lock();
+			ControllerCommands tempActualCommand = actualCommand;
+			actualCommand_mtx.unlock();
+			return tempActualCommand;
 		}
 	};
 }

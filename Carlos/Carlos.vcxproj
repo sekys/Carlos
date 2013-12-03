@@ -15,6 +15,7 @@
     <ClInclude Include="architecture\entities\baseTypes.h" />
     <ClInclude Include="architecture\entities\class.IModul.hpp" />
     <ClInclude Include="architecture\entities\class.Time.hpp" />
+    <ClInclude Include="architecture\entities\cv_entities.h" />
     <ClInclude Include="architecture\entities\entities.h" />
     <ClInclude Include="architecture\modules\fake\class.FakeModulAndroid.hpp" />
     <ClInclude Include="architecture\modules\fake\class.GPSLogFile.hpp" />
@@ -25,6 +26,7 @@
     <ClInclude Include="main\class.App.hpp" />
     <ClInclude Include="main\class.Carlos.hpp" />
     <ClInclude Include="main\class.Dll.hpp" />
+    <ClInclude Include="main\class.ModulWrapper.hpp" />
     <ClInclude Include="main\CThread.h" />
     <ClInclude Include="main\utilities.hpp" />
     <ClInclude Include="architecture\modules\class.ModulAndroid.hpp" />
@@ -39,9 +41,13 @@
     <ClInclude Include="architecture\configuration\tinyxml2\tinyxml2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="architecture\configuration\class.Configuration.cpp" />
     <ClCompile Include="db\entities.hpp" />
     <ClCompile Include="db\sqlite\sqlite3.c" />
+    <ClCompile Include="main\class.App.cpp" />
     <ClCompile Include="main\class.Carlos.cpp" />
+    <ClCompile Include="main\class.ModulesController.cpp" />
+    <ClCompile Include="main\class.ModulWrapper.cpp" />
     <ClCompile Include="main\CThread.cpp" />
     <ClCompile Include="main\main.cpp" />
     <ClCompile Include="main\utilities.cpp" />
@@ -56,7 +62,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -79,8 +85,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <SourcePath>$(SourcePath)</SourcePath>
-    <IncludePath>C:\Users\Seky\Documents\Visual Studio 2012\Projects\Carlos\lib\boost_1_54_0;C:\Programs\opencv\opencv\build\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Programs\opencv\opencv\build\x86\vc11\lib;C:\Users\Seky\Documents\Visual Studio 2012\Projects\Carlos\lib\boost_1_54_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(CARLOS_OPENCV_INC);$(CARLOS_BOOST_INC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(CARLOS_BOOST_LIB);$(CARLOS_OPENCV_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -92,12 +98,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OPENCV_DIR)\..\..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OPENCV_DIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_calib3d246d.lib;opencv_contrib246d.lib;opencv_core246d.lib;opencv_features2d246d.lib;opencv_flann246d.lib;opencv_gpu246d.lib;opencv_haartraining_engined.lib;opencv_highgui246d.lib;opencv_imgproc246d.lib;opencv_legacy246d.lib;opencv_ml246d.lib;opencv_nonfree246d.lib;opencv_objdetect246d.lib;opencv_ocl246d.lib;opencv_photo246d.lib;opencv_stitching246d.lib;opencv_superres246d.lib;opencv_ts246d.lib;opencv_video246d.lib;opencv_videostab246d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

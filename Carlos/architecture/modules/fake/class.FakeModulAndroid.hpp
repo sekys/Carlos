@@ -2,6 +2,7 @@
 #include "../class.ModulAndroid.hpp"
 #include "class.GPSLogFile.hpp"
 #include "../../entities/class.Time.hpp"
+#include <boost/bimap.hpp>
 
 namespace Architecture
 {

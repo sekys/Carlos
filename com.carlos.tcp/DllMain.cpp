@@ -1,7 +1,7 @@
 #include "../Carlos/architecture/DllExports.h"
-#include "../Carlos/architecture/modules/fake/class.FakeModulAndroid.hpp"
 #include "class.MyServerSocket.hpp"
 #include "split.h"
+#include "../Carlos/architecture/modules/fake/class.FakeModulAndroid.hpp"
 #include <windows.h>
 #include <iostream>
 #include <process.h> 
@@ -22,7 +22,7 @@ public:
 	// nas modul sa spusta
 	virtual void init() {
 		FakeModulAndroid::init();
-		cout << "Native server starting\n";
+		cout << "Native TCP server starting\n";
 		server = new MyServerSocket(this, "localhost", "8080");
 		server->start();
 	}
@@ -71,6 +71,8 @@ public:
 			delete server;
 		}
 	}
+
+	virtual bool isThreaded() { return true; }
 };
 
 // Ked nas modul ma byt vytvoreny cez riadiaci modul

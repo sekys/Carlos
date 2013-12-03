@@ -40,8 +40,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Programs\opencv\opencv\build\include;C:\Users\Seky\Documents\Visual Studio 2012\Projects\Carlos\lib\boost_1_54_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Programs\opencv\opencv\build\x86\vc11\lib;C:\Users\Seky\Documents\Visual Studio 2012\Projects\Carlos\lib\boost_1_54_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(CARLOS_OPENCV_INC);$(CARLOS_BOOST_INC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(CARLOS_BOOST_LIB);$(CARLOS_OPENCV_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

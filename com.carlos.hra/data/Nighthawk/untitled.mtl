@@ -1,0 +1,52 @@
+# Blender MTL File: 'None'
+# Material Count: 5
+
+newmtl Material
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl glass
+Ns 5.882353
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.752941 0.752941 0.752941
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Glass_Cockpit.png
+
+newmtl pilot
+Ns 5.882353
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.752941 0.752941 0.752941
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Pilot_usa.png
+
+newmtl plane
+Ns 5.882353
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.752941 0.752941 0.752941
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd F-117_Nighthawk_P01.png
+map_Bump F-117_Nighthawk_N.png
+
+newmtl seat
+Ns 5.882353
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.752941 0.752941 0.752941
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Eject_Seat.png

@@ -6,14 +6,20 @@ namespace Architecture
 {
 	class ModulKinect : public IModul  {
 	public:
-		virtual Rotation getAktualnaRotaciaHlavy() {
-			Rotation rot;
-			rot.rotation[0] = 10.f;
-			rot.rotation[1] = 10.f;
-			rot.rotation[2] = 14.f;
+		virtual Point3f getAktualnaRotaciaHlavy() {
+			Point3f rot;
+			rot.x = 10.f;
+			rot.y = 10.f;
+			rot.z = 14.f;
 			return rot;
 		}
 
+		virtual void spustiKalibraciu() {
+			/*
+			Tato metoda sa spusti, ked pouzivatel stlacil tlacidlo a je
+			potrebne zkonfigurovat kinect
+			*/
+		}
 	};
 }
 

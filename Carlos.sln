@@ -5,7 +5,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Carlos", "Carlos\Carlos.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "com.carlos.android.tcpServer", "com.carlos.tcp\com.carlos.tcp.vcxproj", "{8BC01CF1-DD9A-46B4-83ED-67B9D1EC45A8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "com.carlos.dll", "com.carlos.dll\com.carlos.dll.vcxproj", "{5DB29131-648C-4050-A83A-1BA0FF4AD393}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "com.carlos.spracovanieReality", "com.carlos.dll\com.carlos.dll.vcxproj", "{5DB29131-648C-4050-A83A-1BA0FF4AD393}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "com.carlos.textPosModule", "com.carlos.textPosModule\CalculateTextPosModule.vcxproj", "{972640C7-769E-4721-B5B5-E9D0617CC8F1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "com.carlos.kinect", "com.carlos.kinect\KinectModule.vcxproj", "{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "modulHra", "com.carlos.hra\modulHra.vcxproj", "{7DF4A645-1E83-4708-B987-7759953E8FCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +53,36 @@ Global
 		{5DB29131-648C-4050-A83A-1BA0FF4AD393}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{5DB29131-648C-4050-A83A-1BA0FF4AD393}.Release|Win32.ActiveCfg = Release|Win32
 		{5DB29131-648C-4050-A83A-1BA0FF4AD393}.Release|Win32.Build.0 = Release|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Debug|Win32.Build.0 = Debug|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Release|Any CPU.ActiveCfg = Release|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Release|Win32.ActiveCfg = Release|Win32
+		{972640C7-769E-4721-B5B5-E9D0617CC8F1}.Release|Win32.Build.0 = Release|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Debug|Win32.Build.0 = Debug|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Release|Any CPU.ActiveCfg = Release|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Release|Win32.ActiveCfg = Release|Win32
+		{9DA80045-DEB2-46DE-8CE3-AA91CCD542D6}.Release|Win32.Build.0 = Release|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Debug|Win32.Build.0 = Debug|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Release|Any CPU.ActiveCfg = Release|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Release|Win32.ActiveCfg = Release|Win32
+		{7DF4A645-1E83-4708-B987-7759953E8FCD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

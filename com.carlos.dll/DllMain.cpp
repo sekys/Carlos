@@ -60,12 +60,12 @@ ModulSpracovania::Out RealModulSpracovania::detekujObjekty(In in) {
 	{
 		DetekovanyObjekt najdenyObjekt;
 		najdenyObjekt.objekt = in.recepts[ candidates[index].id ];
+		// TODO: Sekerak: pouzi boundary
+		najdenyObjekt.boundary.position1.x = candidates[index].position1.x;
+		najdenyObjekt.boundary.position1.y = candidates[index].position1.y;
 
-		najdenyObjekt.position1.x = candidates[index].position1.x;
-		najdenyObjekt.position1.y = candidates[index].position1.y;
-
-		najdenyObjekt.position2.x = candidates[index].position2.x;
-		najdenyObjekt.position2.y = candidates[index].position2.y;
+		najdenyObjekt.boundary.position2.x = candidates[index].position2.x;
+		najdenyObjekt.boundary.position2.y = candidates[index].position2.y;
 
 		// Poslem vysledok dalej
 		out.objects.push_back(najdenyObjekt);

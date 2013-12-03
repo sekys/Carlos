@@ -4,4 +4,8 @@
   <title>Carlos</title>
   <version>1.0</version>
   
+  <!-- Modul vypoctu polohy -->
+  <CAMERA_DISTANCE_FROM_WINDOW_IN_M>0.4</CAMERA_DISTANCE_FROM_WINDOW_IN_M>
+  <CAMERA_X_POSITION_IN_WINDOW_IN_M>0.3</CAMERA_X_POSITION_IN_WINDOW_IN_M>
+  
 </configuration>

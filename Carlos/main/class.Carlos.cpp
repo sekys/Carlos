@@ -18,7 +18,7 @@ void Carlos::spracujJedenSnimok(Image& image) {
 	// Z gps suradnic sa musi synchronizovane pockat, potom sa moze ist dalej
 	// Lebo ked snimka meska, tak gps moze byt uz o par metrov dalej
 	GPS gps = controller->android->getGPS();
-	Rotation rotaciaHlavy = controller->kinect->getAktualnaRotaciaHlavy();
+	Point3f rotaciaHlavy = controller->kinect->getAktualnaRotaciaHlavy();
 
 	// Modul preprocessingu
 	vector<WorldObject> recepts = controller->databaza->najdiVsetkySvetoveObjektyBlizkoGPS(gps);
@@ -27,14 +27,14 @@ void Carlos::spracujJedenSnimok(Image& image) {
 	ModulSpracovania::In spracovanie;
 	spracovanie.image = image;
 	spracovanie.recepts = recepts;
-	ModulSpracovania::Out vysledokSpracovania = controller->spracovania->detekujObjekty(spracovanie);
+	ModulSpracovania::Out vysledokSpracovania = controller->spracovanie->detekujObjekty(spracovanie);
 
 	// Modul vypoctu polohy
-	vector<Position> najdenePozicie; // synchronizovane
+	vector<Point2f> najdenePozicie; // synchronizovane
 	for(uint i=0; i < vysledokSpracovania.objects.size(); i++) {
 		ModulVypocitaniaPolohy::In vypocetPolohy;
 		vypocetPolohy.gps = gps;
-		vypocetPolohy.polohaObjektu = vysledokSpracovania.objects.at(i).position;
+		vypocetPolohy.polohaObjektu = vysledokSpracovania.objects.at(i).boundary;
 		vypocetPolohy.rotaciaHlavy = rotaciaHlavy;
 
 		ModulVypocitaniaPolohy::Out polohaTextu;
@@ -48,7 +48,7 @@ void Carlos::spracujJedenSnimok(Image& image) {
 	ModulVykreslovania::In vykreslovanie;
 	vykreslovanie.image = image;
 	vykreslovanie.najdenePozicie = najdenePozicie;
-	controller->vykreslovania->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
+	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
 	imshow("Test", image.data);
 }
 

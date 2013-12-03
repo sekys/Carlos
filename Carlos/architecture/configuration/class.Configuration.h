@@ -1,7 +1,8 @@
 #pragma once
 // http://www.grinninglizard.com/tinyxml2docs/index.html
 #include "tinyxml2/tinyxml2.h"
-#include "../architecture/entities/baseTypes.h"
+#include "../entities/baseTypes.h"
+#include <sstream>
 
 using namespace tinyxml2;
 
@@ -11,10 +12,9 @@ private:
 
 	Configuration(const Configuration& a);  
 	Configuration& operator=(const Configuration& a); 
+	Configuration();
 
-	Configuration() {
-		doc.LoadFile("data/configuration.xml");
-	}
+	float str_to_float(const std::string &in);
 
 public: 
 	static Configuration& getInstance() {
@@ -23,16 +23,8 @@ public:
 	}; 
 
 
-	const XMLElement* getRoot() {
-		return doc.FirstChildElement( "configuration" );
-	}
-
-	const XMLElement* getConfig(const char *name) {
-		return getRoot()->FirstChildElement(name);
-	}
-
-	const char* getTitle() {
-		return getConfig("title")->GetText();
-	}
-
+	const XMLElement* getRoot();
+	const XMLElement* getConfig(const char *name);
+	const char* getTitle();
+	const float getConfigf(const char *name);
 };

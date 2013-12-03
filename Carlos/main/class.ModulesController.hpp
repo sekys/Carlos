@@ -8,6 +8,8 @@
 #include "..\architecture\modules\class.ModulVykreslovania.hpp"
 #include "..\architecture\modules\class.ModulVypocitaniaPolohy.hpp"
 #include "..\architecture\modules\fake\class.FakeModulAndroid.hpp"
+#include "class.ModulWrapper.hpp"
+#include <map>
 
 namespace Architecture {
 	using namespace std;
@@ -15,65 +17,25 @@ namespace Architecture {
 	class ModulesController
 	{
 	private:
-		vector<Dll*> importedDlls;
+		typedef vector<ModulWrapper*> moduls_type;
+		moduls_type moduls;
 
-		void callInits() {
-			android->init();
-			databaza->init();
-			kamera->init();
-			kinect->init();
-			spracovania->init();
-			vykreslovania->init();
-			vyppolohy->init();
-		}
+		void callInits();
+		void destroyThreads();
+		void destroyModules();
+		void reset();
 
-		void dropDlls() {
-			vector<Dll*>::iterator it;
-			for (it = importedDlls.begin(); it!= importedDlls.end(); ++it) {
-				delete *it;
-			}
-			importedDlls.clear();
-		}
-
-		void callDeconstructors() {
-			SAFE_DELETE( android);
-			SAFE_DELETE( databaza);
-			SAFE_DELETE( kamera);
-			SAFE_DELETE( kinect);
-			SAFE_DELETE( spracovania);
-			SAFE_DELETE( vykreslovania);
-			SAFE_DELETE( vyppolohy);
-		}
-
-		void reset() {
-			android = NULL;
-			databaza = NULL;
-			kamera = NULL;
-			kinect = NULL;
-			spracovania = NULL;
-			vykreslovania = NULL;
-			vyppolohy = NULL;
+	protected:
+		template <typename T> T* add(T* instance) {
+			moduls.push_back(  new ModulWrapper(instance));
+			return instance;
 		}
 
 		template <typename T> T* addDll(string file) {
-			Dll* lib = new Dll(file);
-			importedDlls.push_back(lib);			
-			return lib->callFactory<T>();
-		}
-
-		virtual void installModules() {
-			// Zatial chceme pouzit fake moduly
-			android = new FakeModulAndroid("data/video/2013-10-20-12-25-52.txt");
-			databaza = new ModulDatabaza();
-			kamera = new ModulKamera("data/video/2013-10-20-12-25-52.avi");
-			kinect = new ModulKinect();
-			//spracovania = new ModulSpracovania();
-			vykreslovania = new ModulVykreslovania();
-			vyppolohy = new ModulVypocitaniaPolohy();
-
-			// Z dll sa to bude nacitavat takto
-			cout << "Otvaram dll subor.\n";
-			spracovania = addDll<ModulSpracovania>("com.carlos.dll.dll");
+			Dll* dll = new Dll(file);		
+			T* instance = dll->callFactory<T>();
+			moduls.push_back(  new ModulWrapper(instance, dll));
+			return instance;
 		}
 
 	public:
@@ -81,34 +43,15 @@ namespace Architecture {
 		ModulDatabaza* databaza;
 		ModulKamera* kamera;
 		ModulKinect* kinect;
-		ModulSpracovania* spracovania;
-		ModulVykreslovania* vykreslovania;
+		ModulVykreslovania* vykreslovanie;
 		ModulVypocitaniaPolohy* vyppolohy;
+		ModulSpracovania* spracovanie;
 
-		ModulesController() {
-			reset();
-		}
-
-		virtual void start() {
-			installModules();
-			callInits();
-		}
-
-		virtual void stop() {
-			callDeconstructors();
-			dropDlls();
-		}
-
-		void callPreFrames() {
-			android->preFrame();
-			databaza->preFrame();
-			kamera->preFrame();
-			kinect->preFrame();
-			spracovania->preFrame();
-			vykreslovania->preFrame();
-			vyppolohy->preFrame();
-		}
-
+		ModulesController();
+		virtual void installModules();
+		virtual void start();
+		virtual void stop();
+		void callPreFrames();
 	};
 
 }

@@ -8,15 +8,15 @@ namespace Architecture
 	public:
 		class In {
 		public:
-			Rotation rotaciaHlavy;
-			Position polohaObjektu;
+			Point3f rotaciaHlavy;
+			RotatedRect polohaObjektu;
 			GPS gpsPolohaObjektu;
 			GPS gps;
 
 			friend ostream& operator<< (ostream& out, In& object) {
 				out << "ModulVypocitaniaPolohyIn(";
 				out << "rotaciaHlavy: " << object.rotaciaHlavy << ", ";
-				out << "polohaObjektu: " << object.polohaObjektu << ", ";
+				//out << "polohaObjektu: " << object.polohaObjektu << ", ";
 				out << "gpsPolohaObjektu: " << object.gpsPolohaObjektu << ", ";
 				out << "gps: " << object.gps << ", ";
 				out << "));";
@@ -27,7 +27,7 @@ namespace Architecture
 
 		class Out {
 		public:
-			Position polohaTextu;
+			Point2f polohaTextu;
 			bool najdeny;
 
 			friend ostream& operator<< (ostream& out, Out& object) {
