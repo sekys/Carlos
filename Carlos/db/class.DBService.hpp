@@ -6,9 +6,14 @@
 namespace DB {
 	using namespace std;
 
+	/**
+	* Trieda ktora ma na starosti celu databazu.
+	* Pripaja sa na databazu, riadi ju, odpoji sa s nej.
+	* Zaroven cerpa a posiela informacie do databazy.
+	*/
 	class DBService {
 	private:
-		SqliteDB *db;
+		SqliteDB *db; /**< nas typ databazy je sqlite, neskor sa to moze zmenit */
 
 	public:
 		DBService() {
@@ -19,6 +24,8 @@ namespace DB {
 			db = NULL;
 		}
 
+		// Priklad metody, ako vytiahnut objekty z databazy, cez OOP mapovac
+		// Pozn.: Callback sa nevola ked je insert alebo nozina je prazdna
 		vector<Object> selectObjects() {
 			auto sel(db->select<Object>());
 			vector<Object> list;
@@ -33,28 +40,3 @@ namespace DB {
 	};
 
 }
-
-
-/*
-// Callback sa nevola ked je insert alebo nozina je prazdna
-int The_Callback(void *a_param, int argc, char **argv, char **column){
-for (int i=0; i< argc; i++)
-printf("%s,\t", argv[i]);
-printf("aaa\n");
-return 0;
-
-int rc;
-char *zErrMsg = 0;
-char* sql = "SELECT * from object";
-const char* data = "Callback function called";
-
-// Execute SQL statement
-rc = sqlite3_exec(db->getConnection(), sql, The_Callback, (void*)data, &zErrMsg);
-if( rc != SQLITE_OK ){
-fprintf(stderr, "SQL error: %s\n", zErrMsg);
-sqlite3_free(zErrMsg);
-}else{
-fprintf(stdout, "Operation done successfully\n");
-}
-
-}*/

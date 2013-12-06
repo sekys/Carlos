@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-#pragma comment(lib, "ws2_32.lib") // link winsock2
+#pragma comment(lib, "ws2_32.lib") // linker potrebuje winsock2 ktory je v ws2_32
 
 using namespace std;
 
@@ -28,21 +28,20 @@ DWORD SocketListener::start() {
 		int iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) {
 			cout << "Bytes received: " << iResult << "\n";
-			recvbuf[iResult-1] = 0; // null terminate the string according to the length
+			// Ukonci retazec na zakalde prijatej dlzky
 
-			// The message spec indicates the XML will end in a "new line"
-			// character which can be either a newline or caraiage feed
-			// Search for either and replace with a NULL to terminate
-			if ( recvbuf[iResult-2] == '\n' || recvbuf[iResult-2] == '\r' )
-				recvbuf[iResult-2] = 0;
+			recvbuf[iResult] = 0;
 
 			if(handler == NULL) {
 				cout << "handler is null\n";
 				return 1;
 			}
+
+			// Posial spravu dalej na handler
 			handler->HandleMessage(recvbuf);
 		}
 		else {
+			// Client sa odpojil
 			cout << "Client connection closing\n";
 			closesocket(ClientSocket);
 			return 1;
@@ -53,7 +52,7 @@ DWORD SocketListener::start() {
 }
 
 void SocketListener::sendTEXT2Client(const char* txt) {
-	// Send some XML to the client
+	// Metoda pre poslanie spravy cleintovy
 	int len = strlen(txt);
 	cout << "Sending\n" << txt;
 	int sent = send( this->ClientSocket, txt, len, 0 );

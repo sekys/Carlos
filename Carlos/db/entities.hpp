@@ -1,3 +1,9 @@
+/** @file entities.hpp
+*
+* V tomto subore sa definuju databazove entity.
+* Teda tietoentity budu namapovane cez OOP mapovac.
+* Preto musia mat dobru strukturu.
+*/
 #pragma once
 #include "sweetql.hpp"
 #include "../architecture/entities/entities.h"
@@ -7,6 +13,7 @@
 namespace DB {
 	using namespace std;
 
+	// Trieda reprezentuju tabulku Question, kde sa uklada otazky ku hre
 	class Question {
 	public:
 		Question() {}
@@ -24,6 +31,7 @@ namespace DB {
 		int id;
 	};
 
+	// Trieda reprezentuju tabulku Answer,  teda odpovede na otazky
 	class Answer {
 	public:
 		Answer() {}
@@ -43,6 +51,7 @@ namespace DB {
 		int object_id;
 	};
 
+	// Nas objekt vo svete( hrad, zastavka) ulozena v databaze
 	class Object {
 	public:
 		Object() {}
@@ -65,6 +74,8 @@ namespace DB {
 		string source_url;
 	};
 
+	// Tabulka v ktorej su ulozene informacie receptov pre dany objekt
+	// Recept je cesta k suboru
 	class recept_file_info {
 	public:
 		recept_file_info() {}
@@ -78,7 +89,6 @@ namespace DB {
 		}
 		int id;
 		int object;
-		string path;
-
+		string path; /**< cesty k deskriptorom */
 	};
 }

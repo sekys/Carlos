@@ -1,3 +1,7 @@
+﻿/** @file baseTypes.h
+*
+* V tomto subore sa definuju zakladne typy a definuju makra.
+*/
 #pragma once
 #include <fstream>
 #include <ostream>
@@ -20,6 +24,6 @@
 		name(const name&);  \
 		name& operator=(const name&); \
 
-
+// Definuj zakaldne typy
 typedef unsigned char byte;
 typedef unsigned int uint;

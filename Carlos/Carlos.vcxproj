@@ -48,7 +48,6 @@
     <ClCompile Include="main\class.Carlos.cpp" />
     <ClCompile Include="main\class.ModulesController.cpp" />
     <ClCompile Include="main\class.ModulWrapper.cpp" />
-    <ClCompile Include="main\CThread.cpp" />
     <ClCompile Include="main\main.cpp" />
     <ClCompile Include="main\utilities.cpp" />
     <ClCompile Include="architecture\configuration\tinyxml2\tinyxml2.cpp" />

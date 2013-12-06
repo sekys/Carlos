@@ -1,3 +1,7 @@
+﻿/** @file class.Configuration.pp
+*
+* Implementacia nacitavania konfiguracie.
+*/
 #include "class.Configuration.h"
 
 Configuration::Configuration() {

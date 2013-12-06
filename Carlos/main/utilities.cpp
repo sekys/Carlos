@@ -1,3 +1,7 @@
+/** @file utilities.cpp
+*
+* Implementacia pomocnych funkcii.
+*/
 #include "utilities.hpp"
 #include <windows.h>
 #include <iostream>

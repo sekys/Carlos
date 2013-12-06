@@ -9,6 +9,9 @@ namespace Architecture
 	using namespace std;
 	using namespace cv;
 
+	/**
+	* Trieda pre obrazok ako univerzalna entita v ramci Carlos.
+	*/
 	class Image {
 	public:
 		unsigned long frame;
@@ -20,6 +23,9 @@ namespace Architecture
 		}
 	};
 
+	/**
+	* Trieda reprezentuje GPS informaciu
+	*/
 	class GPS {
 	public:
 		float latitude, longitude;
@@ -30,11 +36,14 @@ namespace Architecture
 		}
 	};
 
+	/**
+	* Trieda reprezentuje objekt v 3D svete 
+	*/
 	class WorldObject {
 	public:
 		uint id;
 		GPS position;
-		vector<string> cestyKSuborom;
+		vector<string> cestyKSuborom; int value; /**< cesty k deskriptorom */
 
 		friend ostream& operator<< (ostream& out, WorldObject& object) {
 			out << "WorldObject(";
@@ -49,10 +58,14 @@ namespace Architecture
 		}
 	};
 
+	/**
+	* Trieda reprezentuje objekt detekovany na obrazovke videa.
+	* Dany objekt odkazuje na svetovy objekt
+	*/
 	class DetekovanyObjekt {
 	public:
 		WorldObject objekt;
-		RotatedRect boundary; // na obrazku
+		RotatedRect boundary; /**< ojekt ma velkost rectange, to je aj jeho pozicia na obrazku */
 
 		friend ostream& operator<< (ostream& out, DetekovanyObjekt& object) {
 			out << "DetekovanyObjekt(";
@@ -62,13 +75,16 @@ namespace Architecture
 		}
 	};
 
+	/**
+	* Enum reprezentuje mozne typy prikazov, ktore prichadzaju od ovladaca
+	*/
 	enum ControllerCommands { 
 		NO_ACTION,
-		PRESS_1, 
-		PRESS_2, 
-		PRESS_3, 
-		START, 
-		STOP
+		UP, 
+		DOWN, 
+		LEFT, 
+		RIGHT, 
+		TAP
 	};
 
 }

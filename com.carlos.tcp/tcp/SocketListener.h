@@ -6,6 +6,10 @@
 #include "class.MessageHandler.hpp"
 #define DEFAULT_BUFLEN 512
 
+/**
+* Trieda ktora reprezentuej ssocket medzi serverom a clientom.
+* Teda cez socket sa komunikuje.
+*/
 class SocketListener {
 protected:
     WSADATA wsaData;
@@ -19,10 +23,19 @@ protected:
 	MessageHandler* handler;
 
 public:
+	// Metoda pre zabalenie scoketu
 	SocketListener(SOCKET socket);
+
+	// Metoda pre otvorenie socketu
 	DWORD start();
+
+	// Metoda na poslanie spravy clientovy
 	void sendTEXT2Client(const char* txt);
+
+	// Setter pre nastavenie handlera, pre tento socket, ak bude prazdny prijata sprava sa nikomu neposle
 	void setHandler(MessageHandler* mess);
+
+	// Je socket otvoreny ?
 	bool isListening();
 };
 

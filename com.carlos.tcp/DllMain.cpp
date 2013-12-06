@@ -10,20 +10,25 @@
 using namespace Architecture;
 using namespace std;
 
-class MojaTrieda : public FakeModulAndroid, MessageHandler {
+/**
+* Modul ktory riadi TCP server a napoji tento server.
+* Tento modul je potom napojeny na halvnu apliakciu cez DLL subor.
+*/
+class TCPServer : public FakeModulAndroid, MessageHandler {
 private:
 	ServerSocket* server;
 
 public:
-	MojaTrieda() : FakeModulAndroid("data/video/2013-10-20-12-25-52.txt") {
+	// Nas modul ma zatial nacitavat fake GPS suranice zo suboru 
+	TCPServer() : FakeModulAndroid("data/video/2013-10-20-12-25-52.txt") {
 		server = NULL;
 	}
 
-	// nas modul sa spusta
+	// Nas modul sa spusta
 	virtual void init() {
 		FakeModulAndroid::init();
 		cout << "Native TCP server starting\n";
-		server = new MyServerSocket(this, "localhost", "8080");
+		server = new MyServerSocket(this, "192.168.14.1", "1234");
 		server->start();
 	}
 
@@ -31,15 +36,18 @@ public:
 	void HandleMessage(char* input) {
 		string inputText = input;
 		cout << "Reading\n" + inputText + "\n";
-
-		unsigned pos = inputText.find(":");
-		string key = inputText.substr(pos); 
+		size_t pos = inputText.find(":");
+		if(pos == -1) {
+			cout << "Sprava nieje spravne formatovana.\n";
+			return;
+		}
+		string key = inputText.substr(pos);
 		string value = inputText.substr(pos, inputText.length()); 
 
 		// Citaj prikaz
 		if (key.compare("Command") != 0) {
 			//sendRandomNumberResponse();
-			updateCommand(value);
+			updateCommand(value); // TODO: tu ostava :
 			return;
 		} 
 
@@ -66,23 +74,24 @@ public:
 	}*/
 
 	// Nas modul ma byt vypusteny zo systemu
-	~MojaTrieda() {
+	~TCPServer() {
 		if(server != NULL) {
 			delete server;
 		}
 	}
 
+	// Ma byt moodu lspusteny v samostatnom vlakne ?
 	virtual bool isThreaded() { return true; }
 };
 
 // Ked nas modul ma byt vytvoreny cez riadiaci modul
 IMPEXP void* callFactory() {
-	return static_cast< void* > (new MojaTrieda());
+	return static_cast< void* > (new TCPServer());
 }
 
 // Ked chceme modul spustit ako normalnu aplikaciu
 int main() { 
-	MojaTrieda* a = new MojaTrieda();
+	TCPServer* a = new TCPServer();
 	a->init();
 	delete a;
 }

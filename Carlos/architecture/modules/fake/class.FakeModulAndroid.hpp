@@ -16,11 +16,11 @@ namespace Architecture
 
 	protected:
 		virtual void prepareBimap() {
-			bm.insert( bm_type::value_type("1", ControllerCommands::PRESS_1) );
-			bm.insert( bm_type::value_type("2", ControllerCommands::PRESS_2) );
-			bm.insert( bm_type::value_type("3", ControllerCommands::PRESS_3) );
-			bm.insert( bm_type::value_type("S", ControllerCommands::START) );
-			bm.insert( bm_type::value_type("D", ControllerCommands::STOP) );
+			bm.insert( bm_type::value_type("up", ControllerCommands::UP) );
+			bm.insert( bm_type::value_type("down", ControllerCommands::DOWN) );
+			bm.insert( bm_type::value_type("right", ControllerCommands::RIGHT) );
+			bm.insert( bm_type::value_type("left", ControllerCommands::LEFT) );
+			bm.insert( bm_type::value_type("tap", ControllerCommands::TAP) );
 		}
 
 		virtual string toString(ControllerCommands type)  {

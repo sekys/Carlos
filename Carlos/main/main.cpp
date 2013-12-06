@@ -2,8 +2,12 @@
 
 using namespace Architecture;
 
+/**
+* Metoda za pomoci ktorej sa spsuti program.
+*/
 int main()
 {
+	// Carlos postupne inicializujeme, spustime, deinicializujeme
 	Carlos* carlos = new Carlos();
 	carlos->start();
 	delete carlos;

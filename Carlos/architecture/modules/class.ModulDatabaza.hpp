@@ -6,6 +6,8 @@ namespace Architecture
 {
 	class ModulDatabaza : public IModul  {
 	public:
+
+		// Metoda ma hladat blizke objekty vo svete pdola GPS suradnic
 		virtual vector<WorldObject> najdiVsetkySvetoveObjektyBlizkoGPS(GPS gps) {
 			vector<WorldObject> zoznam;
 			// Stiahni vsetko z datbazi

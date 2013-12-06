@@ -1,3 +1,7 @@
+/** @file ServerSocket.cpp
+*
+* Implementacia servera a prijmanie soketov.
+*/
 // http://www.drdobbs.com/jvm/java-and-c-socket-communication/222900697?pgno=3
 
 #include "ServerSocket.h"

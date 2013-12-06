@@ -1,6 +1,13 @@
+/** @file class.App.cpp
+*
+* Implementacia triedy App.
+*/
 #include "class.App.hpp"
 
 void App::MainCycle() {
+	// Toto je hlavny cyklus aplikacie.
+	// V nom sa udrzuje beh apliakcie v cykle.
+	// Po kazdom cykle prebieha preposielanie sprav z oper. systemom.
 	MSG msg;
 	ZeroMemory( &msg, sizeof(msg) );
 	while(canRun()) {

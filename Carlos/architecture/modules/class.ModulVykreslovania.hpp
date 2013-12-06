@@ -4,12 +4,16 @@
 
 namespace Architecture
 {
+	/**
+	* Modul vykreslvoania, ktory vykresli rozsirenu realitu
+	*/
 	class ModulVykreslovania : public IModul  {
 	public:
 		class In {
 		public:
-			Image image;
-			vector<Point2f> najdenePozicie; // pozicie pre text
+			Image image; /**< obrazok povodny z kamery */
+			vector<Point2f> najdenePozicie; /**< Pozicie najdene pre objekty */
+			ControllerCommands command;
 
 			friend ostream& operator<< (ostream& out, In& object) {
 				out << "ModulVykreslovaniaIn(";
@@ -23,6 +27,7 @@ namespace Architecture
 			}
 		};
 
+		// Posli modulu spravu, ze ma vykreslit obrazok z rozsirenou realitou
 		virtual void vykresliObrazokSRozsirenouRealitou(In in) {
 			Image obrazokNaPozadie = in.image; // tento obrazok je potrebne vykreslit na pozadi
 

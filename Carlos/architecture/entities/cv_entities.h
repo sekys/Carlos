@@ -9,6 +9,7 @@ namespace Architecture
 	using namespace cv;
 
 	/* Pre urcenie polohy pouzivaj:
+	
 	typedef Point_<int> Point2i;
 	typedef Point2i Point;
 	typedef Size_<int> Size2i;

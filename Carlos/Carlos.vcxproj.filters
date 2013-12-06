@@ -23,7 +23,6 @@
     <ClInclude Include="architecture\modules\class.ModulKamera.hpp" />
     <ClInclude Include="architecture\modules\class.ModulKinect.hpp" />
     <ClInclude Include="architecture\modules\class.ModulSpracovania.hpp" />
-    <ClInclude Include="architecture\modules\class.ModulVykreslovania.hpp" />
     <ClInclude Include="architecture\modules\class.ModulVypocitaniaPolohy.hpp" />
     <ClInclude Include="main\class.Carlos.hpp" />
     <ClInclude Include="main\class.Dll.hpp" />
@@ -43,6 +42,7 @@
     <ClInclude Include="architecture\entities\class.Time.hpp" />
     <ClInclude Include="main\class.ModulWrapper.hpp" />
     <ClInclude Include="architecture\entities\cv_entities.h" />
+    <ClInclude Include="architecture\modules\class.ModulVykreslovania.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\class.Carlos.cpp" />
@@ -50,7 +50,6 @@
     <ClCompile Include="db\sqlite\sqlite3.c" />
     <ClCompile Include="db\entities.hpp" />
     <ClCompile Include="main\utilities.cpp" />
-    <ClCompile Include="main\CThread.cpp" />
     <ClCompile Include="architecture\configuration\tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="architecture\configuration\class.Configuration.cpp" />
     <ClCompile Include="main\class.ModulWrapper.cpp" />

@@ -7,6 +7,10 @@ namespace Architecture
 {
 	using namespace cv;
 
+	/**
+	* Trieda ktora manazuje kameru.
+	* Pripoji kameru a prebera stream z nej
+	*/
 	class ModulKamera : public IModul  {
 	private:
 		// http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#videocapture
@@ -22,6 +26,7 @@ namespace Architecture
 			cap = new VideoCapture(device);
 		}
 
+		// Zapni kameru
 		virtual void init() {
 			if(!cap->isOpened()) {
 				cout << "[ModulKamera] I cannot open device / file.\n";
@@ -32,6 +37,7 @@ namespace Architecture
 			SAFE_DELETE(cap);
 		}
 
+		// Ziskaj aktualnu snimku z kamery
 		virtual void readNext(Image& image) {
 			*cap >> image.data;
 		}

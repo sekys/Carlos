@@ -3,7 +3,11 @@
 
 namespace Architecture
 {
-
+	/**
+	* Trieda pre urcenie velmy presneho aktualneho casu
+	* Za pomoci nej dokazeme urcit cas medzi 2 bodmy.
+	* Je thread safe.
+	*/
 	class Time
 	{
 	private: 
@@ -18,11 +22,13 @@ namespace Architecture
 		}
 
 	public:
+		// Trieda je typu singleton
 		static Time& getInstance() {
 			static Time singleton; 
 			return singleton; 
 		}; 
 
+		// Ziskaj akutalny cas v ms
 		inline double GetAbsolute()	{
 			LARGE_INTEGER qwTime = { 0 };
 			QueryPerformanceCounter( &qwTime );

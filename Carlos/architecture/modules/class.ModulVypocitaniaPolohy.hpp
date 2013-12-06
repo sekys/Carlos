@@ -4,14 +4,18 @@
 
 namespace Architecture
 {
+	/**
+	* Modul sa stara o vypocet polohy textu na obrazovke
+	* na zaklade GPS a infromacii z spracovania reality
+	*/
 	class ModulVypocitaniaPolohy : public IModul  {
 	public:
 		class In {
 		public:
-			Point3f rotaciaHlavy;
+			Point3f rotaciaHlavy; 
 			RotatedRect polohaObjektu;
 			GPS gpsPolohaObjektu;
-			GPS gps;
+			GPS gps; /**< aktualna poloha auta */
 
 			friend ostream& operator<< (ostream& out, In& object) {
 				out << "ModulVypocitaniaPolohyIn(";
@@ -28,7 +32,7 @@ namespace Architecture
 		class Out {
 		public:
 			Point2f polohaTextu;
-			bool najdeny;
+			bool najdeny; /**< je dana poloha v pozicii obrazovky, ak nie posli dodatocnu informaciu */
 
 			friend ostream& operator<< (ostream& out, Out& object) {
 				out << "ModulVypocitaniaPolohyOut(";
@@ -40,6 +44,7 @@ namespace Architecture
 		};
 
 
+		// Spusti vypocet polohy textu
 		virtual Out vypocitajPolohuTextu(In in) {
 			Out out;
 			out.polohaTextu.x = 0.5f; // cca v strede obrazovky
