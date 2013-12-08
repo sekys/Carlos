@@ -19,21 +19,19 @@ public:
 	void createFromData(BYTE* bData, int a_iWidth, int a_iHeight, int a_iBPP, GLenum internalColourFormat, GLenum inputColourFormat, bool bGenerateMipMaps);
 	bool loadTexture2D(string a_sPath, bool bGenerateMipMaps = false);
 	void bindTexture(int iTextureUnit = 0);
-
 	void setFiltering(int a_tfMagnification, int a_tfMinification);
-
 	void setSamplerParameter(GLenum parameter, GLenum value);
 
 	int getMinificationFilter();
 	int getMagnificationFilter();
-
 	int getWidth();
 	int getHeight();
 	int getBPP();
 
+	bool flagDelete;
 	void releaseTexture();
-
 	CTexture();
+
 private:
 	int iWidth, iHeight, iBPP; 
 	UINT uiTexture; 

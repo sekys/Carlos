@@ -18,7 +18,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
@@ -42,8 +42,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\modulHra\Carlos\architecture;C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\modulHra\Kniznice\opencv\build\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\modulHra\Kniznice\opencv\build\x86\vc11\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(CARLOS_FREETYPE_INC);$(CARLOS_FREEIMAGE_INC);$(CARLOS_GLFILES_INC);$(CARLOS_GLM_INC);$(CARLOS_ARCHITECTURE);$(CARLOS_BOOST_INC);$(CARLOS_OPENCV_INC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(CARLOS_BOOST_LIB);$(CARLOS_GLFILES_LIB);$(CARLOS_OPENCV_LIB);$(LibraryPath)</LibraryPath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -56,13 +57,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\modulHra\Kniznice\freetype-2.3.5-1-bin\include;C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\modulHra\Kniznice\FreeImage;C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\modulHra\Kniznice\GL Files\include;C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\modulHra\Kniznice\glm-0.9.4.6\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\modulHra\Kniznice\GL Files\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;FreeImage.lib;opencv_calib3d246d.lib;opencv_contrib246d.lib;opencv_core246d.lib;opencv_features2d246d.lib;opencv_flann246d.lib;opencv_gpu246d.lib;opencv_haartraining_engined.lib;opencv_highgui246d.lib;opencv_imgproc246d.lib;opencv_legacy246d.lib;opencv_ml246d.lib;opencv_nonfree246d.lib;opencv_objdetect246d.lib;opencv_ocl246d.lib;opencv_photo246d.lib;opencv_stitching246d.lib;opencv_superres246d.lib;opencv_ts246d.lib;opencv_video246d.lib;opencv_videostab246d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -96,30 +97,38 @@
     <ClInclude Include="architecture\modules\class.ModulSpracovania.hpp" />
     <ClInclude Include="architecture\modules\class.ModulVykreslovania.hpp" />
     <ClInclude Include="architecture\modules\class.ModulVypocitaniaPolohy.hpp" />
+    <ClInclude Include="Hra\Help\class.FrameData.hpp" />
+    <ClInclude Include="Hra\Help\class.ThreadSafeStack.hpp" />
+    <ClInclude Include="Hra\Help\class.ResourceManager.hpp" />
     <ClInclude Include="Hra\Help\Math\AABB.h" />
     <ClInclude Include="Hra\Entity\class.Plain.hpp" />
     <ClInclude Include="Hra\Entity\class.World.hpp" />
     <ClInclude Include="Hra\Help\Math\collisionStatus.h" />
     <ClInclude Include="Hra\Help\font.h" />
     <ClInclude Include="Hra\Help\baseStructures.h" />
-    <ClInclude Include="Hra\Help\class.MyShaderController.hpp" />
+    <ClInclude Include="Hra\Help\class.VisualController.hpp" />
     <ClInclude Include="Hra\opengl.h" />
-    <ClInclude Include="Hra\class.Scene.hpp" />
+    <ClInclude Include="prepojenie\class.DllModulVykreslovania.hpp" />
+    <ClInclude Include="Hra\Scena\class.Scene.hpp" />
     <ClInclude Include="Hra\Model\common_header.h" />
     <ClInclude Include="Hra\Model\objModel.h" />
     <ClInclude Include="Hra\Model\shaders.h" />
     <ClInclude Include="Hra\Model\texture.h" />
     <ClInclude Include="Hra\Model\vertexBufferObject.h" />
-    <ClInclude Include="Hra\StavyHry.h" />
+    <ClInclude Include="Hra\Scena\StavyHry.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DllMain.cpp" />
+    <ClCompile Include="Hra\Scena\prepniStav.cpp" />
+    <ClCompile Include="prepojenie\DllMain.cpp" />
+    <ClCompile Include="prepojenie\class.DllModulVykreslovania.cpp" />
+    <ClCompile Include="Hra\class.SpracovanieSnimku.hpp" />
     <ClCompile Include="Hra\Help\Math\AABB.cpp" />
-    <ClCompile Include="Hra\class.Scene.cpp" />
+    <ClCompile Include="Hra\Scena\class.Scene.cpp" />
     <ClCompile Include="Hra\Model\objModel.cpp" />
     <ClCompile Include="Hra\Model\shaders.cpp" />
     <ClCompile Include="Hra\Model\texture.cpp" />
     <ClCompile Include="Hra\Model\vertexBufferObject.cpp" />
+    <ClCompile Include="Hra\Scena\stavy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Hra\Model\info.txt" />

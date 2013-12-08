@@ -16,21 +16,11 @@ namespace Architecture
 
 	protected:
 		virtual void prepareBimap() {
-			bm.insert( bm_type::value_type("up", ControllerCommands::UP) );
-			bm.insert( bm_type::value_type("down", ControllerCommands::DOWN) );
-			bm.insert( bm_type::value_type("right", ControllerCommands::RIGHT) );
-			bm.insert( bm_type::value_type("left", ControllerCommands::LEFT) );
+			bm.insert( bm_type::value_type("w", ControllerCommands::UP) );
+			bm.insert( bm_type::value_type("s", ControllerCommands::DOWN) );
+			bm.insert( bm_type::value_type("d", ControllerCommands::RIGHT) );
+			bm.insert( bm_type::value_type("a", ControllerCommands::LEFT) );
 			bm.insert( bm_type::value_type("tap", ControllerCommands::TAP) );
-		}
-
-		virtual string toString(ControllerCommands type)  {
-			bm_type::right_const_iterator right_iter = bm.right.find(type);
-			if(right_iter == bm.right.end() ) {
-				return "-";
-			}
-			string text;
-			text += right_iter->first;
-			return text;
 		}
 
 		virtual void checkInput() {
@@ -50,6 +40,15 @@ namespace Architecture
 			}
 			setActualCommand(left_iter->second);
 			return true;		
+		}
+		virtual string toString(ControllerCommands type)  {
+			bm_type::right_const_iterator right_iter = bm.right.find(type);
+			if(right_iter == bm.right.end() ) {
+				return "-";
+			}
+			string text;
+			text += right_iter->first;
+			return text;
 		}
 
 	public:
@@ -79,6 +78,7 @@ namespace Architecture
 				setGPS(row);
 			}
 		}
+
 	};
 }
 

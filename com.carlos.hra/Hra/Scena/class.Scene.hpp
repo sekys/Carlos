@@ -1,0 +1,65 @@
+#pragma once
+/** @file class.Scene.hpp
+* Trieda Scene ktora sa stara o zobrazenie modelu lietadla, textu, framu a ovladanie lietadla
+*/
+
+#include "..\Help\class.VisualController.hpp"
+#include "..\Help\class.ResourceManager.hpp"
+#include "..\Entity\class.Plain.hpp"
+#include "..\Entity\class.World.hpp"
+#include "StavyHry.h"
+#include "opencv2/opencv.hpp"
+#include "..\Help\class.ThreadSafeStack.hpp"
+#include "../../../Carlos/architecture/modules/class.ModulVykreslovania.hpp"
+#include "..\Help\class.FrameData.hpp"
+
+using namespace Architecture;
+
+class Scene {
+private:
+	// Prepinanie stavov
+	void prepniStavNaObrazovku();
+	void prepniStavNaGameOver();
+	void prepniStavNaScore();
+	void prepniStavNaHrania();
+	void havaroval();
+
+	// Volanie stavu
+	void stavHrania(FrameData* fDelta);
+	void stavUvodnaObrazovka(FrameData* frame);
+	void stavGameOver(FrameData* fDelta);
+	void stavSkore(FrameData* fDelta);
+
+	// Pomocne premenne
+	float casPrejdenyNaGameOver;
+	//unsigned char pressedKey; /**< premenna so stlacenou klavesou */
+	Plain* plain; /**<  model lietadla */
+	World* world; /**< svet */ 
+	StavyHry aktualnyStav; /**< aktualny stav v akom sa hra nachadza */
+
+	VisualController visualController; 
+	ResourceManager resManager; 
+	ThreadSafeStack<ModulVykreslovania::In> zasobnikVstupov; /**< buffer prijatych snimkov */
+
+	void delenieStavov(FrameData* fDelta);
+	void setBackgroud(CTexture texture);
+	void ziskajAktualnyVstup(FrameData* data);
+	void nastavPozadieZoVstupu(FrameData* frame);
+public:
+	//int stav; /**< stav pomocou ktoreho urcujeme ci mozme mazat textury */
+	Scene()  {
+		plain = new Plain(glm::vec2(10.0, 10.0));
+		world = new World(glm::vec2(320.0, 240.0));
+	}
+	~Scene() {
+		delete plain;
+		delete world;
+	}
+
+	void init();
+	void frame(float fDelta);
+	//void keyboard(unsigned char key, int x, int y);
+
+	// Pozor: Tato metoda bezi v inom vlakne
+	void sendVstup(ModulVykreslovania::In in);
+};

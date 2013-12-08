@@ -45,28 +45,7 @@
     <ClInclude Include="architecture\modules\class.ModulVypocitaniaPolohy.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hra\class.Scene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hra\Model\common_header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hra\Model\objModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hra\Model\shaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hra\Model\texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hra\Model\vertexBufferObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Hra\Help\baseStructures.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Hra\Help\class.MyShaderController.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Hra\Help\font.h">
@@ -87,12 +66,63 @@
     <ClInclude Include="Hra\opengl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hra\StavyHry.h">
+    <ClInclude Include="Hra\Help\class.ResourceManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Help\class.ThreadSafeStack.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Help\class.VisualController.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Scena\class.Scene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Scena\StavyHry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="prepojenie\class.DllModulVykreslovania.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Model\common_header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Model\objModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Model\shaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Model\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Model\vertexBufferObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Hra\Help\class.FrameData.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Hra\class.Scene.cpp">
+    <ClCompile Include="Hra\Help\Math\AABB.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hra\Scena\class.Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hra\Scena\stavy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="prepojenie\class.DllModulVykreslovania.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="prepojenie\DllMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hra\Scena\prepniStav.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hra\class.SpracovanieSnimku.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Hra\Model\objModel.cpp">
@@ -105,12 +135,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Hra\Model\vertexBufferObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Hra\Help\Math\AABB.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DllMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

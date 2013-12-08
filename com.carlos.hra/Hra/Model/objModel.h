@@ -3,14 +3,6 @@
 #include "texture.h"
 #include "vertexBufferObject.h"
 
-/********************************
-
-Class:	CObjModel
-
-Purpose: Class for handling obj
-		 model files.
-
-********************************/
 
 class CObjModel
 {
@@ -21,6 +13,7 @@ public:
 
 	int getPolygonCount();
 	void setTexture(CTexture texture);
+	CTexture getTexture();
 
 	CObjModel();
 private:

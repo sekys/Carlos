@@ -1,0 +1,54 @@
+/** @file prepniStav.cpp
+* Trieda ktora sa stara o to co sa ma vykonat pri prepnuti stavu hry 
+*/
+#include "class.Scene.hpp"
+
+/** 
+* Funkcia nema na vstupe ziadny parameter, stara sa o zobrazenie uvodnej obrazovky hry
+* @see void Scene::init()
+* @return void 
+*/
+void Scene::prepniStavNaObrazovku() {
+	aktualnyStav = StavyHry::UVODNA_OBRAZOVKA;
+	setBackgroud(resManager.bgUvod);
+	zasobnikVstupov.clear();
+	printf("Prepinam stan na uvodnu obrazovku.\n");
+}
+
+/** 
+* Funkcia nema na vstupe ziadny parameter, stara sa o zobrazenie obrazovky game over, ked lietadlo vyleti mimo obrazovky resp. klesne pod horizont
+* @see void Scene::havaroval()
+* @see void Scene::stavHrania(float fDelta)
+* @return void 
+*/
+void Scene::prepniStavNaGameOver() {
+	aktualnyStav = StavyHry::OBRAZOVKA_PREHRAL;
+	setBackgroud(resManager.bgGameOver);
+	casPrejdenyNaGameOver = 0.0;
+	zasobnikVstupov.clear();
+	printf("Prepinam stav na obrazovku prehral.\n");
+}
+
+/** 
+* Funkcia nema na vstupe ziadny parameter, stara sa o zobrazenie obrazovky so skore
+* @see void Scene::stavGameOver(float fDelta)
+* @return void 
+*/
+void Scene::prepniStavNaScore() {
+	aktualnyStav = StavyHry::OBRAZOVKA_SKORE;
+	setBackgroud(resManager.bgScore);
+	zasobnikVstupov.clear();
+	printf("Prepinam stav na obrazovku skore.\n");
+}
+
+/** 
+* Funkcia nema na vstupe ziadny parameter, stara sa o zobrazenie obrazkov z videa - po zacati hry
+* @see void Scene::stavUvodnaObrazovka()
+* @return void 
+*/
+void Scene::prepniStavNaHrania() {
+	aktualnyStav = StavyHry::HRAJE_HRU;
+	plain->setStartPosition();
+	zasobnikVstupov.clear();
+	printf("Prepinam stav na hraje hru.\n");
+}

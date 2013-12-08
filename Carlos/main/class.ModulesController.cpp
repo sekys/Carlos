@@ -69,9 +69,8 @@ void ModulesController::installModules() {
 	databaza = add(new ModulDatabaza() );
 	kamera = add(new ModulKamera("data/video/2013-10-20-12-25-52.avi") );
 	kinect = add(new ModulKinect() );
-	vykreslovanie = add(new ModulVykreslovania() );
+	vykreslovanie = addDll<ModulVykreslovania>("com.carlos.hra.dll");
 	vyppolohy = add(new ModulVypocitaniaPolohy());
-	//spracovanie = addDll<ModulSpracovania>("com.carlos.dll.dll");
 	spracovanie = new ModulSpracovania();
 }
 

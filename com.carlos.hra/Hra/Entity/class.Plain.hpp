@@ -1,19 +1,21 @@
 /** @file class.Plain.hpp
-* Trieda kde je spisana logika pohybu lietadla a ovladanie.
+* Trieda obsahuje : funkciu na nastavenie starovacej pozicie lietadla, logika pohybu lietadla pri ovladani - fyziku.
 */
 
-#include "../Help/class.MyShaderController.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../Help/Math/AABB.h"
+#include "../../../Carlos/architecture/entities/entities.h"
+
+using namespace Architecture;
 
 class Plain : public AABB {
 protected:
 	glm::vec3 rotation; /**< Premenna ktora urcuje otacanie lietadla */
-	glm::vec2 silaPohybu; /**< Rychlost stupania lietadla */
-	glm::vec2 speed;
-	glm::vec2 akceleracia;
-	glm::vec2 size;
+	glm::vec2 silaPohybu; /**< Rychlost stupania lietadla a klesania lietadla*/
+	glm::vec2 speed; /**< Rychlost do predu a zadu */
+	glm::vec2 akceleracia; /**< Velkost akceleracie pri stupani a pade*/
+	glm::vec2 size; /**< Velkost lietadla */
 
 public:
 	Plain(glm::vec2 size) : AABB(size) {
@@ -21,11 +23,15 @@ public:
 		setStartPosition();
 	}
 
-
+	/** 
+	* Funkcia nema na vstupe ziadne parametre, sluzi na nastavenie startovacej pozicie lietadla.
+	* @see SPlain(glm::vec2 size) : AABB(size)
+	* @return void
+	*/
 	void setStartPosition() {
-		// hranice su -100 po 100
-		setPosition( glm::vec2(0, 0) ); /// startovacia pozicia lietadla
-		rotation = glm::vec3(-90, 0, 270); /// uvodna rotacia lietadla 90, 0, 270
+		/// Hranice  sveta su -100, 100
+		setPosition( glm::vec2(0, 0) ); /// Starovacia pozicia lietadla
+		rotation = glm::vec3(-270, 180, 270); /// Uvodne natocenie lietadla
 		silaPohybu = glm::vec2(500.0f, 10.0f); /// Defaultna rychlost stupania a rychlost klesania - pri pade
 		speed = glm::vec2();
 		akceleracia = glm::vec2(0.0f, -10.0f);
@@ -45,59 +51,46 @@ public:
 	* @see Scene::frame(float fDelta)
 	* @return void
 	*/
-
-	void logic(float fDelta, unsigned char pressedKey) 
+	void logic(float fDelta, ControllerCommands pressedKey) 
 	{
 		float radians = 1.0 * 0.0174532925f;
 		glm::vec2 position = getPosition();
-		/*
-		if(pressedKey == 'a') {
-		position.y -= sinf(radians) *  speed * fDelta;
-		position.x -= cosf(radians) *  speed  * fDelta;
-		}
-		*/
-		/*if (pressedKey == 'd' ) {
-		position.y += sinf(radians) *  speed * fDelta;
-		position.x += cosf(radians) *  speed  * fDelta;
-		}
-		*/
-
-		/*
-		if (pressedKey == 's' ) {
-		position.y += sinf(radians) *  speed * fDelta;
-		position.z += cosf(radians) *  speed * fDelta;
-		}
-		*/
-
-		// Sila psooby na lietadlo
+		
+		/// Sila posobi na lietadlo
 		glm::vec2 F = glm::vec2(0.0);
-		glm::vec2 Fg = glm::vec2(0.0f, -5.0f);
+		glm::vec2 Fg = glm::vec2(0.0f, -30.0f);
 		F += Fg;
-		if (pressedKey == 'w' ) {
+		if (pressedKey == ControllerCommands::UP) {
 			printf("W\n");
 			F.y += silaPohybu.x;
 		}
-		if (pressedKey == 's' ) {
+		if (pressedKey == ControllerCommands::DOWN) {
 			printf("S\n");
 			F.y += silaPohybu.y * -1.0;
 		}
-		if (pressedKey == 'd' ) {
+		if (pressedKey == ControllerCommands::RIGHT) {
 			printf("W\n");
 			F.x += silaPohybu.x;
 		}
-		if (pressedKey == 'a' ) {
+		if (pressedKey == ControllerCommands::LEFT) {
 			printf("A\n");
 			F.x += silaPohybu.x * -1.0;
 		}
 
-		// f = m* a		a = f / m		m = 1kg
+		/// Vzorce na fyziku f = m* a		a = f / m		m = 1kg
 		akceleracia = F;
-		// v = v0 + s.t + 1/2 * a * t^2
+		/// v = v0 + s.t + 1/2 * a * t^2
 		speed += akceleracia * fDelta;
 		position += speed * fDelta;
 		setPosition(position);
 	}
 
+	/** 
+	* Funkcia nema na vstupe ziadne parametre, sluzi na nastavenie startovacej pozicie lietadla vo svete.
+	* @see Scene::frame(float fDelta)
+	* @see Scene::stavHrania(float fDelta)
+	* @return void
+	*/
 	glm::mat4 getMatrix() {
 		glm::vec2 position = getPosition();
 		glm::mat4 mModelMatrix = glm::mat4(1.0f);

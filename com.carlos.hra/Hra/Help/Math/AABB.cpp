@@ -1,7 +1,8 @@
+/** @file AABB.cpp
+* Trieda obsahuje funkcie na urcovanie pozicie lietadla v ramci sveta.
+*/
 #include "AABB.h"
-
 float epsilon = 1e-1f; 
-
 AABB::AABB()
 {
 }
@@ -42,21 +43,6 @@ collisionStatus AABB::collisionTest(AABB other)
 // a collision. Indicate which face of this AABB is in contact with the other.
 bool AABB::leftCollisionTest(AABB other)
 {
-	/*                               +-------+
-	Left face collision scenarios |       |
-	| self  |
-	+-------+-------+     +-------|       |      
-	|       |       |     |       +-------+          
-	| other | self  |     | other |          
-	|       |       |     |       +-------+  
-	+-------+-------+     +-------|       |     
-	|                     | self  |
-	other.xmax <= self.xmin      |       |
-	+-------+
-	/
-	self.zmin < other.zmin, but self.zmax >= other.zmin.
-
-	*/
 	if(
 		max.y - epsilon > other.min.y && min.y + epsilon < other.max.y &&
 		min.x <= other.max.x && max.x >= other.max.x)
@@ -97,7 +83,6 @@ bool AABB::topCollisionTest(AABB other)
 	return false;
 }
 
-// Return true if AABB other contains AABB self
 bool AABB::contains(AABB other)
 {
 	if(other.min.x >= min.x && other.max.x <= max.x &&

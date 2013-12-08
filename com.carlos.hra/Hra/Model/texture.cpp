@@ -10,6 +10,7 @@
 CTexture::CTexture()
 {
 	bMipMapsGenerated = false;
+	flagDelete = false;
 }
 
 void CTexture::createFromData(BYTE* bData, int a_iWidth, int a_iHeight, int a_iBPP, GLenum format, bool bGenerateMipMaps)
@@ -23,6 +24,17 @@ void CTexture::createFromData(BYTE* bData, int a_iWidth, int a_iHeight, int a_iB
 
 void CTexture::createFromData(BYTE* bData, int a_iWidth, int a_iHeight, int a_iBPP, GLenum internalColourFormat, GLenum inputColourFormat, bool bGenerateMipMaps)
 {
+	/* http://stackoverflow.com/questions/3467935/glgentextures-returns-zero-in-background-thread
+	This is a common error, each OpenGL context can be active (current) in one thread only, 
+	so when you create a new thread, it doesn't have any OpenGL context, and all GL calls fail.
+
+	Solution: Create another OpenGL context, make it current in your background thread.
+	To load textures, you also want to share OpenGL names (texture ids, etc) with the main context.
+
+	However I disregard trying to multithread OpenGL operations. Use
+	multithreading to parallelize your programs logic, but keep all OpenGL
+	operations in one thread.
+	*/
 	glGenTextures(1, &uiTexture);
 	glBindTexture(GL_TEXTURE_2D, uiTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, internalColourFormat, a_iWidth, a_iHeight, 0, inputColourFormat, GL_UNSIGNED_BYTE, bData);

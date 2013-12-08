@@ -1,8 +1,10 @@
+/** @file opengl.h
+* Trieda ktora sa stara o inicializaciu opengl, o aktualizaciu obrazovky po slaceni a o renderovanie sceny
+*/
 #pragma once
 #include <gl/glew.h>
 #include <gl/glut.h>
-#include "../Hra/class.Scene.hpp"
-
+#include "../Hra/Scena/class.Scene.hpp"
 
 extern Scene scene;
 int oldTimeSinceStart = 0;
@@ -15,14 +17,17 @@ int oldTimeSinceStart = 0;
  * @param y - pozicia lietadla na osi y
  * @return nil
  */
+/*
 void keyboard(unsigned char key, int x, int y)
 {
 	scene.keyboard(key, x, y);
 	glutPostRedisplay();
 }
+*/
 
 /** 
  * Funkcia nema na vstupe ziadne parametre, sluzi na pocitanie casu a vytvorenie framu
+ * @see void openGLInit()
  * @return nil
  */
 void renderScene() {
@@ -42,7 +47,7 @@ void renderScene() {
 /** 
  * Funkcia ktora sa stara o inicializovanie kniznice openGl, nastavuje sa tu
  * vsetko potrebne od nazvu okna az po rozmery okna
- * @see MojaTrieda::init()
+ * @see void DllModulVykreslovania::init()
  * @return void
  */
 void openGLInit() {
@@ -54,7 +59,7 @@ void openGLInit() {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(640, 480);
-	glutCreateWindow("Carlos");
+	glutCreateWindow("Carlos game");
 	glewInit() ;
 
 	glMatrixMode(GL_PROJECTION);
@@ -66,6 +71,6 @@ void openGLInit() {
 	glEnable(GL_DEPTH_TEST);
 
 	glutDisplayFunc(renderScene);
-	glutKeyboardFunc(keyboard);
+	//glutKeyboardFunc(keyboard);
 	glutMainLoop();
 }

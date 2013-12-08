@@ -11,8 +11,9 @@ CObjModel::CObjModel()
 void CObjModel::setTexture(CTexture texture) {
 	tAmbientTexture = texture;
 }
-
-
+CTexture CObjModel::getTexture() {
+	return tAmbientTexture;
+}
 vector<string> split(string s, string t)
 {
 	vector<string> res;
@@ -111,7 +112,7 @@ bool CObjModel::loadModel(string sFileName, string sMtlFileName)
 					if(ESZ(data[0]) > 0)sscanf(data[0].c_str(), "%d", &iVertIndex);
 					else bError = true;
 				}
-	
+
 				if(iAttrBitField&2 && !bError)
 				{
 					if(ESZ(data) >= 1)
@@ -122,7 +123,7 @@ bool CObjModel::loadModel(string sFileName, string sMtlFileName)
 					}
 					else bError = true;
 				}
-	
+
 				if(iAttrBitField&4 && !bError)
 				{
 					if(ESZ(data) >= 2)
@@ -137,7 +138,7 @@ bool CObjModel::loadModel(string sFileName, string sMtlFileName)
 					fclose(fp);
 					return false;
 				}
-			
+
 
 				if(iVertIndex > 0 && iVertIndex <= ESZ(vVertices))
 					vboModelData.addData(&vVertices[iVertIndex-1], sizeof(glm::vec3));
@@ -232,7 +233,7 @@ bool CObjModel::loadMaterial(string sFullMtlFileName)
 		if(sType == "map_Kd")
 		{
 			string sLine = line;
-	
+
 			int from = sLine.find("map_Kd")+6+1;
 			string sTextureName = sLine.substr(from, ESZ(sLine)-from-1);
 

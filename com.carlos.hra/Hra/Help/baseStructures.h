@@ -2,7 +2,6 @@
 
 /** @file baseStructures.h
  * V tomto súbore su definované základné struktúry na prácu s textúrami.
- * 
  */
 
 typedef struct

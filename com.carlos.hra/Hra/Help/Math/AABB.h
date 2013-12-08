@@ -1,8 +1,10 @@
+/** @file AABB.h
+* https://github.com/pabennett/glblox/tree/master/lib
+*/
 #pragma once
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "collisionStatus.h"
-// https://github.com/pabennett/glblox/tree/master/lib
 
 class AABB
 { 
