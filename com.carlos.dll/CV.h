@@ -1,12 +1,19 @@
+/** @file CV.h
+* Trieda @b Candidate je potencialny kandidat na na objekt
+* Trieda @b RealModulSpracovania sa stara o celu funkcionalitu spracovanie obrazu
+*/
+
 #include <opencv2\core\core.hpp>
 #include <opencv2\highgui\highgui.hpp>
 #include <opencv2\imgproc\imgproc.hpp>
 #include <opencv2\nonfree\features2d.hpp>
 #include <opencv2\features2d\features2d.hpp>
 #include <opencv2\nonfree\nonfree.hpp>
-#include <opencv2\nonfree\gpu.hpp>
+#include <opencv2/nonfree/gpu.hpp>
 #include <opencv2\legacy\legacy.hpp>
 #include <opencv2\gpu\gpu.hpp>
+//#include <opencv2\gpu\gpumat.hpp>
+#include <windows.h>
 #define GPU_MODE
 #undef GPU_MODE
 
@@ -17,49 +24,62 @@
 using namespace Architecture;
 using namespace cv;
 
+/** Funkcia vrati maximum z 2 cisel
+* @param a prve cislo
+* @param b druhe cislo
+* 
+*/
 int maximum(int a, int b)
 {
 	if(a > b) return a;
 	return b;
 }
 
+/** Kandidat na objekt */
+
 class Candidate {
 public:
-	int id;
-	vector<KeyPoint> keyPoints;
-	Mat descriptors;
-	Mat image;
-	bool valid;
-	double confidence;
-	double avgDistance;
-	Point2f position1, position2;
+	int id; /**< id objektu */
+	int pos; /**< pozicia kandidata (od nuly) */
+	vector<KeyPoint> keyPoints; /**< keypointy detegovane na obrazku */
+	Mat descriptors; /**< matica deskriptorov detegovanych keypointov */
+	Mat image; /**< obrazok objektu */
+	bool valid; /**< uspesna detekcia? */
+	double confidence; /**< pravdepodobnost ze sa jedna o hladany objekt */
+	double avgDistance; /**< priemerna L2 vsetkych matchov */
+	Point2f position1; /**< lavy horny roh najdeneho objektu */ 
+	Point2f position2; /**< pravy dolny roh najdeneho objektu */ 
 
 	Candidate();
 };
 
 class RealModulSpracovania : public ModulSpracovania {
-	// TU SI DATE SVOJ KOD
-	virtual Out detekujObjekty(In in);
+
+public:
+	virtual ModulSpracovania::Out detekujObjekty(In in);
 	virtual void init();
 	virtual Mat kalibruj(Mat image1, Mat image2);
 	virtual Mat najdiHorizont(Mat image);
 
 private:
-	BruteForceMatcher<L2<float>> matcher;
-	SurfFeatureDetector detector;
-	SurfDescriptorExtractor extractor;
+	
+	BruteForceMatcher<L2<float>> matcher; /**< matcher deskriptorov */
+	SurfFeatureDetector detector; /**< detektor keypoinotv */
+	SurfDescriptorExtractor extractor; /**< extraktor deskriptorov z keypointov */
 
-	double distanceRatioThreshold;
-	int minMatchesToFindHomography;
-	bool ransacOutliersRemovalEnabled;
-	int minKeypointsPerObject;
-	double minRecognitionConfidence;
-	double maxAvgDistance;
+	/** Thresholdy: */
+
+	double distanceRatioThreshold; /**< min. vzdialenost medzi prvym a druhym najpravdepodobnejsim matchom */
+	int minMatchesToFindHomography; /**< min. pocet matchov */
+	bool ransacOutliersRemovalEnabled; /**< odstranenie outliers */
+	int minKeypointsPerObject; /**< min. pocet keypointov na objekt */
+	double minRecognitionConfidence; /**< min. pravdepodobnost na najdeny objekt */
+	double maxAvgDistance; /**< max. L2 vsetkych matchov */
 	
 private:
 	void setParameters(double distanceRatioThreshold = 0.85, int minMatchesToFindHomography = 5, bool ransacOutliersRemovalEnabled = true, 
 		int minKeypointsPerObject = 10, double minRecognitionConfidence = 0.0014 /*0.01*/, double maxAvgDistance = 0.21 /*0.35*/ );
-	int importCandidates(vector<Candidate> &candidates, const vector<WorldObject> &objects);
+	int importCandidates(vector<Candidate> &candidates, vector<WorldObject> &objects);
 	double computeAvgDistance(const vector<DMatch> &matches);
 	double computeConfidence(int keypoints1_size, int keypoints2_size, int matches_size);
 	void crossCheckFilter(vector<vector<DMatch>> matches12, vector<vector<DMatch>> matches21, vector<DMatch> &matches);

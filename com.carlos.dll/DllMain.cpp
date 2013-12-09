@@ -19,63 +19,79 @@ void RealModulSpracovania::init() {
 #endif
 }
 
-ModulSpracovania::Out RealModulSpracovania::detekujObjekty(In in) {
-	Out out;
-	Mat scene;
-	vector<Candidate> candidates; // kandidati na detekovany objekt
-	vector<KeyPoint> sceneKeyPoints; // keypointy streamu
-	Mat sceneDescriptors; // matica deskriptorov streamu
+/** detekcia objektov z mnoziny moznych objektov
+*	@param in obsahuje mnozinu objektov spolu s ich cestami, ktore sa na vstupnom obrazku moozu nachadzat
+*	@return najpravdepodobnejsi objekt na obrazku
+*/
 
-	if( in.image.data.empty() || in.recepts.empty() ) return out; // chyba nacitania streamu alebo ziadne mozne objekty
+ModulSpracovania::Out RealModulSpracovania::detekujObjekty(ModulSpracovania::In in) {
+	ModulSpracovania::Out out; /**< najdeny objekt */
+	Mat scene; /**< vstupny obrazok */
+	vector<Candidate> candidates; /**< kandidati na detekovany objekt */
+	vector<KeyPoint> sceneKeyPoints; /**< keypointy streamu */
+	Mat sceneDescriptors; /**< matica deskriptorov streamu */
+
+	if( in.image.data.empty() || in.recepts.empty() ) return out; /// chyba nacitania streamu alebo ziadne mozne objekty
 	cvtColor( in.image.data, scene, CV_BGR2GRAY );
-
+	
 #ifdef GPU_MODE
 	runSiftGpu(scene, sceneKeyPoints, sceneDescriptors);
 #else
-	runSurf(scene, sceneKeyPoints, sceneDescriptors);  // najdi keypoints a deskriptory
+	runSurf(scene, sceneKeyPoints, sceneDescriptors);  /// najdi keypoints a deskriptory
 #endif
 
-	int imported = importCandidates(candidates, in.recepts);
-	if( imported == 0 ) return out; // neuspesny import
+	int imported = importCandidates(candidates, in.recepts); /**< pocet kandidatov na objekty */
+	if( imported == 0 ) return out; /// neuspesny import
 
 	for(int i = 0; i < candidates.size(); i++ )
 	{
-		Mat H;
-		vector<DMatch> matches;
-		robustMatching( candidates[i].descriptors, sceneDescriptors, matches, distanceRatioThreshold ); // najdi dobre zhody
+		Mat H; /**< matica perspektivnej transformacie */
+		vector<DMatch> matches; /**< zhody */
+		robustMatching( candidates[i].descriptors, sceneDescriptors, matches, distanceRatioThreshold ); /// najdi dobre zhody
 			
-		candidates[i].valid = selectInliers( candidates[i].keyPoints, sceneKeyPoints, matches, H ); // odstran outliers a ziskaj maticu perspektivnej transformacie
-		if( candidates[i].valid == false ) continue;
+		candidates[i].valid = selectInliers( candidates[i].keyPoints, sceneKeyPoints, matches, H ); /// odstran outliers a ziskaj maticu perspektivnej transformacie
+		if( candidates[i].valid == false ) continue; /// neuspesna detekcia objektu na vstupnom obrazku
 		else
 		{
-			candidates[i].avgDistance = computeAvgDistance( matches ); // priemerna L2 vzdialenost zhod
-			candidates[i].confidence = computeConfidence( candidates[i].keyPoints.size(), sceneKeyPoints.size(), matches.size() ); // pomer medzi bodmi a dobrymi zhodami (urcuje spravnost detekcie)
-			candidates[i].valid = findObject( scene, H, candidates[i].confidence, candidates[i].position1, candidates[i].position2 ); // najdi poziciu objektu
+			candidates[i].avgDistance = computeAvgDistance( matches ); /// priemerna L2 vzdialenost zhod
+			candidates[i].confidence = computeConfidence( candidates[i].keyPoints.size(), sceneKeyPoints.size(), matches.size() ); /// pomer medzi bodmi a dobrymi zhodami (urcuje spravnost detekcie)
+			candidates[i].valid = findObject( candidates[i].image, H, candidates[i].confidence, candidates[i].position1, candidates[i].position2 ); /// najdi poziciu objektu
 		}
 	}
 
-	int index = getBestCandidate( candidates ); // vyber najlepsieho kandidata za objekt
+ 	int index = getBestCandidate( candidates ); /**< najlepsi kandidat za objekt */
 
-	if( index >= 0 )
+	if( index >= 0 ) /// najdenie pozicie najlepsieho kandidata
 	{
 		DetekovanyObjekt najdenyObjekt;
-		najdenyObjekt.objekt = in.recepts[ candidates[index].id ];
-		// TODO: Sekerak: pouzi boundary
-		najdenyObjekt.boundary.position1.x = candidates[index].position1.x;
-		najdenyObjekt.boundary.position1.y = candidates[index].position1.y;
-
-		najdenyObjekt.boundary.position2.x = candidates[index].position2.x;
-		najdenyObjekt.boundary.position2.y = candidates[index].position2.y;
-
+		
+		najdenyObjekt.objekt = in.recepts[ candidates[index].pos ]; /**< detegovany objekt */
+		
+		najdenyObjekt.boundary = RotatedRect(
+			Point2f( candidates[index].position1.x + ( candidates[index].position2.x - candidates[index].position1.x ) /2, candidates[index].position1.y + ( candidates[index].position2.y - candidates[index].position1.y) / 2 ), 
+			Size( candidates[index].position2.x - candidates[index].position1.x ,  candidates[index].position2.y - candidates[index].position1.y ), 
+			0
+			); /**< pozicia objektu */
+		
+		cout << "Najdeny objekt #" << index << endl;
+	
 		// Poslem vysledok dalej
-		out.objects.push_back(najdenyObjekt);
+		out.objects.push_back(najdenyObjekt); /**< vlozit vysledok */
 	}
+	
 	return out;
 }
+
+/** inicializacia kandidata */
 
 Candidate::Candidate():confidence(0.),avgDistance(0.),valid(true)
 {
 }
+
+/** vyber najlepsieho kandidata na objekt
+*	@param candidates potencialny kandidati na objekt
+*	@return index najlepsieho kandidata
+*/
 
 int RealModulSpracovania::getBestCandidate(const vector<Candidate> &candidates)
 {
@@ -90,6 +106,11 @@ int RealModulSpracovania::getBestCandidate(const vector<Candidate> &candidates)
 
 	return index;
 }
+
+/** vypocet priemernej L2 zo vsetkych matchov
+*	@param matches zhody
+*	@return priemerna L2 zo vsetkych matchov
+*/
 
 double RealModulSpracovania::computeAvgDistance(const vector<DMatch> &matches)
 {
@@ -106,12 +127,29 @@ double RealModulSpracovania::computeAvgDistance(const vector<DMatch> &matches)
 	return avgDistance;
 }
 
+/** vypocet pravdepodobnosti ze sa jedna o hladany objekt
+*	pravdepodobnost sa vypocita na zaklade pomeru poctu keypointov a a "dobrych" zhod
+*	@param keypoints1_size pocet keypointov na jednom obrazku
+*	@param keypoints2_size pocet keypointov na druhom obrazku
+*	@param matches_size pocet zhod medzi keypointami
+*	@return pravdepodobnost
+*/
+
 double RealModulSpracovania::computeConfidence(int keypoints1_size, int keypoints2_size, int matches_size)
 {
 	double confidence = 0;
 	confidence = (double) matches_size / ( ( keypoints1_size + keypoints2_size )*0.5 );
 	return confidence;
 }
+
+/** najdenie pozicie objektu na obrazku
+*	@param image obrazok objektu
+*	@param H matica perspektivnej transf.
+*	@confidence pravd. ze sa jedna o objekt
+*	@position1 lavy horny roh objektu
+*	@position2 pravy dolny roh objektu
+*	@return bolo hladanie uspesne?
+*/
 
 bool RealModulSpracovania::findObject(const Mat &image, const Mat &H, double confidence, Point2f &position1, Point2f &position2)
 {
@@ -122,46 +160,57 @@ bool RealModulSpracovania::findObject(const Mat &image, const Mat &H, double con
 	obj_corners[3] = cvPoint( 0, image.rows );
 	vector<Point2f> scene_corners(4);
 	Rect roi;
-	const int minWidth = 5;
-	const int minHeight = 5;
+	const int minWidth = 10;
+	const int minHeight = 10;
 
 	if( confidence < minRecognitionConfidence ) return false;
 
 	try{
 		perspectiveTransform( obj_corners, scene_corners, H );
 		roi = boundingRect( scene_corners );
-		if(roi.width < minWidth || roi.height < minHeight ) return false;
+		
+		if(roi.width < minWidth || roi.height < minHeight ) return false; /// objekt musi splnat min. velkost
 
 		position1 = Point2f( roi.x, roi.y );
 		position2 = Point2f( roi.x + roi.width, roi.y + roi.height );
 	}catch(Exception &e)
 	{
-		return false;
+		return false; /// neuspesna perspektivna transf.
 	}
 
 	return true;
 }
 
-int RealModulSpracovania::importCandidates(vector<Candidate> &candidates, const vector<WorldObject> &objects) // nacitaj pre vsetky mozne objekty vsetky obrazky a najdi keypoints a maticu deskriptorov 
-{
-	int count = 0; // pocet nacitanych kandidatov
-	const char *fileFormat = "images\\%s\\image-%04d.jpg"; // zatial bude cesta k suborom takato
+/** z moznych objektov kt. mozu byt na obrazku vytvor kandidatov
+*	@param candidates mnozina kandidatov
+*	@param objects mnozina potencialnych objektov
+*	@return pocet kandidatov
+*/
 
+int RealModulSpracovania::importCandidates(vector<Candidate> &candidates, vector<WorldObject> &objects) // nacitaj pre vsetky mozne objekty vsetky obrazky a najdi keypoints a maticu deskriptorov 
+{
+	int count = 0; /// pocet nacitanych kandidatov
+	char *fileFormat = "images\\%s\\image-%04d.jpg"; /// zatial bude cesta k suborom takato
+	WorldObject object;
+	
 	for (int pos = 0; pos < objects.size(); pos++)
 	{
-		WorldObject object = objects[pos];
+		object = objects.at(pos);
 		while(true)
 		{
 			Candidate candidate;
 			candidate.id = object.id;
-			candidate.image = imread(format(fileFormat, object.cestyKSuborom[0].c_str(), count+1), IMREAD_GRAYSCALE); // nacitaj obrazky
+			candidate.pos = pos;
+			string path = format(fileFormat, object.cestyKSuborom[0].c_str(), count+1);
+			candidate.image = imread(path, IMREAD_GRAYSCALE); /// nacitaj obrazky
 			if(candidate.image.empty()) break;
 #ifdef GPU_MODE
 			runSiftGpu(candidate.image, candidate.keyPoints, candidate.descriptors);
 #else
-			runSurf(candidate.image, candidate.keyPoints, candidate.descriptors); // najdi keypoints a deskriptory
+			runSurf(candidate.image, candidate.keyPoints, candidate.descriptors); /// najdi keypoints a deskriptory
 #endif
-			if(candidate.keyPoints.size() < minKeypointsPerObject || candidate.descriptors.empty()) continue;
+			
+			if(candidate.keyPoints.empty() || candidate.keyPoints.size() < minKeypointsPerObject || candidate.descriptors.empty()) continue;
 			candidates.push_back(candidate);
 			count++;
 		}
@@ -169,6 +218,15 @@ int RealModulSpracovania::importCandidates(vector<Candidate> &candidates, const 
 
 	return count;
 }
+
+/** vytvor maticu perspektivnej transf. 
+*	volitelne: zo vsetkych matchov vyber len tie spravne zhody - inliers
+*	@param objectKeypoints keypointy objektu
+*	@param sceneKeypoints keypointy sceny (vstupneho obrazu)
+*	@param matches zhody
+*	@param H matica perspektivnej transf.
+*	@return uspesne vytvorenie H?
+*/
 
 bool RealModulSpracovania::selectInliers(const vector<KeyPoint> &objectKeypoints, const vector<KeyPoint> &sceneKeypoints, vector<DMatch> &matches, Mat &H)
 {
@@ -180,13 +238,13 @@ bool RealModulSpracovania::selectInliers(const vector<KeyPoint> &objectKeypoints
 	{
 		for( int x = 0; x < matches.size(); x++ )
 		{
-			//-- Get the keypoints from the good matches
+			/// Ziskaj keypointy z "dobrych zhod"
 			obj_points.push_back( objectKeypoints[ matches[x].queryIdx ].pt );
 			scene_points.push_back( sceneKeypoints[ matches[x].trainIdx ].pt );
 		}
 
 		try{
-			H = findHomography( obj_points, scene_points, inliers, CV_RANSAC ); // najdi homografiu - maticu perspektivnej transformacie
+			H = findHomography( obj_points, scene_points, inliers, CV_RANSAC ); /// najdi homografiu - maticu perspektivnej transformacie
 					
 			if(ransacOutliersRemovalEnabled)
 				extractInlierMatches(matches, inliers);
@@ -219,6 +277,13 @@ bool RealModulSpracovania::selectInliers(const vector<KeyPoint> &objectKeypoints
 	return true;
 }
 
+/** filtrovanie zhod
+*	dobra zhoda je len taka ak sa najde oboma sposobmi: 1.obrazok -> 2.obrazok a 2.obrazok -> 1.obrazok
+*	@param matches12 zhody - 1.obrazok -> 2.obrazok
+*	@param matches21 zhody - 2.obrazok -> 1.obrazok
+*	@param matches vyfiltrovane zhody
+*/
+
 void RealModulSpracovania::crossCheckFilter(vector<vector<DMatch>> matches12, vector<vector<DMatch>> matches21, vector<DMatch> &matches)
 {
 	DMatch match;
@@ -239,6 +304,14 @@ void RealModulSpracovania::crossCheckFilter(vector<vector<DMatch>> matches12, ve
 
 }
 
+/** pre kazdy keypoint najdi k najpravdepodobnejsich zhod oboma smermi
+*	@param descriptors1 matica deskriptorov 1.obrazku
+*	@param descriptors2 matica deskriptorov 2.obrazku
+*	@param matches12 zhody - 1.obrazok -> 2.obrazok
+*	@param matches21 zhody - 2.obrazok -> 1.obrazok
+*	@param k pocet zhod pre kazdy keypoint
+*/
+
 void RealModulSpracovania::crossKnnMatch(Mat descriptors1, Mat descriptors2, vector<vector<DMatch>> &matches12, vector<vector<DMatch>> &matches21, int k)
 {
 	matches12.clear();
@@ -246,9 +319,14 @@ void RealModulSpracovania::crossKnnMatch(Mat descriptors1, Mat descriptors2, vec
 
 	if(descriptors1.empty() || descriptors2.empty()) return;
 
-	matcher.knnMatch(descriptors1,descriptors2,matches12, k);
-	matcher.knnMatch(descriptors2,descriptors1,matches21, k);
+	matcher.knnMatch(descriptors1,descriptors2,matches12, k); /// najdi pre kazdy keypoint k najpravdepodobnejsich zhod 
+	matcher.knnMatch(descriptors2,descriptors1,matches21, k); /// najdi pre kazdy keypoint k najpravdepodobnejsich zhod 
 }
+
+/** vyfiltruj zhody, ktorych vzdialenost najlepsieho paru dostatocne mensia ako vzdialenost 2. najlepsieho paru
+* @param matches zhody
+* @param th threshold medzi parmi
+*/
 
 void RealModulSpracovania::distanceRatioFilter(vector<vector<DMatch>> &matches, double th)
 {
@@ -258,6 +336,11 @@ void RealModulSpracovania::distanceRatioFilter(vector<vector<DMatch>> &matches, 
 			matches[i].clear();
 	}
 }
+
+/** zo zhod vyselektuj len spravne zhody na zaklade inliers
+* @param matches zhody
+* @param inliers spravne zhody
+*/
 
 void RealModulSpracovania::extractInlierMatches(vector<DMatch> &matches, vector<uchar> inliers)
 {
@@ -279,6 +362,8 @@ void RealModulSpracovania::extractInlierMatches(vector<DMatch> &matches, vector<
 	matches.resize(lastBadMatchIndex);
 }
 
+/** nastav parametre pre vsetky threshooldy */
+
 void RealModulSpracovania::setParameters(double distanceRatioThreshold, int minMatchesToFindHomography, bool ransacOutliersRemovalEnabled, int minKeypointsPerObject, double minRecognitionConfidence, double maxAvgDistance)
 {
 	this->distanceRatioThreshold = distanceRatioThreshold, 
@@ -289,21 +374,43 @@ void RealModulSpracovania::setParameters(double distanceRatioThreshold, int minM
 	this->maxAvgDistance = maxAvgDistance;
 }
 
+/** matchovanie keypointov len s vyuzitim "vzdialenostneho filtra" @see RealModulSpracovania::distanceRatioFilter
+*	@param descriptors1 matica deskriptorov 1. obrazka
+*	@param descriptors2 matica deskriptorov 2. obrazka
+*	@param matches "dobre zhody"
+*	@param minRatioThreshold min. vzdialenost
+*/
+
 void RealModulSpracovania::distanceMatching(const Mat &descriptors1, const Mat &descriptors2, vector<DMatch> &matches, double minRatioThreshold)
 {
 	vector<vector<DMatch>> matches12;
 
 	matcher.knnMatch(descriptors1, descriptors2, matches12, 2);
-	distanceRatioFilter(matches12, 0.7);
+	distanceRatioFilter(matches12, minRatioThreshold);
 
 	for(int i = 0; i < matches12.size(); i++)
 		if(matches12[i].size() > 0) matches.push_back( matches12[i][0] );
 }
 
+/** klasicke matchovanie keypointov bez filtra
+*	@param descriptors1 matica deskriptorov 1. obrazka
+*	@param descriptors2 matica deskriptorov 2. obrazka
+*	@param matches "dobre zhody"
+*/
+
 void RealModulSpracovania::simpleMatching(const Mat &descriptors1, const Mat &descriptors2, vector<DMatch> &matches)
 {
 	matcher.match(descriptors1, descriptors2, matches);
 }
+
+/** robustne matchovanie keypointov s vyuzitim 
+*	1. "vzdialenostneho filtra" @see RealModulSpracovania::distanceRatioFilter
+*	1. "krizoveho filtra" @see RealModulSpracovania::crossCheckFilter
+*	@param descriptors1 matica deskriptorov 1. obrazka
+*	@param descriptors2 matica deskriptorov 2. obrazka
+*	@param matches "dobre zhody"
+*	@param minRatioThreshold min. vzdialenost
+*/
 
 void RealModulSpracovania::robustMatching(const Mat &descriptors1, const Mat &descriptors2, vector<DMatch> &matches, double minRatioThreshold)
 {
@@ -316,6 +423,12 @@ void RealModulSpracovania::robustMatching(const Mat &descriptors1, const Mat &de
 	distanceRatioFilter(matches21, minRatioThreshold);
 	crossCheckFilter(matches12, matches21, matches);
 }
+
+/** detegovat keypointy a opisat ich pomocou SURF deskriptorov
+*	@param image obrazok
+*	@param keypoints keypointy
+*	@param descriptors matica deskriptorov
+*/
 
 void RealModulSpracovania::runSurf(const Mat &image, vector<KeyPoint> &keypoints, Mat &descriptors)
 {
@@ -363,32 +476,47 @@ void RealModulSpracovania::runSiftGpu(const Mat &image, vector<KeyPoint> &keypoi
 }
 #endif
 
+/** kalibracia kamery na zaklade 2 vstupnych obrazkov
+*	najdenie prespektivnej transformacie medzi nimi
+*	@param image1 zdeformovany obraz
+*	@param image2 spravny obraz
+*	@return matica perspektivnej transf.
+*/
+
 Mat RealModulSpracovania::kalibruj(Mat image1, Mat image2) {
 	Mat out;
 
-	vector<KeyPoint> keypoints1, keypoints2; // keypointy streamu
-	Mat descriptors1, descriptors2; // matica deskriptorov streamu
+	vector<KeyPoint> keypoints1, keypoints2;
+	Mat descriptors1, descriptors2;
 
-	if( image1.empty() || image2.empty() ) return out; // chyba nacitania streamu alebo ziadne mozne objekty
+	if( image1.empty() || image2.empty() ) return out; /// chyba nacitania streamu alebo ziadne mozne objekty
 	cvtColor( image1, image1, CV_BGR2GRAY );
 	cvtColor( image2, image2, CV_BGR2GRAY );
 
 #ifdef GPU_MODE
 	runSiftGpu(scene, sceneKeyPoints, sceneDescriptors);
 #else
-	runSurf(image1, keypoints1, descriptors1);  // najdi keypoints a deskriptory
-	runSurf(image2, keypoints2, descriptors2);  // najdi keypoints a deskriptory
+	runSurf(image1, keypoints1, descriptors1);  /// najdi keypoints a deskriptory
+	runSurf(image2, keypoints2, descriptors2);  /// najdi keypoints a deskriptory
 #endif
 
 	Mat H;
 	vector<DMatch> matches;
-	robustMatching( descriptors1, descriptors2, matches, distanceRatioThreshold ); // najdi dobre zhody
+	robustMatching( descriptors1, descriptors2, matches, distanceRatioThreshold ); /// najdi dobre zhody
 			
-	if(findMatrix( keypoints1, keypoints2, matches, H ) == false) return out; // odstran outliers a ziskaj maticu perspektivnej transformacie
+	if(findMatrix( keypoints1, keypoints2, matches, H ) == false) return out; /// odstran outliers a ziskaj maticu perspektivnej transformacie
 	
 	out= H;
 	return out;
 }
+
+/** najdi maticu perspektivnej transf.
+*	@param objectKeypoints keypointy 1. obrazku
+*	@param sceneKeypoints keypointy 2. obrazku
+*	@param matches zhody
+*	@param H matica perspektivnej transformacie
+*	@return uspesne hladanie?
+*/
 
 bool RealModulSpracovania::findMatrix(const vector<KeyPoint> &objectKeypoints, const vector<KeyPoint> &sceneKeypoints, vector<DMatch> &matches, Mat &H)
 {
@@ -400,13 +528,12 @@ bool RealModulSpracovania::findMatrix(const vector<KeyPoint> &objectKeypoints, c
 	{
 		for( int x = 0; x < matches.size(); x++ )
 		{
-			//-- Get the keypoints from the good matches
 			obj_points.push_back( objectKeypoints[ matches[x].queryIdx ].pt );
 			scene_points.push_back( sceneKeypoints[ matches[x].trainIdx ].pt );
 		}
 
 		try{
-			H = findHomography( obj_points, scene_points, inliers, CV_RANSAC ); // najdi homografiu - maticu perspektivnej transformacie
+			H = findHomography( obj_points, scene_points, inliers, CV_RANSAC ); /// najdi homografiu - maticu perspektivnej transformacie
 		}catch(Exception &e){
 			return false;
 		}
@@ -418,6 +545,11 @@ bool RealModulSpracovania::findMatrix(const vector<KeyPoint> &objectKeypoints, c
 	return true;
 }
 
+/** nadi horizont na obrazku
+*	@param image vstupny obrazok
+*	@return bitmapa s vysegmentovanou oblohou (biela farba)
+*/
+
 Mat RealModulSpracovania::najdiHorizont(Mat image)
 {
 	Mat horizon;
@@ -425,6 +557,11 @@ Mat RealModulSpracovania::najdiHorizont(Mat image)
 	cannyHorizonDetection(image, horizon);
 	return horizon;
 }
+
+/** detekcia horizontu s vyuzitim hranoveho detektoru Canny
+*	@param image vstupny obrazok
+*	@param horizon obrazok s najdenou oblohou
+*/
 
 void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 {
@@ -437,12 +574,11 @@ void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 
 	vector<vector<Point> > contours;
 	vector<Vec4i> hierarchy;
-	/// Reduce noise with a kernel 3x3
+	/// Zmensit sum
 	blur( image, detected_edges, Size(3,3) );
 
 	/// Canny detector
 	Canny( detected_edges, detected_edges, lowThreshold, lowThreshold*ratio, kernel_size );
-	threshold( detected_edges, detected_edges, lowThreshold, 255, CV_THRESH_BINARY );
 	findContours( detected_edges, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
 
 	horizon = Scalar::all(0);
@@ -452,6 +588,7 @@ void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 		drawContours( horizon, contours, i, Scalar::all(255), 2, 8, hierarchy);
 	}
 
+	/// kreslenie oblohy po pasoch zhora nadol
 	for( int j= 0; j < horizon.cols; j++ )
 	{
 		int color = 255;
@@ -462,10 +599,67 @@ void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 		}
 	}
 
-	morphologyEx( horizon, horizon, MORPH_DILATE, Mat(), Point(), 1 );
-	morphologyEx( horizon, horizon, MORPH_ERODE, Mat(), Point(), 1 );
+	morphologyEx( horizon, horizon, MORPH_CLOSE, Mat(), Point(), 1 );
 }
 
 IMPEXP void* callFactory() {
 	return static_cast< void* > (new RealModulSpracovania());
+}
+
+int main()
+{
+	char c;
+	String folder;
+	String imagePath1, imagePath2, tmp;
+	int mode;
+	
+	RealModulSpracovania modul;
+	ModulSpracovania::In in;
+	ModulSpracovania::Out out;
+	WorldObject object;
+	string path = "kostol";
+	object.cestyKSuborom.push_back(path);
+	object.id = 1;
+	Mat image = imread("images\\kostol\\example-0001.jpg");
+	
+	Mat output;
+
+	in.image.data = image;
+	in.recepts.push_back(object);
+		
+	while((c=getchar()) != 'Q')
+	{
+		switch(c)
+		{
+			case 'R':
+			case 'r':
+				image.copyTo(output);
+				modul.init();
+				
+				out = modul.detekujObjekty(in);
+			
+				for( int i = 0; i< out.objects.size(); i++)
+				{
+					RotatedRect rect = out.objects[i].boundary;
+					rectangle(output, rect.boundingRect(), Scalar(0, 255, 0), 4);
+				}
+				resize( output, output, Size(output.cols / 3, output.rows / 3) );
+				imshow("FINAL", output);
+				waitKey();
+				destroyAllWindows();
+				break;
+			case 'C':
+			case 'c':
+				break;
+			case 'H':
+			case 'h':
+				output = modul.najdiHorizont(image);
+				imshow("FINAL", output);
+				waitKey();
+				destroyAllWindows();
+				break;
+		}
+	}
+	
+	return 0;
 }
