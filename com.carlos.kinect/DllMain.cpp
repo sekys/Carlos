@@ -13,8 +13,8 @@ using namespace Architecture;
 class MojaTrieda : public ModulKinect {
 	// TU SI DATE SVOJ KOD
 
-	virtual vec3 getAktualnaRotaciaHlavy() {
-		vec3 rot;
+	virtual Point3f getAktualnaRotaciaHlavy() {
+		Point3f rot;
 		rot.x = 60.0f;
 		rot.y= 20.0f;
 		rot.z = 52.0f;
