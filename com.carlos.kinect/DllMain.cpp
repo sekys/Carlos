@@ -1,32 +1,24 @@
 #include <windows.h>
 #include "../Carlos/architecture/DllExports.h"
-#include "../Carlos/architecture/modules/class.ModulKinect.hpp"
 #include <iostream>
+#include "DllKinect.h"
 
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
 	printf("Dll nacitane\n");
 	return 1;
 }
 
-using namespace Architecture;
-
-class MojaTrieda : public ModulKinect {
-	// TU SI DATE SVOJ KOD
-
-	virtual Point3f getAktualnaRotaciaHlavy() {
-		Point3f rot;
-		rot.x = 60.0f;
-		rot.y= 20.0f;
-		rot.z = 52.0f;
-		return rot;
-	}
-
-	virtual void init() {
-		cout << "Tu sa zapina aplikacia\n";
-	}
-
-};
-
 IMPEXP void* callFactory() {
-	return static_cast< void* > (new MojaTrieda());
+	return static_cast< void* > (new DllKinect());
+}
+
+/** 
+*	Hlavná funkcia modulu. Na zaèiatku spustí inicializáciu a kinect, ktorý potom do ukonèenia programu zisuje súradnice bodu pozerania
+*/
+
+
+int main(int argc, char **argv) {
+	DllKinect* dll = new DllKinect();
+	dll->init();
+	delete dll;
 }
