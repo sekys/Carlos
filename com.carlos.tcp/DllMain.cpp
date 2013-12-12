@@ -28,7 +28,7 @@ public:
 	virtual void init() {
 		FakeModulAndroid::init();
 		cout << "Native TCP server starting\n";
-		server = new MyServerSocket(this, "192.168.247.1", "1234");
+		server = new MyServerSocket(this, "192.168.247.222", "1234");
 		server->start();
 	}
 
