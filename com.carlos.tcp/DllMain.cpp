@@ -28,7 +28,7 @@ public:
 	virtual void init() {
 		FakeModulAndroid::init();
 		cout << "Native TCP server starting\n";
-		server = new MyServerSocket(this, "10.0.0.107", "1234");
+		server = new MyServerSocket(this, "192.168.247.1", "1234");
 		server->start();
 	}
 
@@ -41,8 +41,8 @@ public:
 			cout << "Sprava nieje spravne formatovana.\n";
 			return;
 		}
-		string key = inputText.substr(pos);
-		string value = inputText.substr(pos, inputText.length()); 
+		string key = inputText.substr(0, pos);
+		string value = inputText.substr(pos+1, inputText.length()); 
 
 		// Citaj prikaz
 		if (key.compare("Command") != 0) {
@@ -52,6 +52,7 @@ public:
 		} 
 
 		// Citaj GPS
+		
 		if (key.compare("gps") != 0) {
 			vector<string> v;
 			split(value, v);
