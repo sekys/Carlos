@@ -35,6 +35,7 @@ namespace Architecture
 		class Out {
 		public:
 			vector<DetekovanyObjekt> objects; /**< zoznam detekovanych objektov */
+			cv::Mat horizont;
 
 			friend ostream& operator<< (ostream& out, Out& object) {
 				out << "ModulSpracovaniaOut(objects :(";
@@ -48,7 +49,7 @@ namespace Architecture
 
 
 		virtual Out detekujObjekty(In in) {
-			cout << "Dostal som\n\n" << in<< "\n\n";
+			//cout << "Dostal som\n\n" << in<< "\n\n";
 
 			// Hladam na obrazovky a ked najdem objekt ulozim ho + jeho poziciu
 			DetekovanyObjekt najdenyObjekt;

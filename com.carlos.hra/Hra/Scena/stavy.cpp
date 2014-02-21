@@ -32,10 +32,6 @@ void Scene::stavGameOver(FrameData* frame) {
 }
 
 void Scene::nastavPozadieZoVstupu(FrameData* frame) {
-	if(frame->hasVstup == false) {
-		printf("Neprisiel mi snimok z videa, preskakujem nastavenie textury.\n");
-		return;
-	}
 	printf("Nastavujem texturu z videa.\n");
 	cv::Mat img = frame->vstup.image.data;
 
@@ -55,6 +51,29 @@ void Scene::nastavPozadieZoVstupu(FrameData* frame) {
 	setBackgroud(texture);
 }
 
+bool otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plain* plain) {
+	glm::vec2 aktualnaPozicia = plain->getPosition();
+	glm::vec2 velkostLiedatla = plain->getsize();
+
+	int os_min_x = aktualnaPozicia.x - velkostLiedatla.x/2 + 320;
+	int os_max_x = aktualnaPozicia.x + velkostLiedatla.x/2 + 320;
+	int os_min_y = aktualnaPozicia.y - velkostLiedatla.y/2 + 240;
+	int os_max_y = aktualnaPozicia.y + velkostLiedatla.y/2 + 240;
+
+	if (os_min_x < 0) return false; 
+	if (os_max_x > 640) return false; 
+	if (os_min_y < 0) return false; 
+	if (os_max_y > 480) return false; 
+
+	for (int j = os_min_y; j < os_max_y; j++ ){
+		for (int i = os_min_x; i < os_max_x; i++ ){
+			if(horizont.at<uchar>(j,i) != 0) return true;
+		}
+	}
+	
+	return false;
+}
+
 /** 
 * Funkcia ma na vstupe jeden parameter, zobrazuje pozadie a overuje ci je lietadlo na obrazku
 * @param fDelta - zmena casu
@@ -63,36 +82,55 @@ void Scene::nastavPozadieZoVstupu(FrameData* frame) {
 * @return void 
 */
 void Scene::stavHrania(FrameData* frame) {
-	/// Kazdu snimku updatni pozadie
-	nastavPozadieZoVstupu(frame);
-
-	/// Spustame logiku casti
-	collisionStatus colStatus;
-	colStatus = plain->collisionTest(*world); /// prava strana lietadla je 1 ked je na pravo colStatus.right
-	// 001011
-	printf("%d %d %d %d\n",  colStatus.bottom, colStatus.left, colStatus.right, colStatus.top);
-	// lietadlo je na lavej strane sveta a 1 je		right
-	// lietadlo je na pravej strane a 1 je		left		a right
-	// lietadlo je hore 1 je:					bottom		a right
-	// lietadlo je dole							top		
-	// v strede je								front, right, top 
-
-	bool contain = world->contains(*plain);
-	if(contain) {
-		printf("Y\n"); // toto vracia Y aj ked sa len dotykaju, neskor sa to prepne na N
+	if(frame->hasVstup == false) {
+		printf("Neprisiel mi snimok z videa, preskakujem nastavenie textury.\n");
 	} else {
-		printf("N\n");
-		havaroval();
-	}
-	contain = plain->contains(*world);
-	if(contain) {
-		printf("A\n");
-	} else {
-		printf("B\n");  // toto vracia stale B
-	}
+		/// Kazdu snimku updatni pozadie
+		nastavPozadieZoVstupu(frame);
 
-	plain->logic(frame->deltaTime, frame->command);
-	visualController.renderObject(resManager.plain, plain->getMatrix());
+		/// Spustame logiku casti
+		collisionStatus colStatus;
+		colStatus = plain->collisionTest(*world); /// prava strana lietadla je 1 ked je na pravo colStatus.right
+		// 001011
+		printf("%d %d %d %d\n",  colStatus.bottom, colStatus.left, colStatus.right, colStatus.top);
+		// lietadlo je na lavej strane sveta a 1 je		right
+		// lietadlo je na pravej strane a 1 je		left		a right
+		// lietadlo je hore 1 je:					bottom		a right
+		// lietadlo je dole							top		
+		// v strede je								front, right, top 
+
+		bool contain = world->contains(*plain);
+		if(contain) {
+			printf("Y\n"); // toto vracia Y aj ked sa len dotykaju, neskor sa to prepne na N
+		} else {
+			printf("N\n");
+			havaroval();
+		}
+		contain = plain->contains(*world);
+		if(contain) {
+			printf("A\n");
+		} else {
+			printf("B\n");  // toto vracia stale B
+		}
+
+		// Otestuj ci sa dotyka horizontu
+		cv::Mat horizont = frame->vstup.horizont;
+	contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
+		horizont.release();
+		if(contain) {
+			
+			printf("Narazil do horizontu\n");
+			havaroval();
+		} else {
+			 // toto vracia stale B
+			
+			printf("Leti nad horizontom\n");
+			
+		}
+
+		plain->logic(frame->deltaTime, frame->command);
+		visualController.renderObject(resManager.plain, plain->getMatrix());
+	}
 
 	// Hud
 	glUseProgram(0);

@@ -32,6 +32,7 @@ void Carlos::spracujJedenSnimok(Image& image) {
 	spracovanie.image = image;
 	spracovanie.recepts = recepts;
 	ModulSpracovania::Out vysledokSpracovania = controller->spracovanie->detekujObjekty(spracovanie);
+	vysledokSpracovania.horizont = controller->spracovanie->najdiHorizont(image.data);
 
 	// Modul vypoctu polohy
 	vector<Point2f> najdenePozicie; // synchronizovane
@@ -53,8 +54,10 @@ void Carlos::spracujJedenSnimok(Image& image) {
 	vykreslovanie.image = image;
 	vykreslovanie.command = command;
 	vykreslovanie.najdenePozicie = najdenePozicie;
+	vykreslovanie.horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
 	imshow("Test", image.data);
+	//imshow("Horizont", vysledokSpracovania.horizont);
 }
 
 

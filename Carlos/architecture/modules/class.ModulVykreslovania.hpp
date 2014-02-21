@@ -14,6 +14,7 @@ namespace Architecture
 			Image image; /**< obrazok povodny z kamery */
 			vector<Point2f> najdenePozicie; /**< Pozicie najdene pre objekty */
 			ControllerCommands command;
+			Mat horizont;
 
 			friend ostream& operator<< (ostream& out, In& object) {
 				out << "ModulVykreslovaniaIn(";

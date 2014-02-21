@@ -122,9 +122,6 @@
     <ClCompile Include="Hra\Scena\prepniStav.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Hra\class.SpracovanieSnimku.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Hra\Model\objModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

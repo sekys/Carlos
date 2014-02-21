@@ -18,6 +18,9 @@ protected:
 	glm::vec2 size; /**< Velkost lietadla */
 
 public:
+	glm::vec2 getsize(){
+		return size;
+	}
 	Plain(glm::vec2 size) : AABB(size) {
 		this->size = size;
 		setStartPosition();
@@ -30,9 +33,9 @@ public:
 	*/
 	void setStartPosition() {
 		/// Hranice  sveta su -100, 100
-		setPosition( glm::vec2(0, 0) ); /// Starovacia pozicia lietadla
+		setPosition( glm::vec2(150, 150) ); /// Starovacia pozicia lietadla
 		rotation = glm::vec3(-270, 180, 270); /// Uvodne natocenie lietadla
-		silaPohybu = glm::vec2(500.0f, 10.0f); /// Defaultna rychlost stupania a rychlost klesania - pri pade
+		silaPohybu = glm::vec2(350.0f, 30.0f); /// Defaultna rychlost stupania a rychlost klesania - pri pade
 		speed = glm::vec2();
 		akceleracia = glm::vec2(0.0f, -10.0f);
 	}

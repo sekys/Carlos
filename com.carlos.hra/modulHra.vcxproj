@@ -122,7 +122,6 @@
     <ClCompile Include="Hra\Scena\prepniStav.cpp" />
     <ClCompile Include="prepojenie\DllMain.cpp" />
     <ClCompile Include="prepojenie\class.DllModulVykreslovania.cpp" />
-    <ClCompile Include="Hra\class.SpracovanieSnimku.hpp" />
     <ClCompile Include="Hra\Help\Math\AABB.cpp" />
     <ClCompile Include="Hra\Scena\class.Scene.cpp" />
     <ClCompile Include="Hra\Model\objModel.cpp" />
