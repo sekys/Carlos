@@ -1,9 +1,10 @@
 #pragma once
+#include <carlos_global.h>
 #include <windows.h>
 #include <string>
 #include <iostream>
 #include <conio.h>
-#include "utilities.hpp"
+#include "../../com.carlos.architecture/utilities.hpp"
 // http://edn.embarcadero.com/article/20165
 
 namespace Architecture {

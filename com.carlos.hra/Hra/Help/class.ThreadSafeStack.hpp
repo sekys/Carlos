@@ -18,6 +18,10 @@ public:
 	*/
 	void push(const T& item) {
 		boost::mutex::scoped_lock lock(m_mutex);
+		/*if(size == max_velkost) {
+			// Ak velkost je na maxime zastav
+			cond.wait( m_mutex );
+		}*/
 		m_stack.push(item);
 	}
 
@@ -35,6 +39,7 @@ public:
 		while (!m_stack.empty()) {
 			m_stack.pop();
 		}
+		//cond.notify_one();
 	}
 
 	/** 
@@ -43,10 +48,11 @@ public:
 	* @param 
 	* @return void
 	*/
-	void pop() {
-		boost::mutex::scoped_lock lock(m_mutex);
-		m_stack.pop();
-	}
+	/*void pop() {
+	boost::mutex::scoped_lock lock(m_mutex);
+	m_stack.pop();
+	}*/
+
 	/** 
 	* Funkcia nema ziadne parametre - vracia vrchol zasobnika
 	* Top nevola descruktor elementu.
@@ -55,9 +61,14 @@ public:
 	*/
 	T top() const {
 		boost::mutex::scoped_lock lock(m_mutex);
-		if(m_stack.empty()) {
-			/// STack nehadze exception
-			/// http://stackoverflow.com/questions/4892108/c-stl-stack-question-why-does-pop-not-throw-an-exception-if-the-stack-is-em
+		int size = m_stack.size();
+		// Ak velkost klesne na polovicu, oznam to prvemu vlaknu
+		/*if(size == max_velkost / 2) {
+			cond.notify_one();
+		}*/
+		// Stack nehadze exception
+		if(size == 0) {
+			// http://stackoverflow.com/questions/4892108/c-stl-stack-question-why-does-pop-not-throw-an-exception-if-the-stack-is-em
 			throw std::out_of_range("Zasobnik prazdny");
 		}
 		return m_stack.top();
@@ -65,5 +76,9 @@ public:
 
 private:
 	mutable boost::mutex m_mutex; // mutable
+	//boost::condition_variable cond;
 	std::stack<T> m_stack;
+
+	// http://stackoverflow.com/questions/6923641/does-boostwait-and-boostcondition-have-to-share-the-same-mutex-object
+	//const int m_mutex = 100;
 };

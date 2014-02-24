@@ -2,6 +2,7 @@
 *
 * Implementacia ModulWrapper.
 */
+#include <carlos_global.h>
 #include "class.ModulWrapper.hpp"
 
 using namespace Architecture;

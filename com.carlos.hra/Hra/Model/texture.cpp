@@ -3,7 +3,7 @@
 
 #include "texture.h"
 
-#include <FreeImage.h>
+#include <FreeImage/FreeImage.h>
 
 #pragma comment(lib, "FreeImage.lib")
 

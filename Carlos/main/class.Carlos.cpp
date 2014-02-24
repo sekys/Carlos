@@ -1,10 +1,11 @@
+#include <carlos_global.h>
 #include "class.Carlos.hpp"
-#include "../architecture/configuration/class.Configuration.h"
+#include "../../com.carlos.architecture/configuration/class.Configuration.hpp"
+#include "../../com.carlos.architecture/db/class.DBService.hpp"
 using namespace Architecture;
 
 Carlos::Carlos() {
 	// Nacitaj vsetky casti Carlosa
-	db = new DBService();
 	controller = new ModulesController();
 }
 
@@ -13,11 +14,10 @@ Carlos::~Carlos() {
 	// Program konci, je potrebne uvolnit jeho casti
 	controller->stop();
 	SAFE_DELETE(controller);
-	SAFE_DELETE(db);
 }
 
 
-void Carlos::spracujJedenSnimok(Image& image) {
+void Carlos::spracujJedenSnimok(Image image) {
 	// Z gps suradnic sa musi synchronizovane pockat, potom sa moze ist dalej
 	// Lebo ked snimka meska, tak gps moze byt uz o par metrov dalej
 	ControllerCommands command = controller->android->getActualCommand();
@@ -25,7 +25,7 @@ void Carlos::spracujJedenSnimok(Image& image) {
 	Point3f rotaciaHlavy = controller->kinect->getAktualnaRotaciaHlavy();
 
 	// Modul preprocessingu
-	vector<WorldObject> recepts = controller->databaza->najdiVsetkySvetoveObjektyBlizkoGPS(gps);
+	vector<WorldObject> recepts = DB::DBService::getInstance().najdiVsetkySvetoveObjektyBlizkoGPS(gps);
 
 	// Modul spracovania
 	ModulSpracovania::In spracovanie;
@@ -56,34 +56,41 @@ void Carlos::spracujJedenSnimok(Image& image) {
 	vykreslovanie.najdenePozicie = najdenePozicie;
 	vykreslovanie.horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
-	imshow("Test", image.data);
 	//imshow("Horizont", vysledokSpracovania.horizont);
+	imshow("Test", image.data);
+	image.data.release();
 }
 
 
 void Carlos::Init() {
 	// Inicializacia Carlosu spociva napriklad v nacitani konfiguracie ...
-	db->selectObjects();
+	//db->selectObjects();
+	DB::DBService::getInstance();
 	Configuration::getInstance();
 	cout << "Configuration title '" << Configuration::getInstance().getTitle() << "'\n";
 
 	// Spociva aj v nacitani modulov
 	controller->start();
 	namedWindow("Test",1);
-	frame.frame = 0;
 }
 bool Carlos::Run() {
 	// Tato metoda sa spusta v kazdom cykle apliakcie
 	controller->callPreFrames();
 	nacitajDalsiuSnimku();
-	return true;
+	return true; // okno obnovujeme stale
 }
 
 void Carlos::nacitajDalsiuSnimku() {
 	// Ziskaj snimok ..
-	controller->kamera->readNext(frame);
-	spracujJedenSnimok(frame);
-	frame.frame++;
-
-	// Bum ! Hotovo mozme ist na dalsi snimok
+	try {
+		controller->kamera->readNext();
+		Image image = controller->kamera->getImage();
+		cout << "Snimok: " << image.frame << "\n";
+		spracujJedenSnimok(image);
+	} catch(ModulKamera::EndOfStream stream) {
+		// Cyklus Run skonci, skonci apliakcia, spusti sa dekonstruktor, zacne sa uvolnovat pamet a vsetko vypinat ...
+		this->stop();
+	} catch (std::out_of_range e) {
+		cout << e.what();
+	} 
 }

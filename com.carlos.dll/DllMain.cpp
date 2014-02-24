@@ -1,9 +1,9 @@
 #include <windows.h>
-#include "../Carlos/architecture/DllExports.h"
-#include "../Carlos/architecture/modules/class.ModulSpracovania.hpp"
+#include "../com.carlos.architecture/DllExports.h"
+#include "../com.carlos.architecture/modules/class.ModulSpracovania.hpp"
 #include "CV.h"
 #include <iostream>
-
+#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
 
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
 	printf("Dll nacitane\n");

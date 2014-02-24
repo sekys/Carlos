@@ -3,7 +3,7 @@
 * Implementacia servera a prijmanie soketov.
 */
 // http://www.drdobbs.com/jvm/java-and-c-socket-communication/222900697?pgno=3
-
+#include <carlos_global.h>
 #include "ServerSocket.h"
 #include <process.h> 
 #include <iostream>
@@ -49,7 +49,7 @@ DWORD ServerSocket::start() {
 	// Resolve the server address and port
 	iResult = getaddrinfo(ip, port, &hints, &result);
 	if ( iResult != 0 ) {
-		cout << "getaddrinfo failed\n";
+		cout << "TCP getaddrinfo failed" << ip << port << "\n";
 		WSACleanup();
 		return 1;
 	}
@@ -57,7 +57,7 @@ DWORD ServerSocket::start() {
 	// Create a SOCKET for connecting to server
 	ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 	if (ListenSocket == INVALID_SOCKET) {
-		 cout << "socket failed\n";
+		 cout << "socket failed " << ip << port << "\n";
 		freeaddrinfo(result);
 		WSACleanup();
 		return 1;
@@ -66,7 +66,7 @@ DWORD ServerSocket::start() {
 	// Setup the TCP listening socket
 	iResult = bind( ListenSocket, result->ai_addr, (int)result->ai_addrlen);
 	if (iResult == SOCKET_ERROR) {
-		cout << "bind failed\n";
+		cout << "bind failed - zla ip adresa? " << ip << port << "\n";
 		freeaddrinfo(result);
 		closesocket(ListenSocket);
 		WSACleanup();
@@ -77,7 +77,7 @@ DWORD ServerSocket::start() {
 
 	iResult = listen(ListenSocket, SOMAXCONN);
 	if (iResult == SOCKET_ERROR) {
-		cout << "listen failed\n";
+		cout << "listen failed  " << ip << port << "\n";
 		closesocket(ListenSocket);
 		WSACleanup();
 		return 1;

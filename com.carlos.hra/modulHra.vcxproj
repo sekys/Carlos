@@ -42,8 +42,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(CARLOS_FREETYPE_INC);$(CARLOS_FREEIMAGE_INC);$(CARLOS_GLFILES_INC);$(CARLOS_GLM_INC);$(CARLOS_ARCHITECTURE);$(CARLOS_BOOST_INC);$(CARLOS_OPENCV_INC);$(IncludePath)</IncludePath>
-    <LibraryPath>$(CARLOS_BOOST_LIB);$(CARLOS_GLFILES_LIB);$(CARLOS_OPENCV_LIB);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(CARLOS_INC);$(CARLOS_BOOST_INC);$(CARLOS_OPENCV_INC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(CARLOS_BOOST_LIB);$(CARLOS_LIB);$(CARLOS_OPENCV_LIB);$(LibraryPath)</LibraryPath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
     <ExcludePath>$(WindowsSDK_IncludePath);$(ExcludePath)</ExcludePath>
   </PropertyGroup>

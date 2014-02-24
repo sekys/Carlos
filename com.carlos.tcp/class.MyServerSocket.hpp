@@ -1,4 +1,5 @@
 #pragma once
+#include <carlos_global.h>
 #include "tcp\ServerSocket.h"
 
 /**

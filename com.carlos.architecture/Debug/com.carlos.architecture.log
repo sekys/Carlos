@@ -1,0 +1,27 @@
+﻿Build started 2/24/2014 12:12:17 AM.
+     1>Project "C:\Users\Seky\Documents\Visual Studio 2012\Projects\git\CarlosAR_VW\com.carlos.architecture\com.carlos.architecture.vcxproj" on node 2 (Rebuild target(s)).
+     1>CTP_Warning:
+         'Microsoft Visual C++ Compiler Nov 2012 CTP' is for testing purposes only.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual C++ Compiler Nov 2012 CTP\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt configuration\class.Configuration.cpp configuration\tinyxml2\tinyxml2.cpp db\class.DBService.cpp utilities.cpp
+         utilities.cpp
+         class.DBService.cpp
+     1>c:\users\seky\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.architecture\db\class.dbservice.cpp(59): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\seky\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.architecture\db\class.dbservice.cpp(60): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         tinyxml2.cpp
+         class.Configuration.cpp
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual C++ Compiler Nov 2012 CTP\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TC /analyze- /errorReport:prompt db\sqlite\sqlite3.c
+         sqlite3.c
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"C:\Users\Seky\Documents\Visual Studio 2012\Projects\git\CarlosAR_VW\Debug\com.carlos.architecture.lib" /NOLOGO Debug\class.Configuration.obj
+         Debug\tinyxml2.obj
+         Debug\class.DBService.obj
+         Debug\sqlite3.obj
+         Debug\utilities.obj
+         com.carlos.architecture.vcxproj -> C:\Users\Seky\Documents\Visual Studio 2012\Projects\git\CarlosAR_VW\Debug\com.carlos.architecture.lib
+     1>Done Building Project "C:\Users\Seky\Documents\Visual Studio 2012\Projects\git\CarlosAR_VW\com.carlos.architecture\com.carlos.architecture.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:09.99

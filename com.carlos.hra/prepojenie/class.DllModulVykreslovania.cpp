@@ -1,10 +1,13 @@
 /** @file class.DllModulVykreslovania.cpp
 * trieda ktora sa stara o inicializaciu a o posielanie obrazkov do buffera
 */
+#include <carlos_global.h>
 #include "class.DllModulVykreslovania.hpp"
 #include <iostream>
 #include "..\Hra\opengl.h"
 #include "..\Hra\Help\class.FrameData.hpp"
+
+using namespace Architecture;
 
 Scene scene;
 

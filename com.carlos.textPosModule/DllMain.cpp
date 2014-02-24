@@ -1,8 +1,9 @@
 #include <windows.h>
-#include "../Carlos/architecture/DllExports.h"
-#include "../Carlos/architecture/entities/entities.h"
-#include "../Carlos/architecture/modules/class.ModulVypocitaniaPolohy.hpp"
-#include "../Carlos/architecture/configuration/class.Configuration.h"
+#include "../com.carlos.architecture/DllExports.h"
+#include "../com.carlos.architecture/entities/entities.h"
+#include "../com.carlos.architecture/modules/class.ModulVypocitaniaPolohy.hpp"
+#include "../com.carlos.architecture/configuration/class.Configuration.hpp"
+#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
 
 #define PI	3.14159265 /// cislo PI
 #define R	6378.1 /// Radius of the Earth in km

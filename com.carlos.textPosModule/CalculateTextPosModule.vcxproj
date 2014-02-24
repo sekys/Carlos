@@ -42,7 +42,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(CARLOS_ARCHITECTURE);$(CARLOS_OPENCV_INC);$(IncludePath)</IncludePath>
+    <IncludePath>$(CARLOS_INC);$(CARLOS_OPENCV_INC);$(IncludePath)</IncludePath>
     <LibraryPath>$(CARLOS_OPENCV_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

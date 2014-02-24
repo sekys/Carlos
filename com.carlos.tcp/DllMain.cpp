@@ -1,11 +1,14 @@
-#include "../Carlos/architecture/DllExports.h"
+#include <carlos_global.h>
+#include "../com.carlos.architecture/DllExports.h"
 #include "class.MyServerSocket.hpp"
-#include "split.h"
-#include "../Carlos/architecture/modules/fake/class.FakeModulAndroid.hpp"
+#include "../com.carlos.architecture/utilities.hpp"
+#include "../com.carlos.architecture/modules/fake/class.FakeModulAndroid.hpp"
 #include <windows.h>
 #include <iostream>
 #include <process.h> 
 #include <iostream>
+#include "../com.carlos.architecture/configuration/class.Configuration.hpp"
+#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
 
 using namespace Architecture;
 using namespace std;
@@ -28,7 +31,8 @@ public:
 	virtual void init() {
 		FakeModulAndroid::init();
 		cout << "Native TCP server starting\n";
-		server = new MyServerSocket(this, "192.168.247.222", "1234");
+		Configuration& config = Configuration::getInstance();
+		server = new MyServerSocket(this, config.getConfigTxt("MY_IP"), config.getConfigTxt("MY_PORT"));
 		server->start();
 	}
 

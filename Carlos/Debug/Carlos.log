@@ -1,11 +1,11 @@
-﻿Build started 2/21/2014 8:12:59 PM.
-     1>Project "C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\Carlos\Carlos.vcxproj" on node 2 (Build target(s)).
+﻿Build started 2/24/2014 12:45:41 AM.
+     1>Project "C:\Users\Seky\Documents\Visual Studio 2012\Projects\git\CarlosAR_VW\Carlos\Carlos.vcxproj" on node 2 (Build target(s)).
      1>CTP_Warning:
          'Microsoft Visual C++ Compiler Nov 2012 CTP' is for testing purposes only.
        Link:
-         Carlos.vcxproj -> C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\Debug\Carlos.exe
-     1>Done Building Project "C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\Carlos\Carlos.vcxproj" (Build target(s)).
+         Carlos.vcxproj -> C:\Users\Seky\Documents\Visual Studio 2012\Projects\git\CarlosAR_VW\Debug\Carlos.exe
+     1>Done Building Project "C:\Users\Seky\Documents\Visual Studio 2012\Projects\git\CarlosAR_VW\Carlos\Carlos.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.32
+Time Elapsed 00:00:00.11

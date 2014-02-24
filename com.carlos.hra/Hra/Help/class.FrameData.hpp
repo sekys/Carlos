@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../Carlos/architecture/modules/class.ModulVykreslovania.hpp"
+#include "../../com.carlos.architecture/modules/class.ModulVykreslovania.hpp"
 
 using namespace Architecture;
 
@@ -9,4 +9,14 @@ public:
 	bool hasVstup;
 	ControllerCommands command;
 	float deltaTime;
+
+	FrameData() {
+		
+	}
+	~FrameData() {
+		if(hasVstup) {
+			vstup.horizont.release();
+			vstup.image.data.release();
+		}
+	}
 };

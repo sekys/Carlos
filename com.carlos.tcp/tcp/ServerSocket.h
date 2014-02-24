@@ -1,6 +1,7 @@
 // http://www.drdobbs.com/jvm/java-and-c-socket-communication/222900697?pgno=3
 
 #pragma once
+#include <carlos_global.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include "SocketListener.h"

@@ -1,6 +1,7 @@
 #pragma once
+#include <carlos_global.h>
 #include <windows.h>
-#include "../../Carlos/architecture/DllExports.h"
+#include "../../com.carlos.architecture/DllExports.h"
 #include "class.DllModulVykreslovania.hpp"
 
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {

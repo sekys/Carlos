@@ -5,7 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "../Help/Math/AABB.h"
-#include "../../../Carlos/architecture/entities/entities.h"
+#include "../../../com.carlos.architecture/entities/entities.h"
 
 using namespace Architecture;
 

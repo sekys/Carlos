@@ -1,9 +1,8 @@
 #pragma once
-#include "../../Carlos/architecture/modules/class.ModulVykreslovania.hpp"
+#include <carlos_global.h>
+#include "../../com.carlos.architecture/modules/class.ModulVykreslovania.hpp"
 
-using namespace Architecture;
-
-class DllModulVykreslovania : public ModulVykreslovania {
+class DllModulVykreslovania : public Architecture::ModulVykreslovania {
 private:
 
 

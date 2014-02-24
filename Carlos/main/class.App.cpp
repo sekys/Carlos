@@ -2,6 +2,7 @@
 *
 * Implementacia triedy App.
 */
+#include <carlos_global.h>
 #include "class.App.hpp"
 
 void App::MainCycle() {

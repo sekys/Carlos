@@ -40,7 +40,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(CARLOS_OPENCV_INC);$(CARLOS_BOOST_INC);$(IncludePath)</IncludePath>
+    <IncludePath>$(CARLOS_INC);$(CARLOS_OPENCV_INC);$(CARLOS_BOOST_INC);$(IncludePath)</IncludePath>
     <LibraryPath>$(CARLOS_BOOST_LIB);$(CARLOS_OPENCV_LIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -76,7 +76,6 @@
     <ClInclude Include="tcp\class.MessageHandler.hpp" />
     <ClInclude Include="tcp\ServerSocket.h" />
     <ClInclude Include="tcp\SocketListener.h" />
-    <ClInclude Include="split.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

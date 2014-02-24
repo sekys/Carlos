@@ -10,6 +10,5 @@
     <ClInclude Include="tcp\SocketListener.h" />
     <ClInclude Include="class.MyServerSocket.hpp" />
     <ClInclude Include="tcp\class.MessageHandler.hpp" />
-    <ClInclude Include="split.h" />
   </ItemGroup>
 </Project>

@@ -2,6 +2,7 @@
 *
 * Implementacia ModulesController
 */
+#include <carlos_global.h>
 #include "class.ModulesController.hpp"
 
 using namespace Architecture;
@@ -51,7 +52,7 @@ void ModulesController::destroyModules() {
 
 void ModulesController::reset() {
 	android = NULL;
-	databaza = NULL;
+	//databaza = NULL;
 	kamera = NULL;
 	kinect = NULL;
 	vykreslovanie = NULL;
@@ -66,12 +67,12 @@ void ModulesController::installModules() {
 	// - moduly normalne
 	// - moduly z dll suborov
 	android = addDll<ModulAndroid>("com.carlos.android.tcpServer.dll");
-	databaza = add(new ModulDatabaza() );
+	//databaza = add(new ModulDatabaza() );
 	kamera = add(new ModulKamera("data/video/2013-10-20-12-25-52.avi") );
 	kinect = add(new ModulKinect() );
 	vykreslovanie = addDll<ModulVykreslovania>("com.carlos.hra.dll");
 	vyppolohy = add(new ModulVypocitaniaPolohy());
-	spracovanie = new ModulSpracovania();
+	spracovanie = add(new ModulSpracovania());
 }
 
 ModulesController::ModulesController() {

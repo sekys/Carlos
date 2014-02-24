@@ -45,7 +45,6 @@ void Scene::nastavPozadieZoVstupu(FrameData* frame) {
 	texture.createFromData(img.ptr(), img.cols, img.rows, GL_RGB, inputColourFormat, true);
 	texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_NEAREST_MIPMAP);
 	texture.flagDelete = true;
-	img.release();
 
 	// 3. nastav texturu na pozadie kocky
 	setBackgroud(texture);
@@ -70,7 +69,7 @@ bool otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plain* plain) {
 			if(horizont.at<uchar>(j,i) != 0) return true;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -115,17 +114,16 @@ void Scene::stavHrania(FrameData* frame) {
 
 		// Otestuj ci sa dotyka horizontu
 		cv::Mat horizont = frame->vstup.horizont;
-	contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
-		horizont.release();
+		contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
 		if(contain) {
-			
+
 			printf("Narazil do horizontu\n");
 			havaroval();
 		} else {
-			 // toto vracia stale B
-			
+			// toto vracia stale B
+
 			printf("Leti nad horizontom\n");
-			
+
 		}
 
 		plain->logic(frame->deltaTime, frame->command);

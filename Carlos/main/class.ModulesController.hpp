@@ -1,13 +1,14 @@
 #pragma once
+#include <carlos_global.h>
 #include "class.Dll.hpp"
-#include "..\architecture\modules\class.ModulAndroid.hpp"
-#include "..\architecture\modules\class.ModulDatabaza.hpp"
-#include "..\architecture\modules\class.ModulKamera.hpp"
-#include "..\architecture\modules\class.ModulKinect.hpp"
-#include "..\architecture\modules\class.ModulSpracovania.hpp"
-#include "..\architecture\modules\class.ModulVykreslovania.hpp"
-#include "..\architecture\modules\class.ModulVypocitaniaPolohy.hpp"
-#include "..\architecture\modules\fake\class.FakeModulAndroid.hpp"
+#include "..\..\com.carlos.architecture\modules\class.ModulAndroid.hpp"
+//#include "..\..\com.carlos.architecture\modules\class.ModulDatabaza.hpp"
+#include "..\..\com.carlos.architecture\modules\class.ModulKamera.hpp"
+#include "..\..\com.carlos.architecture\modules\class.ModulKinect.hpp"
+#include "..\..\com.carlos.architecture\modules\class.ModulSpracovania.hpp"
+#include "..\..\com.carlos.architecture\modules\class.ModulVykreslovania.hpp"
+#include "..\..\com.carlos.architecture\modules\class.ModulVypocitaniaPolohy.hpp"
+#include "..\..\com.carlos.architecture\modules\fake\class.FakeModulAndroid.hpp"
 #include "class.ModulWrapper.hpp"
 #include <map>
 
@@ -47,7 +48,7 @@ namespace Architecture {
 	public:
 		// Zoznam modulov
 		ModulAndroid* android;
-		ModulDatabaza* databaza;
+		//ModulDatabaza* databaza;
 		ModulKamera* kamera;
 		ModulKinect* kinect;
 		ModulVykreslovania* vykreslovanie;

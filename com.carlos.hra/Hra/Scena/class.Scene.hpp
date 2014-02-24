@@ -10,7 +10,7 @@
 #include "StavyHry.h"
 #include "opencv2/opencv.hpp"
 #include "..\Help\class.ThreadSafeStack.hpp"
-#include "../../../Carlos/architecture/modules/class.ModulVykreslovania.hpp"
+#include "../../../com.carlos.architecture/modules/class.ModulVykreslovania.hpp"
 #include "..\Help\class.FrameData.hpp"
 
 using namespace Architecture;

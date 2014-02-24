@@ -28,30 +28,20 @@
     <ClInclude Include="main\class.Dll.hpp" />
     <ClInclude Include="main\class.ModulesController.hpp" />
     <ClInclude Include="architecture\DllExports.h" />
-    <ClInclude Include="db\sweetql.hpp" />
-    <ClInclude Include="db\sqlite\sqlite3.h" />
-    <ClInclude Include="db\sqlite\sqlite3ext.h" />
-    <ClInclude Include="main\utilities.hpp" />
     <ClInclude Include="main\CThread.h" />
     <ClInclude Include="main\class.App.hpp" />
-    <ClInclude Include="architecture\configuration\class.Configuration.h" />
     <ClInclude Include="architecture\configuration\tinyxml2\tinyxml2.h" />
-    <ClInclude Include="db\class.DBService.hpp" />
     <ClInclude Include="architecture\modules\fake\class.FakeModulAndroid.hpp" />
     <ClInclude Include="architecture\modules\fake\class.GPSLogFile.hpp" />
     <ClInclude Include="architecture\entities\class.Time.hpp" />
     <ClInclude Include="main\class.ModulWrapper.hpp" />
     <ClInclude Include="architecture\entities\cv_entities.h" />
     <ClInclude Include="architecture\modules\class.ModulVykreslovania.hpp" />
+    <ClInclude Include="architecture\configuration\class.Configuration.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main\class.Carlos.cpp" />
     <ClCompile Include="main\main.cpp" />
-    <ClCompile Include="db\sqlite\sqlite3.c" />
-    <ClCompile Include="db\entities.hpp" />
-    <ClCompile Include="main\utilities.cpp" />
-    <ClCompile Include="architecture\configuration\tinyxml2\tinyxml2.cpp" />
-    <ClCompile Include="architecture\configuration\class.Configuration.cpp" />
     <ClCompile Include="main\class.ModulWrapper.cpp" />
     <ClCompile Include="main\class.ModulesController.cpp" />
     <ClCompile Include="main\class.App.cpp" />

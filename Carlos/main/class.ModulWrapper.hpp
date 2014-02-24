@@ -1,7 +1,7 @@
 #pragma once
+#include <carlos_global.h>
 #include <boost/thread.hpp>
-#include "../architecture/entities/baseTypes.h"
-#include "../architecture/entities/class.IModul.hpp"
+#include "../../com.carlos.architecture/entities/class.IModul.hpp"
 #include <iostream> 
 #include "class.Dll.hpp"
 

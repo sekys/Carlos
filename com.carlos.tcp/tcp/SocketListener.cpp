@@ -1,5 +1,5 @@
 // http://www.drdobbs.com/jvm/java-and-c-socket-communication/222900697?pgno=3
-
+#include <carlos_global.h>
 #include "SocketListener.h"
 #include <process.h> 
 #include <stdlib.h>

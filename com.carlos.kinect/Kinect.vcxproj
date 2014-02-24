@@ -66,7 +66,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(CARLOS_OPENCV_INC);$(CARLOS_BOOST_INC);$(CARLOS_FREENECT_INC);$(CARLOS_PTHREADS_INC);$(CARLOS_ARCHITECTURE);$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>$(CARLOS_OPENCV_INC);$(CARLOS_BOOST_INC);$(CARLOS_FREENECT_INC);$(CARLOS_PTHREADS_INC);$(CARLOS_INC);$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(CARLOS_OPENCV_LIB);$(CARLOS_BOOST_LIB);$(CARLOS_PTHREADS_LIB);$(CARLOS_FREENECT_LIB);$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
