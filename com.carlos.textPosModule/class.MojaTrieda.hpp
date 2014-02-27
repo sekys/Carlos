@@ -1,13 +1,10 @@
 #pragma once
-#include "../Carlos/architecture/modules/class.ModulVypocitaniaPolohy.hpp"
+#include "../com.carlos.architecture/entities/entities.h"
 #include <iostream>
 #include <math.h>
 
 #define PI	3.14159265 /// cislo PI
 #define R	6378.1 /// Radius of the Earth in km
-
-using namespace Architecture;
-using namespace cv;
 
 class MojaTrieda {
 protected:
