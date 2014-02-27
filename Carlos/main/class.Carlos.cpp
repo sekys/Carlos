@@ -21,6 +21,7 @@ void Carlos::spracujJedenSnimok(Image image) {
 	// Z gps suradnic sa musi synchronizovane pockat, potom sa moze ist dalej
 	// Lebo ked snimka meska, tak gps moze byt uz o par metrov dalej
 	ControllerCommands command = controller->android->getActualCommand();
+	controller->android->setActualCommand(ControllerCommands::NO_ACTION);
 	GPS gps = controller->android->getGPS();
 	Point3f rotaciaHlavy = controller->kinect->getAktualnaRotaciaHlavy();
 

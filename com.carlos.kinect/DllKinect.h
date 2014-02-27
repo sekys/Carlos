@@ -1,6 +1,6 @@
 #pragma once
 #define NOMINMAX
-#include "../Carlos/architecture/modules/class.ModulKinect.hpp"
+#include "../Carlos/modules/class.ModulKinect.hpp"
 
 using namespace Architecture;
 

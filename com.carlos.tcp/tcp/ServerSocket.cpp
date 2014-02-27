@@ -93,6 +93,7 @@ DWORD ServerSocket::start() {
 			// Create socket listener and sender to handle this client
 			if ( listener != NULL ) {
 				try { delete listener; } catch (...) { }
+				listener = NULL;
 			}
 
 			// Setup the socket sender and listener
@@ -106,8 +107,8 @@ DWORD ServerSocket::start() {
 			cout <<"listener start has end\n";
 			if(listener != NULL) {
 				delete listener;
+				listener = NULL;
 			}
-			listening = false;
 		}
 		else {
 			int error = WSAGetLastError();
