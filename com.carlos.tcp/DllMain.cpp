@@ -49,7 +49,7 @@ public:
 		string value = inputText.substr(pos+1, inputText.length()); 
 
 		// Citaj prikaz
-		if (key.compare("Command") != 0) {
+		if (key.compare("Command") == 0) {
 			//sendRandomNumberResponse();
 			updateCommand(value); // TODO: tu ostava :
 			return;
@@ -57,7 +57,7 @@ public:
 
 		// Citaj GPS
 		
-		if (key.compare("gps") != 0) {
+		if (key.compare("gps") == 0) {
 			vector<string> v;
 			split(value, v);
 			GPS gps;		

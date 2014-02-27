@@ -21,6 +21,7 @@ void Carlos::spracujJedenSnimok(Image image) {
 	// Z gps suradnic sa musi synchronizovane pockat, potom sa moze ist dalej
 	// Lebo ked snimka meska, tak gps moze byt uz o par metrov dalej
 	ControllerCommands command = controller->android->getActualCommand();
+	controller->android->setActualCommand(ControllerCommands::NO_ACTION);
 	GPS gps = controller->android->getGPS();
 	Point3f rotaciaHlavy = controller->kinect->getAktualnaRotaciaHlavy();
 
@@ -85,7 +86,7 @@ void Carlos::nacitajDalsiuSnimku() {
 	try {
 		controller->kamera->readNext();
 		Image image = controller->kamera->getImage();
-		cout << "Snimok: " << image.frame << "\n";
+		//cout << "Snimok: " << image.frame << "\n";
 		spracujJedenSnimok(image);
 	} catch(ModulKamera::EndOfStream stream) {
 		// Cyklus Run skonci, skonci apliakcia, spusti sa dekonstruktor, zacne sa uvolnovat pamet a vsetko vypinat ...
