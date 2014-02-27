@@ -44,7 +44,7 @@ bool CObjModel::loadModel(string sFileName, string sMtlFileName)
 {
 	FILE* fp = fopen(sFileName.c_str(), "rt");
 
-	if(fp == NULL)return false;
+	if(fp == NULL) throw exception("subor chyba");
 
 	char line[255];
 
@@ -135,6 +135,7 @@ bool CObjModel::loadModel(string sFileName, string sMtlFileName)
 				if(bError)
 				{
 					fclose(fp);
+					throw exception("subor chyba");
 					return false;
 				}
 

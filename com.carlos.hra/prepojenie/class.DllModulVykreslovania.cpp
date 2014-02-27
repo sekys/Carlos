@@ -2,6 +2,7 @@
 #include "class.DllModulVykreslovania.hpp"
 #include <iostream>
 #include <gl/glew.h>
+#include <gl/wglew.h>
 #include "..\Hra\Help\class.FrameData.hpp"
 
 #pragma comment(lib, "opengl32.lib")
@@ -87,23 +88,73 @@ void DllModulVykreslovania::render() {
 * @return void
 */
 void DllModulVykreslovania::init() {
+
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		// Unrecoverable error, exit here.
 		printf("SDL_Init failed: %s\n", SDL_GetError());
 	}
-
-	/*SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	/*
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-	//SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);*/
-
+	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+	*/
 	window = SDL_CreateWindow("Carlos game", 100, 100, 600, 480, SDL_WINDOW_OPENGL);
 	if (window == NULL) {
 		throw std::exception("Failed to initialize SDL_CreateWindow\n");
 	}
 	SDL_GLContext context = SDL_GL_CreateContext(window);
+	if (!context){
+		throw std::exception("Failed to initialize SDL_GL_CreateContext\n");
+	}
 	if (glewInit() != GLEW_OK) {
 		throw std::exception("Failed to initialize GLEW\n");
 	}
+
+	SDL_SysWMinfo sdlinfo;
+	SDL_version sdlver;
+	SDL_VERSION(&sdlver);
+	sdlinfo.version = sdlver;
+	SDL_GetWindowWMInfo(window, &sdlinfo);
+
+	HGLRC hRC;
+	HDC hDC;
+	hDC = GetDC( sdlinfo.info.win.window );
+	PIXELFORMATDESCRIPTOR pfd;
+
+	const int iPixelFormatAttribList[] =
+	{
+		WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+		WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
+		WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
+		WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+		WGL_COLOR_BITS_ARB, 32,
+		WGL_DEPTH_BITS_ARB, 24,
+		WGL_STENCIL_BITS_ARB, 8,
+		0 // End of attributes list
+	};
+	int iContextAttribs[] =
+	{
+		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+		WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+		WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+		0 // End of attributes list
+	};
+
+	int iPixelFormat, iNumFormats;
+	wglChoosePixelFormatARB(hDC, iPixelFormatAttribList, NULL, 1, &iPixelFormat, (UINT*)&iNumFormats);
+
+	// PFD seems to be only redundant parameter now
+	if(!SetPixelFormat(hDC, iPixelFormat, &pfd)) {
+		throw std::exception("Failed to initialize SetPixelFormat\n");
+	}
+
+	hRC = wglCreateContextAttribsARB(hDC, 0, iContextAttribs);
+	// If everything went OK
+	if(hRC) wglMakeCurrent(hDC, hRC);
+	else {
+		throw std::exception("Failed to initialize wglMakeCurrent\n");
+	}
+
 
 	/*AllocConsole();
 	freopen("CONIN$", "r",stdin);
@@ -118,6 +169,12 @@ void DllModulVykreslovania::init() {
 	should_stop = false;
 	oldTimeSinceStart = 0;
 	//scene = new Scene();
+
+	GLenum error = glGetError();
+	if( error != GL_NO_ERROR ) {
+		printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
+	}
+
 	scene.init();
 
 	SDL_Event windowEvent;

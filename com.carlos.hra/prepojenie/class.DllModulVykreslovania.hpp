@@ -5,12 +5,7 @@
 #include <boost/atomic.hpp>
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
-
-#define SDL_OPENGLVC9	 2 /**< Create an OpenGL rendering context */
-#define SDL_FULLSCREENVC9	2147483648
-#define SDL_DOUBLEBUFVC9	1073741824
-#define SDL_NOFRAMEVC9	 32
-#define SDL_RESIZEBLEVC9	16
+#include <SDL/SDL_syswm.h>
 
 class DllModulVykreslovania : public Architecture::ModulVykreslovania {
 private:

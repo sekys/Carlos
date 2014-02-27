@@ -10,6 +10,13 @@
 #include <stdarg.h>
 #include <stdexcept>
 
+void testGL() {
+	GLenum error = glGetError();
+	if( error != GL_NO_ERROR ) {
+		printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
+	}
+}
+
 Scene::Scene()  {
 	plain = new Plain(glm::vec2(10.0, 10.0));
 	world = new World(glm::vec2(320.0, 240.0));
@@ -25,24 +32,21 @@ Scene::~Scene() {
 * @return void
 */
 void Scene::init() {
+	testGL();
 	printf("Spustam Scene::init()\n");
 	visualController  = new VisualController();
 	resManager = new ResourceManager();
 	resManager->load();
+	testGL();
 	visualController->load(resManager->shaders);
+	testGL();
 	prepniStavNaObrazovku();
+	testGL();
 	buildFont();
-
-	glDisable(GL_LIGHTING);
+	testGL();
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_2D);
-
-	GLenum error = glGetError();
-	if( error != GL_NO_ERROR ) {
-		printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
-	}
-
 	printf("Koncim Scene::init()\n");
+	testGL();
 }
 
 
@@ -84,31 +88,34 @@ break;
 * @return void
 */
 void Scene::frame(float fDelta) {
+	testGL();
 	glClearColor(0,0,1,1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); //GL_FILL);
-	glDisable(GL_LIGHTING);
+	testGL();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //GL_FILL);
+	testGL();
 
 	FrameData frame;
 	frame.deltaTime = fDelta;
 	ziskajAktualnyVstup(&frame);
+	testGL();
 	visualController->setPerspektive();
+	testGL();
 	visualController->renderObject(resManager->square, world->getMatrix());
+	testGL();
 	delenieStavov(&frame);
-
+	testGL();
+	/*
 	glBegin(GL_TRIANGLES);                      // Drawing Using Triangles
 	glVertex3f( 0.0f, 1.0f, 0.0f);              // Top
 	glVertex3f(-1.0f,-1.0f, 0.0f);              // Bottom Left
 	glVertex3f( 1.0f,-1.0f, 0.0f);              // Bottom Right
 	glEnd();  
+	testGL();*/
 
 	// Flushujeme buffer
 	glFlush();
-
-	GLenum error = glGetError();
-	if( error != GL_NO_ERROR ) {
-		printf( "Error rendering OpenGL! %s\n", gluErrorString( error ) );
-	}
+	testGL();
 }
 
 

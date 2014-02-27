@@ -1,25 +1,16 @@
-﻿Build started 2/21/2014 1:20:03 PM.
-     1>Project "C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\com.carlos.kinect\Kinect.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 2/27/2014 1:51:35 PM.
+     1>Project "C:\Users\Seky\Documents\Visual Studio 2012\Projects\git\CarlosAR_VW\com.carlos.kinect\Kinect.vcxproj" on node 3 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /D _MBCS /D _CRT_SECURE_NO_WARNINGS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt DllKinect.cpp DllMain.cpp MyFreenectDevice.cpp
          MyFreenectDevice.cpp
-     1>c:\users\dokonaly\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.kinect\myfreenectdevice.cpp(10): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\dokonaly\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.kinect\myfreenectdevice.cpp(12): warning C4244: '=' : conversion from 'float' to 'unsigned short', possible loss of data
-     1>c:\users\dokonaly\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.kinect\myfreenectdevice.cpp(68): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\dokonaly\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.kinect\myfreenectdevice.cpp(69): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\dokonaly\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.kinect\myfreenectdevice.cpp(70): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\seky\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.kinect\myfreenectdevice.h(2): fatal error C1083: Cannot open include file: 'libfreenect.hpp': No such file or directory
          DllMain.cpp
+     1>c:\users\seky\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.kinect\dllmain.cpp(2): fatal error C1083: Cannot open include file: '../Carlos/architecture/DllExports.h': No such file or directory
          DllKinect.cpp
-     1>c:\users\dokonaly\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.kinect\dllkinect.cpp(88): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\seky\documents\visual studio 2012\projects\git\carlosar_vw\com.carlos.kinect\dllkinect.h(3): fatal error C1083: Cannot open include file: '../Carlos/architecture/modules/class.ModulKinect.hpp': No such file or directory
          Generating Code...
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\Debug\Kinect.exe" /INCREMENTAL /NOLOGO opencv_core246d.lib opencv_imgproc246d.lib opencv_highgui246d.lib opencv_ml246d.lib opencv_video246d.lib opencv_features2d246d.lib opencv_calib3d246d.lib opencv_objdetect246d.lib opencv_contrib246d.lib opencv_legacy246d.lib opencv_flann246d.lib pthreadVC2.lib freenect.lib freenect_sync.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\Debug\Kinect.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\Debug\Kinect.lib" /MACHINE:X86 Debug\DllKinect.obj
-         Debug\DllMain.obj
-         Debug\MyFreenectDevice.obj
-            Creating library C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\Debug\Kinect.lib and object C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\Debug\Kinect.exp
-         Kinect.vcxproj -> C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\Debug\Kinect.exe
-     1>Done Building Project "C:\Users\Dokonaly\Documents\Visual Studio 2012\Projects\Git\CarlosAR_VW\com.carlos.kinect\Kinect.vcxproj" (Rebuild target(s)).
+     1>Done Building Project "C:\Users\Seky\Documents\Visual Studio 2012\Projects\git\CarlosAR_VW\com.carlos.kinect\Kinect.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:12.37
+Time Elapsed 00:00:03.18

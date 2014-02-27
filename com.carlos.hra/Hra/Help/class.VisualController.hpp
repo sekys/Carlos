@@ -48,7 +48,7 @@ public:
 		projekcnaMatica = glm::ortho(-320.0f,320.0f,-240.0f,240.0f,0.1f,5000.0f);
 		control.useProgram();
 		glm::vec3 vEye, vView, vUp;
-		vEye = glm::vec3(0.0001f, 0.0f, 5000.0f);
+		vEye = glm::vec3(0.001f, 0.0f, 4998.0f);
 		vView = glm::vec3(0.0f, 0.0, 0.0f);
 		vUp = glm::vec3(0.0f, 1.0f, 0.0f);
 		control.setUniform("matrices.projMatrix", projekcnaMatica);

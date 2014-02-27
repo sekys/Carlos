@@ -22,6 +22,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -41,7 +42,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(CARLOS_INC);$(CARLOS_BOOST_INC);$(CARLOS_OPENCV_INC);$(IncludePath)</IncludePath>
     <LibraryPath>$(CARLOS_BOOST_LIB);$(CARLOS_LIB);$(CARLOS_OPENCV_LIB);$(LibraryPath)</LibraryPath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
@@ -54,18 +55,22 @@
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;FreeImage.lib;opencv_calib3d246d.lib;opencv_contrib246d.lib;opencv_core246d.lib;opencv_features2d246d.lib;opencv_flann246d.lib;opencv_gpu246d.lib;opencv_haartraining_engined.lib;opencv_highgui246d.lib;opencv_imgproc246d.lib;opencv_legacy246d.lib;opencv_ml246d.lib;opencv_nonfree246d.lib;opencv_objdetect246d.lib;opencv_ocl246d.lib;opencv_photo246d.lib;opencv_stitching246d.lib;opencv_superres246d.lib;opencv_ts246d.lib;opencv_video246d.lib;opencv_videostab246d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_calib3d246d.lib;opencv_contrib246d.lib;opencv_core246d.lib;opencv_features2d246d.lib;opencv_flann246d.lib;opencv_gpu246d.lib;opencv_haartraining_engined.lib;opencv_highgui246d.lib;opencv_imgproc246d.lib;opencv_legacy246d.lib;opencv_ml246d.lib;opencv_nonfree246d.lib;opencv_objdetect246d.lib;opencv_ocl246d.lib;opencv_photo246d.lib;opencv_stitching246d.lib;opencv_superres246d.lib;opencv_ts246d.lib;opencv_video246d.lib;opencv_videostab246d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -108,7 +113,6 @@
     <ClInclude Include="Hra\Help\font.h" />
     <ClInclude Include="Hra\Help\baseStructures.h" />
     <ClInclude Include="Hra\Help\class.VisualController.hpp" />
-    <ClInclude Include="Hra\opengl.h" />
     <ClInclude Include="prepojenie\class.DllModulVykreslovania.hpp" />
     <ClInclude Include="Hra\Scena\class.Scene.hpp" />
     <ClInclude Include="Hra\Model\common_header.h" />
@@ -131,7 +135,7 @@
     <ClCompile Include="Hra\Scena\stavy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Hra\Model\info.txt" />
+    <Text Include="licence.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
