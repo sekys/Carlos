@@ -85,7 +85,7 @@ void Carlos::nacitajDalsiuSnimku() {
 	try {
 		controller->kamera->readNext();
 		Image image = controller->kamera->getImage();
-		cout << "Snimok: " << image.frame << "\n";
+		//cout << "Snimok: " << image.frame << "\n";
 		spracujJedenSnimok(image);
 	} catch(ModulKamera::EndOfStream stream) {
 		// Cyklus Run skonci, skonci apliakcia, spusti sa dekonstruktor, zacne sa uvolnovat pamet a vsetko vypinat ...

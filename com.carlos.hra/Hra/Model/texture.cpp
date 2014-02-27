@@ -1,8 +1,6 @@
 
 #include "common_header.h"
-
 #include "texture.h"
-
 #include <FreeImage/FreeImage.h>
 
 #pragma comment(lib, "FreeImage.lib")

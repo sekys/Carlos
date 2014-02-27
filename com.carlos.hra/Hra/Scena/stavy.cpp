@@ -91,7 +91,7 @@ void Scene::stavHrania(FrameData* frame) {
 		collisionStatus colStatus;
 		colStatus = plain->collisionTest(*world); /// prava strana lietadla je 1 ked je na pravo colStatus.right
 		// 001011
-		printf("%d %d %d %d\n",  colStatus.bottom, colStatus.left, colStatus.right, colStatus.top);
+		//printf("%d %d %d %d\n",  colStatus.bottom, colStatus.left, colStatus.right, colStatus.top);
 		// lietadlo je na lavej strane sveta a 1 je		right
 		// lietadlo je na pravej strane a 1 je		left		a right
 		// lietadlo je hore 1 je:					bottom		a right
@@ -100,16 +100,16 @@ void Scene::stavHrania(FrameData* frame) {
 
 		bool contain = world->contains(*plain);
 		if(contain) {
-			printf("Y\n"); // toto vracia Y aj ked sa len dotykaju, neskor sa to prepne na N
+			//printf("Y\n"); // toto vracia Y aj ked sa len dotykaju, neskor sa to prepne na N
 		} else {
-			printf("N\n");
+			//printf("N\n");
 			havaroval();
 		}
 		contain = plain->contains(*world);
 		if(contain) {
-			printf("A\n");
+			//printf("A\n");
 		} else {
-			printf("B\n");  // toto vracia stale B
+			//printf("B\n");  // toto vracia stale B
 		}
 
 		// Otestuj ci sa dotyka horizontu
@@ -127,7 +127,7 @@ void Scene::stavHrania(FrameData* frame) {
 		}
 
 		plain->logic(frame->deltaTime, frame->command);
-		visualController.renderObject(resManager.plain, plain->getMatrix());
+		visualController->renderObject(resManager->plain, plain->getMatrix());
 	}
 
 	// Hud

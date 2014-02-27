@@ -69,7 +69,7 @@ public:
 		}
 		if (pressedKey == ControllerCommands::DOWN) {
 			printf("S\n");
-			F.y += silaPohybu.y * -1.0;
+			F.y += silaPohybu.y * -1.0f;
 		}
 		if (pressedKey == ControllerCommands::RIGHT) {
 			printf("W\n");
@@ -77,7 +77,7 @@ public:
 		}
 		if (pressedKey == ControllerCommands::LEFT) {
 			printf("A\n");
-			F.x += silaPohybu.x * -1.0;
+			F.x += silaPohybu.x * -1.0f;
 		}
 
 		/// Vzorce na fyziku f = m* a		a = f / m		m = 1kg

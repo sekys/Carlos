@@ -4,8 +4,6 @@
 */
 
 #include <stdlib.h>
-#include <gl/glew.h>
-#include <gl/glut.h>
 #include "../Model/objModel.h"
 #include "../Model/shaders.h"
 

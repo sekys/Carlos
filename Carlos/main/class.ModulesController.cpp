@@ -34,7 +34,7 @@ void ModulesController::destroyThreads() {
 	for (it = moduls.begin(); it!= moduls.end(); ++it) {
 		ModulWrapper* wrapper = *it;
 		if(wrapper->modul->isThreaded()) {
-			wrapper->init_thread.join(); // Cakame
+			wrapper->init_thread.timed_join( boost::posix_time::seconds(1)  );
 		}
 	}
 }

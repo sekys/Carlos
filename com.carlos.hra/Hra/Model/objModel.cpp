@@ -1,6 +1,5 @@
 
 #include "common_header.h"
-
 #include "objModel.h"
 
 CObjModel::CObjModel()

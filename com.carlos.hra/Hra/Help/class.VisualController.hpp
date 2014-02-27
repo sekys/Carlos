@@ -4,8 +4,6 @@
 */
 
 #include <stdlib.h>
-#include <gl/glew.h>
-#include <gl/glut.h>
 #include "../Model/objModel.h"
 #include "../Model/shaders.h"
 #include <glm/gtc/matrix_transform.hpp>
@@ -20,6 +18,9 @@ public:
 
 	}
 
+	~VisualController() {
+		control.deleteProgram();
+	}
 	/** 
 	* Funkcia ktora sa stara o nacitanie shaderov
 	* @param shaders[11] - pole shaderov
@@ -36,7 +37,6 @@ public:
 		control.addShaderToProgram(&shaders[7]);
 		control.linkProgram();
 	}
-
 
 	/** 
 	* Funkcia ktora zabezpecuje nastavenie matic a kamery

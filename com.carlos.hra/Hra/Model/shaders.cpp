@@ -1,7 +1,5 @@
 #include "common_header.h"
-
 #include "shaders.h"
-
 #include <glm/gtc/type_ptr.hpp>
 
 CShader::CShader()
@@ -36,7 +34,7 @@ bool CShader::loadShader(string sFile, int a_iType)
 		int iLogLength;
 		glGetShaderInfoLog(uiShader, 1024, &iLogLength, sInfoLog);
 		sprintf(sFinalMessage, "Error! Shader file %s wasn't compiled! The compiler returned:\n\n%s", sFile.c_str(), sInfoLog);
-		MessageBox(NULL, sFinalMessage, "Error", MB_ICONERROR);
+		throw std::exception(sFinalMessage);
 		return false;
 	}
 	iType = a_iType;

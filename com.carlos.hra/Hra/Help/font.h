@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <windows.h>
 #include <stdarg.h>
-#include <gl/glew.h>
-#include <gl/glut.h>
 
 GLuint	base; /**< Vytvoreny font */
 

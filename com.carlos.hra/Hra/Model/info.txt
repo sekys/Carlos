@@ -1,4 +1,0 @@
-Nacitanie modelu sa vykonava pomocou tohto tutorialu:
-http://www.mbsoftworks.sk/index.php?page=tutorials&series=1&tutorial=18
-Zdrojove kody su prevzate. 
-Na nacitanie a zobrazenie, su upravene pre potreby nasho projektu.

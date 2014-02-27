@@ -37,29 +37,21 @@ private:
 	World* world; /**< svet */ 
 	StavyHry aktualnyStav; /**< aktualny stav v akom sa hra nachadza */
 
-	VisualController visualController; 
-	ResourceManager resManager; 
-	ThreadSafeStack<ModulVykreslovania::In> zasobnikVstupov; /**< buffer prijatych snimkov */
+	VisualController* visualController; 
+	ResourceManager* resManager; 
 
 	void delenieStavov(FrameData* fDelta);
 	void setBackgroud(CTexture texture);
 	void ziskajAktualnyVstup(FrameData* data);
 	void nastavPozadieZoVstupu(FrameData* frame);
 public:
-	//int stav; /**< stav pomocou ktoreho urcujeme ci mozme mazat textury */
-	Scene()  {
-		plain = new Plain(glm::vec2(10.0, 10.0));
-		world = new World(glm::vec2(320.0, 240.0));
-	}
-	~Scene() {
-		delete plain;
-		delete world;
-	}
+	Scene();
+	~Scene();
 
+	void release();
 	void init();
 	void frame(float fDelta);
 	//void keyboard(unsigned char key, int x, int y);
 
-	// Pozor: Tato metoda bezi v inom vlakne
-	void sendVstup(ModulVykreslovania::In in);
+	ThreadSafeStack<ModulVykreslovania::In> zasobnikVstupov; /**< buffer prijatych snimkov */
 };
