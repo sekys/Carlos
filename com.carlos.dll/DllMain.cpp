@@ -569,13 +569,12 @@ void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 	const int kernel_size = 3;
 	const int lowThreshold = 130;
 	const int minPixelThreshold = 180;
-	int i, j, x;
+	int i, j;
+	const int minSky = image.rows / 6; /// minimalna vyska oblohy
 	Mat detected_edges;
 
 	horizon.create( image.size(), CV_8UC1 );
 
-	vector<vector<Point> > contours;
-	vector<Vec4i> hierarchy;
 	/// Zmensit sum a zvyraznit hrany
 	blur( image, detected_edges, Size(3,3) );
 	addWeighted(image, 1.5, detected_edges, -0.5, 0, detected_edges);
@@ -589,14 +588,22 @@ void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 		int color = 255;
 		for( i = 0; i < horizon.rows; i++ )
 		{
-			if(horizon.at<uchar>(i,j) != 0 && color == 255) color = 0;
+			if(horizon.at<uchar>(i,j) != 0 && color == 255) 
+			{
+				color = 0;
+				if( i < minSky ) /// malo miesta v oblohe na prechod lietadla, vratime "prazdnu" bitmapu bez horizontu
+				{
+					horizon = Scalar::all(255);
+					return;
+				}
+			}
 			horizon.at<uchar>(i,j) = color;
 		}
 	}
 
 	/// finalna uprava mapy morf. operaciou ("vyhladenie" mapy)
-	Mat element = getStructuringElement(MORPH_RECT, Size(9, 9), Point(4,4) );
-	morphologyEx( horizon, horizon, MORPH_CLOSE, element, Point());
+	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(13, 13) );
+	morphologyEx( horizon, horizon, MORPH_ERODE, element);
 }
 
 IMPEXP void* callFactory() {
