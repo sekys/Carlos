@@ -11,7 +11,6 @@ int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
 }
 
 using namespace Architecture;
-using namespace cv;
 
 class DllModulVypocitaniaPolohy : public MojaTrieda, public ModulVypocitaniaPolohy {
 public:
@@ -19,7 +18,7 @@ public:
 		double distance = calculateDistanceInM(in.gps, in.gpsPolohaObjektu);
 
 		// TODO: Sekerak: poloha objektu sa urcuje ako boundary, cize obdlznik.... 
-		double cos = calculateCosBtwnCameraAndObj(in.polohaObjektu.);
+		double cos = calculateCosBtwnCameraAndObj(in.polohaObjektu.center.x-in.polohaObjektu.size.width/2);
 
 		// TODO: Sekerak: poloha objektu sa urcuje ako boundary, cize obdlznik.... 
 		Point3f detecObjPos;

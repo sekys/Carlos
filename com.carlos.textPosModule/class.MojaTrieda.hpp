@@ -6,6 +6,8 @@
 #define PI	3.14159265 /// cislo PI
 #define R	6378.1 /// Radius of the Earth in km
 
+using namespace Architecture;
+
 class MojaTrieda {
 protected:
 	double CAMERA_DISTANCE_FROM_WINDOW_IN_M; /// Vdialenost kamery, ktora natacala scenu od okna v metroch
