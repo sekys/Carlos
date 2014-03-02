@@ -96,4 +96,5 @@ namespace DB {
 		int object;
 		string path; /**< cesty k deskriptorom */
 	};
+
 }
