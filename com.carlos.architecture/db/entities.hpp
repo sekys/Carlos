@@ -75,7 +75,6 @@ namespace DB {
 		double longitude;
 		string name;
 		string source_url;
-		string name;
 		string short_description;
 		string long_description;
 	};
