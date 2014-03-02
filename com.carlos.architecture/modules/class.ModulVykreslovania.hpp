@@ -10,6 +10,11 @@ namespace Architecture
 	*/
 	class ModulVykreslovania : public IModul  {
 	public:
+		enum ModuleModes {
+			GAME,
+			TROURIST_INFO
+		};
+
 		class In {
 		public:
 			Image image; /**< obrazok povodny z kamery */

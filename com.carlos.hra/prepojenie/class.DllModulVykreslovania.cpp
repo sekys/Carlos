@@ -64,7 +64,7 @@ void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In in)
 * @return nil
 */
 void DllModulVykreslovania::render() {
-	uint32_t timeSinceStart = (float)SDL_GetTicks(); ;
+	uint32_t timeSinceStart = (float)SDL_GetTicks();
 	int deltaTime;
 	float fDelta;
 	if(oldTimeSinceStart == 0) {
