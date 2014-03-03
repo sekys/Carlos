@@ -36,9 +36,10 @@ void Carlos::spracujJedenSnimok(Image image) {
 	vysledokSpracovania.horizont = controller->spracovanie->najdiHorizont(image.data);
 
 	// Modul vypoctu polohy
-	vector<Point2f> najdenePozicie; // synchronizovane
+	vector<ModulVypocitaniaPolohy::Out> najdeneObjekty; // synchronizovane
 	for(uint i=0; i < vysledokSpracovania.objects.size(); i++) {
 		ModulVypocitaniaPolohy::In vypocetPolohy;
+		vypocetPolohy.id = vysledokSpracovania.objects.at(i).objekt.id;
 		vypocetPolohy.gps = gps;
 		vypocetPolohy.polohaObjektu = vysledokSpracovania.objects.at(i).boundary;
 		vypocetPolohy.rotaciaHlavy = rotaciaHlavy;
@@ -46,7 +47,7 @@ void Carlos::spracujJedenSnimok(Image image) {
 		ModulVypocitaniaPolohy::Out polohaTextu;
 		polohaTextu = controller->vyppolohy->vypocitajPolohuTextu(vypocetPolohy);
 		if(polohaTextu.najdeny) {
-			najdenePozicie.push_back(polohaTextu.polohaTextu);
+			najdeneObjekty.push_back(polohaTextu);
 		}
 	}
 
@@ -54,7 +55,7 @@ void Carlos::spracujJedenSnimok(Image image) {
 	ModulVykreslovania::In vykreslovanie;
 	vykreslovanie.image = image;
 	vykreslovanie.command = command;
-	vykreslovanie.najdenePozicie = najdenePozicie;
+	vykreslovanie.najdeneObjekty = najdeneObjekty;
 	vykreslovanie.horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
 	//imshow("Horizont", vysledokSpracovania.horizont);

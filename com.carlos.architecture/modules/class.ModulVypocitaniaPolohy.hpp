@@ -13,6 +13,7 @@ namespace Architecture
 	public:
 		class In {
 		public:
+			uint id;
 			Point3f rotaciaHlavy; 
 			RotatedRect polohaObjektu;
 			GPS gpsPolohaObjektu;
@@ -32,11 +33,13 @@ namespace Architecture
 
 		class Out {
 		public:
+			uint id;
 			Point2f polohaTextu;
 			bool najdeny; /**< je dana poloha v pozicii obrazovky, ak nie posli dodatocnu informaciu */
 
 			friend ostream& operator<< (ostream& out, Out& object) {
 				out << "ModulVypocitaniaPolohyOut(";
+				out << "id: " << object.id << ", ";
 				out << "polohaTextu: " << object.polohaTextu << ", ";
 				out << "najdeny: " << object.najdeny << ", ";
 				out << "));";

@@ -29,6 +29,7 @@ public:
 		Point2f textPos = calculateTextPos(in.rotaciaHlavy, detecObjPos);
 
 		Out out;
+		out.id = in.id;
 		out.najdeny = true;
 		out.polohaTextu = textPos;
 		return out;
