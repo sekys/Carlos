@@ -136,6 +136,11 @@ void Scene::delenieStavov(FrameData* frame) {
 		stavUvodnaObrazovka(frame);
 		break;
 									 }
+	case StavyHry::TOURIST_INFO: {
+		stateTouristInfo(frame);
+		break;
+	}
+
 	default: {
 		throw std::exception("Neocakavany stav\n");
 			 }

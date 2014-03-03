@@ -19,6 +19,7 @@ public:
 	cv::Mat getImage();
 	cv::Mat getHorizont();
 	bool hasVstup();
+	ModulVykreslovania::In* getVstup();
 
 	friend ostream& operator<< (ostream& out, FrameData& object);
 };

@@ -74,6 +74,26 @@ vector<WorldObject> DBService::najdiVsetkySvetoveObjektyBlizkoGPS(GPS gps) {
 	return zoznam;
 }
 
+DB::Object *DBService::getObjectById(uint id) {
+	Object *object = new Object();
+
+	std::ostringstream where;
+	where << "id = " << id;
+	auto sel(db->select<Object>(where.str()));
+	SqliteDB::Iterator<Object> it;
+
+	for (it = sel.first ; it != sel.second; ++it) {
+		object->id = it->id;
+		object->name = it->name;
+		object->longitude = it->longitude;
+		object->latitude = it->latitude;
+		object->short_description = it->short_description;
+		object->long_description = it->long_description;
+		object->source_url = it->source_url;
+	}
+	
+	return object;
+}
 // Priklad metody, ako vytiahnut objekty z databazy, cez OOP mapovac
 // Pozn.: Callback sa nevola ked je insert alebo nozina je prazdna
 /*vector<Object> selectObjects() {

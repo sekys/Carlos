@@ -24,11 +24,15 @@ private:
 	void prepniStavNaHrania();
 	void havaroval();
 
+	void switchStateToTouristInfo();
+
 	// Volanie stavu
 	void stavHrania(FrameData* fDelta);
 	void stavUvodnaObrazovka(FrameData* frame);
 	void stavGameOver(FrameData* fDelta);
 	void stavSkore(FrameData* fDelta);
+
+	void stateTouristInfo(FrameData * frame);
 
 	// Pomocne premenne
 	float casPrejdenyNaGameOver;

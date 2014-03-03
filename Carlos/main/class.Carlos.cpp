@@ -63,8 +63,6 @@ void Carlos::spracujJedenSnimok(Image image) {
 	vykreslovanie->najdeneObjekty = najdeneObjekty;
 	vykreslovanie->horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
-
-
 }
 
 

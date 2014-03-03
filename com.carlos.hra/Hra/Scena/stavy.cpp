@@ -2,6 +2,10 @@
 * Trieda ktora sa stara o to co sa ma vykonat pri prepnuti stavu hry s logikou hry
 */ 
 #include "class.Scene.hpp"
+
+#include "..\..\..\com.carlos.architecture\db\entities.hpp"
+#include "..\..\..\com.carlos.architecture\db\class.DBService.hpp"
+
 /** 
 * Funkcia nema na vstupe ziadny parameter, stara sa o restartovanie hry
 * @see void Scene::delenieStavov(float fDelta)
@@ -167,5 +171,17 @@ void Scene::stavUvodnaObrazovka(FrameData* frame) {
 	///Ak sa dotkne obrazovky zacina sa hra
 	if(frame->getCommand() == ControllerCommands::UP) {
 		prepniStavNaHrania();
+	}
+}
+
+void Scene::stateTouristInfo(FrameData *frame) {
+	if (frame->hasVstup()) {
+		vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = frame->getVstup()->najdeneObjekty;
+		nastavPozadieZoVstupu(frame->getImage());
+
+		// Vykreslime informacie o objektoch y databazy
+		for (int i = 0; i < najdeneObjekty.size(); i++) {
+			DB::Object *object = DB::DBService::getInstance().getObjectById(najdeneObjekty.at(i).id);
+		}
 	}
 }

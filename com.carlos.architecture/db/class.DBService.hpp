@@ -30,6 +30,7 @@ namespace DB {
 		}; 
 
 		virtual vector<Architecture::WorldObject> najdiVsetkySvetoveObjektyBlizkoGPS(Architecture::GPS gps);
+		virtual Object *getObjectById(uint id);
 	};
 
 }

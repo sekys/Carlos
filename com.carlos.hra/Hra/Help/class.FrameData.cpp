@@ -42,3 +42,7 @@ cv::Mat FrameData::getHorizont() {
 bool FrameData::hasVstup() {
 	return vstup != NULL;
 }
+
+ModulVykreslovania::In* FrameData::getVstup() {
+	return vstup;
+}

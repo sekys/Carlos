@@ -52,3 +52,9 @@ void Scene::prepniStavNaHrania() {
 	zasobnikVstupov.clear();
 	cout << "Prepinam stav na hraje hru.\n";
 }
+
+void Scene::switchStateToTouristInfo() {
+	aktualnyStav = StavyHry::TOURIST_INFO;
+	zasobnikVstupov.clear();
+	cout << "Switching state to tourist info.\n";
+}
