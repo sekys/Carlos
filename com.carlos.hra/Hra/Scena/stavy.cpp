@@ -11,7 +11,7 @@ void Scene::stavSkore(FrameData* frame) {
 	zasobnikVstupov.clear();
 
 	///Ak sa dotkol displeja tak sa vrat do stavu hrania
-	if(frame->command == ControllerCommands::UP) {
+	if(frame->getCommand() == ControllerCommands::UP) {
 		prepniStavNaHrania();
 	}
 }
@@ -24,17 +24,15 @@ void Scene::stavSkore(FrameData* frame) {
 */
 void Scene::stavGameOver(FrameData* frame) {
 	zasobnikVstupov.clear();
-	casPrejdenyNaGameOver += frame->deltaTime;
+	casPrejdenyNaGameOver += frame->getDeltaTime();
 	if(casPrejdenyNaGameOver > 3.0) {
 		/// presiel cas a zmeni sa stav
 		prepniStavNaScore() ;
 	}
 }
 
-void Scene::nastavPozadieZoVstupu(FrameData* frame) {
-	printf("Nastavujem texturu z videa.\n");
-	cv::Mat img = frame->vstup.image.data;
-
+void Scene::nastavPozadieZoVstupu(cv::Mat& img) {
+	cout << "Nastavujem texturu z videa.\n";
 	GLenum inputColourFormat = GL_BGR;
 	if (img.channels() == 1) {
 		inputColourFormat = GL_LUMINANCE;
@@ -81,64 +79,62 @@ bool otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plain* plain) {
 * @return void 
 */
 void Scene::stavHrania(FrameData* frame) {
-	if(frame->hasVstup == false) {
-		printf("Neprisiel mi snimok z videa, preskakujem nastavenie textury.\n");
+	if(!frame->hasVstup()) {
+		cout << "Neprisiel mi snimok z videa, preskakujem nastavenie textury.\n";
 	} else {
 		/// Kazdu snimku updatni pozadie
-		nastavPozadieZoVstupu(frame);
+		nastavPozadieZoVstupu(frame->getImage());
+	}
+	/// Spustame logiku casti
+	collisionStatus colStatus;
+	colStatus = plain->collisionTest(*world); /// prava strana lietadla je 1 ked je na pravo colStatus.right
+	// 001011
+	//printf("%d %d %d %d\n",  colStatus.bottom, colStatus.left, colStatus.right, colStatus.top);
+	// lietadlo je na lavej strane sveta a 1 je		right
+	// lietadlo je na pravej strane a 1 je		left		a right
+	// lietadlo je hore 1 je:					bottom		a right
+	// lietadlo je dole							top		
+	// v strede je								front, right, top 
 
-		/// Spustame logiku casti
-		collisionStatus colStatus;
-		colStatus = plain->collisionTest(*world); /// prava strana lietadla je 1 ked je na pravo colStatus.right
-		// 001011
-		//printf("%d %d %d %d\n",  colStatus.bottom, colStatus.left, colStatus.right, colStatus.top);
-		// lietadlo je na lavej strane sveta a 1 je		right
-		// lietadlo je na pravej strane a 1 je		left		a right
-		// lietadlo je hore 1 je:					bottom		a right
-		// lietadlo je dole							top		
-		// v strede je								front, right, top 
+	bool contain = world->contains(*plain);
+	if(contain) {
+		// cout << "Y\n"; // toto vracia Y aj ked sa len dotykaju, neskor sa to prepne na N
+	} else {
+		// cout <<"N\n";
+		havaroval();
+	}
+	contain = plain->contains(*world);
+	if(contain) {
+		//cout << "A\n";
+	} else {
+		//cout << "B\n";  // toto vracia stale B
+	}
 
-		bool contain = world->contains(*plain);
-		if(contain) {
-			//printf("Y\n"); // toto vracia Y aj ked sa len dotykaju, neskor sa to prepne na N
-		} else {
-			//printf("N\n");
-			havaroval();
-		}
-		contain = plain->contains(*world);
-		if(contain) {
-			//printf("A\n");
-		} else {
-			//printf("B\n");  // toto vracia stale B
-		}
-
-		// Otestuj ci sa dotyka horizontu
-		cv::Mat horizont = frame->vstup.horizont;
+	// Otestuj ci sa dotyka horizontu
+	/*if(frame->hasVstup()) {
+		cv::Mat horizont = frame->getHorizont();
 		contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
 		if(contain) {
-
-			printf("Narazil do horizontu\n");
+			cout << "Narazil do horizontu\n";
 			havaroval();
 		} else {
 			// toto vracia stale B
-
-			printf("Leti nad horizontom\n");
-
+			//cout << "Leti nad horizontom\n";
 		}
+	}*/
 
-		plain->logic(frame->deltaTime, frame->command);
-		visualController->renderObject(resManager->plain, plain->getMatrix());
-	}
+	plain->logic(frame->getDeltaTime(), frame->getCommand() );
+	visualController->renderObject(resManager->plain, plain->getMatrix());
 
 	// Hud
-	glUseProgram(0);
+	/*glUseProgram(0);
 	glDisable(GL_LIGHTING);
 	glLoadIdentity();
 	glTranslatef(0.0f,0.8f,0.0f);
 	glColor3f(0.0f, 0.f, 0.f);
 	glRasterPos2f(0.0f, 0.f); 
 	//glPrint("STLAC MEDZERNIK");
-	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);*/
 }
 /** 
 * Funkcia nema na vstupe ziaden parameter, stara sa o hru ze hrac vyletel mimo obrazovky
@@ -169,7 +165,7 @@ void Scene::stavUvodnaObrazovka(FrameData* frame) {
 	glEnable(GL_LIGHTING);
 
 	///Ak sa dotkne obrazovky zacina sa hra
-	if(frame->command == ControllerCommands::UP) {
+	if(frame->getCommand() == ControllerCommands::UP) {
 		prepniStavNaHrania();
 	}
 }

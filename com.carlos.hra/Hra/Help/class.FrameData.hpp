@@ -4,19 +4,21 @@
 using namespace Architecture;
 
 class FrameData {
-public:
-	ModulVykreslovania::In vstup;
-	bool hasVstup;
-	ControllerCommands command;
+private:
+	ModulVykreslovania::In* vstup;
 	float deltaTime;
 
-	FrameData() {
-		
-	}
-	~FrameData() {
-		if(hasVstup) {
-			vstup.horizont.release();
-			vstup.image.data.release();
-		}
-	}
+public:
+	FrameData();
+	~FrameData();
+
+	void setVstup(ModulVykreslovania::In* vstup);
+	ControllerCommands getCommand();
+	float getDeltaTime();
+	void setDeltaTime(float f);
+	cv::Mat getImage();
+	cv::Mat getHorizont();
+	bool hasVstup();
+
+	friend ostream& operator<< (ostream& out, FrameData& object);
 };

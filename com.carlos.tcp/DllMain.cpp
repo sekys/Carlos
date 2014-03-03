@@ -23,7 +23,7 @@ private:
 
 public:
 	// Nas modul ma zatial nacitavat fake GPS suranice zo suboru 
-	TCPServer() : FakeModulAndroid("data/video/2013-10-20-12-25-52.txt") {
+	TCPServer() : FakeModulAndroid("../data/video/2013-10-20-12-25-52.txt") {
 		server = NULL;
 	}
 

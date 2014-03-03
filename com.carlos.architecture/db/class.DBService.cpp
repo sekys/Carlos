@@ -34,7 +34,7 @@ static void distanceFunc(sqlite3_context *context, int argc, sqlite3_value **arg
 //---------------------------
 
 DBService::DBService() {
-	db = new SqliteDB("data/carlos.db3");
+	db = new SqliteDB("../data/carlos.db3");
 	sqlite3_create_function(db->getConnection(), "distance", 4, SQLITE_UTF8, NULL, &distanceFunc, NULL, NULL);
 }
 DBService::~DBService() {

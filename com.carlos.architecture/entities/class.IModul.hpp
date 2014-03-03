@@ -28,6 +28,11 @@ namespace Architecture
 		virtual void preFrame() {} 
 
 		/**
+		* Metoda je prikazom na uskutocnenie vypnutia
+		*/
+		virtual void doExit() {}
+
+		/**
 		* Deconstructor sa moze pretazit
 		* pouzijes ked chces vymazat alokovanu pamet
 		*/

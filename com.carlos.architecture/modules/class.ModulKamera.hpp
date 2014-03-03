@@ -49,16 +49,17 @@ namespace Architecture
 		}
 
 		// Ziskaj aktualnu snimku z kamery
-		virtual void readNext() {
+		virtual Image readNext() {
 			if(!cap->read(frame.data)) {
 				throw EndOfStream();
 			}
 			frame.frame = cap->get(CV_CAP_PROP_POS_FRAMES);
-		}
-
-		Image getImage() {
 			return frame;
 		}
+
+		/*Image getImage() {
+		return frame;
+		}*/
 	};
 }
 

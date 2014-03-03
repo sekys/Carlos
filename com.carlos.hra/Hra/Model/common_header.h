@@ -13,7 +13,6 @@
 #include <set>
 
 using namespace std;
-
 #include <gl/glew.h>
 #include <glm/glm.hpp>
 

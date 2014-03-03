@@ -23,20 +23,24 @@ void Carlos::spracujJedenSnimok(Image image) {
 	ControllerCommands command = controller->android->getActualCommand();
 	GPS gps = controller->android->getGPS();
 	Point3f rotaciaHlavy = controller->kinect->getAktualnaRotaciaHlavy();
+	imshow("Vstup", image.data);
 
 	// Modul preprocessingu
-	vector<WorldObject> recepts = DB::DBService::getInstance().najdiVsetkySvetoveObjektyBlizkoGPS(gps);
+	vector<WorldObject> recepts;
+	// recepts = DB::DBService::getInstance().najdiVsetkySvetoveObjektyBlizkoGPS(gps);
 
 	// Modul spracovania
 	ModulSpracovania::In spracovanie;
 	spracovanie.image = image;
 	spracovanie.recepts = recepts;
-	ModulSpracovania::Out vysledokSpracovania = controller->spracovanie->detekujObjekty(spracovanie);
+	ModulSpracovania::Out vysledokSpracovania;
+	// vysledokSpracovania = controller->spracovanie->detekujObjekty(spracovanie);
 	vysledokSpracovania.horizont = controller->spracovanie->najdiHorizont(image.data);
+	imshow("Horizont", vysledokSpracovania.horizont);
 
 	// Modul vypoctu polohy
 	vector<Point2f> najdenePozicie; // synchronizovane
-	for(uint i=0; i < vysledokSpracovania.objects.size(); i++) {
+	/*for(uint i=0; i < vysledokSpracovania.objects.size(); i++) {
 		ModulVypocitaniaPolohy::In vypocetPolohy;
 		vypocetPolohy.gps = gps;
 		vypocetPolohy.polohaObjektu = vysledokSpracovania.objects.at(i).boundary;
@@ -47,18 +51,16 @@ void Carlos::spracujJedenSnimok(Image image) {
 		if(polohaTextu.najdeny) {
 			najdenePozicie.push_back(polohaTextu.polohaTextu);
 		}
-	}
+	}*/
 
 	// Modul vykreslovania
-	ModulVykreslovania::In vykreslovanie;
-	vykreslovanie.image = image;
-	vykreslovanie.command = command;
-	vykreslovanie.najdenePozicie = najdenePozicie;
-	vykreslovanie.horizont = vysledokSpracovania.horizont;
+	ModulVykreslovania::In* vykreslovanie;
+	vykreslovanie = new ModulVykreslovania::In();
+	vykreslovanie->image = image;
+	vykreslovanie->command = command;
+	vykreslovanie->najdenePozicie = najdenePozicie;
+	vykreslovanie->horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
-	//imshow("Horizont", vysledokSpracovania.horizont);
-	imshow("Test", image.data);
-	image.data.release();
 }
 
 
@@ -71,7 +73,8 @@ void Carlos::Init() {
 
 	// Spociva aj v nacitani modulov
 	controller->start();
-	namedWindow("Test",1);
+	namedWindow("Vstup", WND_PROP_FULLSCREEN);
+	namedWindow("Horizont", WND_PROP_FULLSCREEN);
 }
 bool Carlos::Run() {
 	// Tato metoda sa spusta v kazdom cykle apliakcie
@@ -83,9 +86,9 @@ bool Carlos::Run() {
 void Carlos::nacitajDalsiuSnimku() {
 	// Ziskaj snimok ..
 	try {
-		controller->kamera->readNext();
-		Image image = controller->kamera->getImage();
-		//cout << "Snimok: " << image.frame << "\n";
+		Image image;
+		image = controller->kamera->readNext();
+		cout << "Snimok: " << image.frame << "\n";
 		spracujJedenSnimok(image);
 	} catch(ModulKamera::EndOfStream stream) {
 		// Cyklus Run skonci, skonci apliakcia, spusti sa dekonstruktor, zacne sa uvolnovat pamet a vsetko vypinat ...

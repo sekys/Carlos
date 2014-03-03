@@ -43,7 +43,7 @@ private:
 	void delenieStavov(FrameData* fDelta);
 	void setBackgroud(CTexture texture);
 	void ziskajAktualnyVstup(FrameData* data);
-	void nastavPozadieZoVstupu(FrameData* frame);
+	void nastavPozadieZoVstupu(cv::Mat& img);
 public:
 	Scene();
 	~Scene();
@@ -53,5 +53,5 @@ public:
 	void frame(float fDelta);
 	//void keyboard(unsigned char key, int x, int y);
 
-	ThreadSafeStack<ModulVykreslovania::In> zasobnikVstupov; /**< buffer prijatych snimkov */
+	ThreadSafeStack<ModulVykreslovania::In*> zasobnikVstupov; /**< buffer prijatych snimkov */
 };
