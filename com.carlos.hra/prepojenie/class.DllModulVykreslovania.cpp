@@ -13,9 +13,9 @@
 
 using namespace Architecture;
 
-cv::Mat dokresliHorizont(cv::Mat bg, cv::Mat horizont) {
-	int a = bg.channels();
-	int b = horizont.channels();
+void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
+	//int a = bg.channels();
+	//int b = horizont.channels();
 
 	for( int j= 0; j < bg.cols; j++ )
 	{
@@ -32,8 +32,6 @@ cv::Mat dokresliHorizont(cv::Mat bg, cv::Mat horizont) {
 			} 
 		}
 	}
-
-	return bg;
 }
 
 /** 
@@ -42,13 +40,13 @@ cv::Mat dokresliHorizont(cv::Mat bg, cv::Mat horizont) {
 * @param in - prijaty obrazok
 * @return void 
 */
-void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In in) 
+void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In* in) 
 {
 	// Spracuj obrazok
-	in.image.data = in.image.data.clone();
-	in.horizont = in.horizont.clone();
-	in.image.data = dokresliHorizont(in.image.data, in.horizont); // .clone()
-	cv::flip(in.image.data, in.image.data, 0);
+	in->image.data = in->image.data.clone();
+	in->horizont = in->horizont.clone();
+	dokresliHorizont(in->image.data, in->horizont);
+	cv::flip(in->image.data, in->image.data, 0);
 
 	// Posli obrazok dalej
 	/*if(scene == NULL) {
@@ -64,7 +62,7 @@ void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In in)
 * @return nil
 */
 void DllModulVykreslovania::render() {
-	uint32_t timeSinceStart = (float)SDL_GetTicks();
+	uint32_t timeSinceStart = (float)SDL_GetTicks(); ;
 	int deltaTime;
 	float fDelta;
 	if(oldTimeSinceStart == 0) {
@@ -90,8 +88,7 @@ void DllModulVykreslovania::render() {
 void DllModulVykreslovania::init() {
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		// Unrecoverable error, exit here.
-		printf("SDL_Init failed: %s\n", SDL_GetError());
+		throw std::exception(SDL_GetError());
 	}
 	/*
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -109,7 +106,7 @@ void DllModulVykreslovania::init() {
 	if (glewInit() != GLEW_OK) {
 		throw std::exception("Failed to initialize GLEW\n");
 	}
-
+	/*
 	SDL_SysWMinfo sdlinfo;
 	SDL_version sdlver;
 	SDL_VERSION(&sdlver);
@@ -154,27 +151,15 @@ void DllModulVykreslovania::init() {
 	else {
 		throw std::exception("Failed to initialize wglMakeCurrent\n");
 	}
-
-
-	/*AllocConsole();
-	freopen("CONIN$", "r",stdin);
-	freopen("CONOUT$", "w",stdout);
-	freopen("CONOUT$", "w",stderr);*/
-	printf("%s\n", glGetString( GL_VENDOR ));
-	printf("%s\n", glGetString( GL_RENDERER ));
-	printf("%s\n", glGetString( GL_VERSION   ));
-	printf("%s\n", glGetString ( GL_SHADING_LANGUAGE_VERSION ));
-
+	*/
+	cout << "Vendor: " <<  glGetString( GL_VENDOR ) << "\n";
+	cout << "Renderer: " << glGetString( GL_RENDERER )  << "\n";
+	cout << "Version: " << glGetString( GL_VERSION   )  << "\n";
+	cout << "Shading ver: " << glGetString ( GL_SHADING_LANGUAGE_VERSION )  << "\n";
 
 	should_stop = false;
 	oldTimeSinceStart = 0;
 	//scene = new Scene();
-
-	GLenum error = glGetError();
-	if( error != GL_NO_ERROR ) {
-		printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
-	}
-
 	scene.init();
 
 	SDL_Event windowEvent;

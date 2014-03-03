@@ -90,4 +90,19 @@ namespace Architecture
 		TAP
 	};
 
+	inline ostream& operator<< (ostream& out, ControllerCommands& command) {
+		switch(command) {
+		case ControllerCommands::NO_ACTION: { out << "NO_ACTION"; break;}
+		case ControllerCommands::DOWN: { out << "DOWN";  break;}
+		case ControllerCommands::UP: { out << "UP";  break;}
+		case ControllerCommands::LEFT: { out << "LEFT";  break;}
+		case ControllerCommands::RIGHT: { out << "RIGHT";  break;}
+		case ControllerCommands::TAP: { out << "TAP";  break;}
+		default: {
+			throw new std::exception();
+				 }
+		};
+		return out;
+	}
+
 }

@@ -6,7 +6,7 @@
 #include "class.Configuration.hpp"
 
 Configuration::Configuration() {
-	doc.LoadFile("data/configuration.xml");
+	doc.LoadFile("../data/configuration.xml");
 }
 
 float Configuration::str_to_float(const std::string &in)

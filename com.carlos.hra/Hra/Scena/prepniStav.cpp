@@ -12,7 +12,7 @@ void Scene::prepniStavNaObrazovku() {
 	aktualnyStav = StavyHry::UVODNA_OBRAZOVKA;
 	setBackgroud(resManager->bgUvod);
 	zasobnikVstupov.clear();
-	printf("Prepinam stan na uvodnu obrazovku.\n");
+	cout << "Prepinam stan na uvodnu obrazovku.\n";
 }
 
 /** 
@@ -26,7 +26,7 @@ void Scene::prepniStavNaGameOver() {
 	setBackgroud(resManager->bgGameOver);
 	casPrejdenyNaGameOver = 0.0;
 	zasobnikVstupov.clear();
-	printf("Prepinam stav na obrazovku prehral.\n");
+	cout << "Prepinam stav na obrazovku prehral.\n";
 }
 
 /** 
@@ -38,7 +38,7 @@ void Scene::prepniStavNaScore() {
 	aktualnyStav = StavyHry::OBRAZOVKA_SKORE;
 	setBackgroud(resManager->bgScore);
 	zasobnikVstupov.clear();
-	printf("Prepinam stav na obrazovku skore.\n");
+	cout << "Prepinam stav na obrazovku skore.\n";
 }
 
 /** 
@@ -50,5 +50,5 @@ void Scene::prepniStavNaHrania() {
 	aktualnyStav = StavyHry::HRAJE_HRU;
 	plain->setStartPosition();
 	zasobnikVstupov.clear();
-	printf("Prepinam stav na hraje hru.\n");
+	cout << "Prepinam stav na hraje hru.\n";
 }

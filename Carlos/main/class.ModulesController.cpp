@@ -67,12 +67,13 @@ void ModulesController::installModules() {
 	// - moduly normalne
 	// - moduly z dll suborov
 	android = addDll<ModulAndroid>("com.carlos.android.tcpServer.dll");
-	//databaza = add(new ModulDatabaza() );
-	kamera = add(new ModulKamera("data/video/2013-10-20-12-25-52.avi") );
+	kamera = add(new ModulKamera("../data/video/2013-10-20-12-25-52.avi") );
+	//kamera = add(new ModulKamera(0) );
 	kinect = add(new ModulKinect() );
 	vykreslovanie = addDll<ModulVykreslovania>("com.carlos.hra.dll");
 	vyppolohy = add(new ModulVypocitaniaPolohy());
-	spracovanie = add(new ModulSpracovania());
+	//spracovanie = add(new ModulSpracovania());
+	spracovanie = addDll<ModulSpracovania>("com.carlos.spracovanieReality.dll");
 }
 
 ModulesController::ModulesController() {

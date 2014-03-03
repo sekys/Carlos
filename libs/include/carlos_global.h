@@ -2,9 +2,13 @@
 #ifndef CARLOS_GLOBAL_H
 #define CARLOS_GLOBAL_H
 
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
+
+//#define _CRTDBG_MAP_ALLOC
+//#include <stdlib.h>
+//#include <crtdbg.h>
+
+#define CARLOS_DEBUG_OPENGL false
+
 
 #define SAFE_DELETE(a) if( (a) != NULL ) delete (a); (a) = NULL;
 

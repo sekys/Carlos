@@ -18,7 +18,7 @@ private:
 
 public:
 	/// Spusta sa v 2. vlakne !
-	void vykresliObrazokSRozsirenouRealitou(In in);
+	void vykresliObrazokSRozsirenouRealitou(In* in);
 	void init();
 	bool isThreaded();
 	void doExit();

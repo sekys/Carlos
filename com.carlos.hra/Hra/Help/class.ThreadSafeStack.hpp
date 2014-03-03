@@ -19,8 +19,8 @@ public:
 	void push(const T& item) {
 		boost::mutex::scoped_lock lock(m_mutex);
 		/*if(size == max_velkost) {
-			// Ak velkost je na maxime zastav
-			cond.wait( m_mutex );
+		// Ak velkost je na maxime zastav
+		cond.wait( m_mutex );
 		}*/
 		m_stack.push(item);
 	}
@@ -37,7 +37,9 @@ public:
 	void clear() {
 		boost::mutex::scoped_lock lock(m_mutex);
 		while (!m_stack.empty()) {
+			T off = m_stack.top();
 			m_stack.pop();
+			delete off;
 		}
 		//cond.notify_one();
 	}
@@ -59,19 +61,23 @@ public:
 	* @param 
 	* @return T
 	*/
-	T top() const {
+	T poll() {
 		boost::mutex::scoped_lock lock(m_mutex);
 		int size = m_stack.size();
 		// Ak velkost klesne na polovicu, oznam to prvemu vlaknu
 		/*if(size == max_velkost / 2) {
-			cond.notify_one();
+		cond.notify_one();
 		}*/
 		// Stack nehadze exception
 		if(size == 0) {
 			// http://stackoverflow.com/questions/4892108/c-stl-stack-question-why-does-pop-not-throw-an-exception-if-the-stack-is-em
 			throw std::out_of_range("Zasobnik prazdny");
 		}
-		return m_stack.top();
+
+		T value;
+		value = m_stack.top();
+		m_stack.pop();
+		return value;
 	}
 
 private:

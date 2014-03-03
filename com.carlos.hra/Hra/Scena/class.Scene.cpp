@@ -1,7 +1,7 @@
 /** @file class.Scene.cpp
 * Trieda ktora sa stara o zobrazenie samotnej sceny, po jednotlivych framoch
 */
-
+#include <carlos_global.h>
 #include "class.Scene.hpp"
 #include "..\Help\font.h"
 #include <gl/glew.h>
@@ -11,9 +11,11 @@
 #include <stdexcept>
 
 void testGL() {
-	GLenum error = glGetError();
-	if( error != GL_NO_ERROR ) {
-		printf( "Error initializing OpenGL! %s\n", gluErrorString( error ) );
+	if(CARLOS_DEBUG_OPENGL) {
+		GLenum error = glGetError();
+		if( error != GL_NO_ERROR ) {
+			cout << "Error initializing OpenGL! " << gluErrorString( error ) << "\n";
+		}
 	}
 }
 
@@ -33,7 +35,7 @@ Scene::~Scene() {
 */
 void Scene::init() {
 	testGL();
-	printf("Spustam Scene::init()\n");
+	cout << "Spustam Scene::init()\n";
 	visualController  = new VisualController();
 	resManager = new ResourceManager();
 	resManager->load();
@@ -45,7 +47,7 @@ void Scene::init() {
 	buildFont();
 	testGL();
 	glEnable(GL_DEPTH_TEST);
-	printf("Koncim Scene::init()\n");
+	cout << "Koncim Scene::init()\n";
 	testGL();
 }
 
@@ -54,8 +56,8 @@ void Scene::release() {
 	zasobnikVstupov.clear();
 	SAFE_DELETE( visualController );
 	SAFE_DELETE( resManager );
-	SAFE_DELETE(plain);
-	SAFE_DELETE(world);
+	SAFE_DELETE( plain );
+	SAFE_DELETE( world );
 }
 /** 
 * Funkcia ma na vstupe 3 parametre, stacenu klavesu a aktualnu poziciu lietadla x a y koordinaty
@@ -92,11 +94,11 @@ void Scene::frame(float fDelta) {
 	glClearColor(0,0,1,1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	testGL();
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); //GL_FILL);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	testGL();
 
 	FrameData frame;
-	frame.deltaTime = fDelta;
+	frame.setDeltaTime(fDelta);
 	ziskajAktualnyVstup(&frame);
 	testGL();
 	visualController->setPerspektive();
@@ -105,15 +107,6 @@ void Scene::frame(float fDelta) {
 	testGL();
 	delenieStavov(&frame);
 	testGL();
-	/*
-	glBegin(GL_TRIANGLES);                      // Drawing Using Triangles
-	glVertex3f( 0.0f, 1.0f, 0.0f);              // Top
-	glVertex3f(-1.0f,-1.0f, 0.0f);              // Bottom Left
-	glVertex3f( 1.0f,-1.0f, 0.0f);              // Bottom Right
-	glEnd();  
-	testGL();*/
-
-	// Flushujeme buffer
 	glFlush();
 	testGL();
 }
@@ -144,38 +137,18 @@ void Scene::delenieStavov(FrameData* frame) {
 		break;
 									 }
 	default: {
-		printf("Neocakavany stav\n");
+		throw std::exception("Neocakavany stav\n");
 			 }
 	}
 }
 
-const char* ControllerCommand2cchar(ControllerCommands command) {
-	switch(command) {
-	case ControllerCommands::NO_ACTION: return("NO");
-	case ControllerCommands::DOWN: return("DOWN"); 
-	case ControllerCommands::UP: return("UP"); 
-	case ControllerCommands::LEFT: return("LEFT"); 
-	case ControllerCommands::RIGHT: return("RIGHT");
-	};
-	return NULL;
-}
-
 void Scene::ziskajAktualnyVstup(FrameData* frame) {
-
-	// 1. krok prerob snimku z Cv:mat na unsigned char
-	// http://r3dux.org/2012/01/how-to-convert-an-opencv-cvmat-to-an-opengl-texture/
 	try {
-		frame->vstup = zasobnikVstupov.top();
-		frame->command = frame->vstup.command;
-		frame->hasVstup = true;
-		//printf("Prijmam  prikaz %s\n", ControllerCommand2cchar(frame->command));
-
-
+		frame->setVstup( zasobnikVstupov.poll() );
+		cout << "[Hra] Prijmam  vstupy " << *frame << "\n";
 	} catch (const std::out_of_range& oor) {
 		// Zasobnik je prazdny, ponechaj tam staru texturu do kedy nepride obrazok
 		// Ponechaj staru texturu, ....
-		frame->hasVstup = false;
-		frame->command = ControllerCommands::NO_ACTION;
 	}
 }
 
@@ -191,5 +164,4 @@ void Scene::setBackgroud(CTexture texture) {
 		actualTex.releaseTexture();
 	}
 	resManager->square.setTexture(texture);
-
 }
