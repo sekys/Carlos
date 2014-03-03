@@ -1,0 +1,67 @@
+#pragma once
+#include <carlos_global.h>
+#include "..\entities\entities.h"
+#include "..\entities\class.IModul.hpp"
+#include "class.ModulVypocitaniaPolohy.hpp"
+
+namespace Architecture
+{
+	/**
+	* Modul vykreslvoania, ktory vykresli rozsirenu realitu
+	*/
+	class ModulVykreslovania : public IModul  {
+	public:
+		class In {
+		public:
+			Image image; /**< obrazok povodny z kamery */
+			vector<ModulVypocitaniaPolohy::Out> najdeneObjekty; /**< Najdene objekty */
+			ControllerCommands command;
+			Mat horizont;
+
+			friend ostream& operator<< (ostream& out, In& object) {
+				out << "ModulVykreslovaniaIn(";
+				out << "image: " << object.image << ", ";
+<<<<<<< HEAD
+				out << "najdeneObjekty: (";
+				for(uint i=0; i < object.najdeneObjekty.size(); i++) {
+					out << object.najdeneObjekty.at(i) << ",";
+				}
+=======
+				out << "command: " << object.command << ", ";
+				/*out << "najdenePozicie: (";
+				for(uint i=0; i < object.najdenePozicie.size(); i++) {
+				out << object.najdenePozicie.at(i) << ",";
+				}*/
+>>>>>>> 0e312773ee646562ace609008d5eb48dc50a3e11
+				out << "));";
+				return out;
+			}
+
+			In() {
+
+			}
+			~In() {
+				image.data.release();
+				horizont.release();
+			}
+		};
+
+		// Posli modulu spravu, ze ma vykreslit obrazok z rozsirenou realitou
+		virtual void vykresliObrazokSRozsirenouRealitou(In* in) {
+			/*Image obrazokNaPozadie = in.image; // tento obrazok je potrebne vykreslit na pozadi
+
+<<<<<<< HEAD
+			for(uint i=0; i < in.najdeneObjekty.size(); i++) {
+				ModulVypocitaniaPolohy::Out najdenyObjekt = in.najdeneObjekty.at(i);
+			}
+=======
+			for(uint i=0; i < in.najdenePozicie.size(); i++) {
+			Point2f poziciaTextu = in.najdenePozicie.at(i);
+			}*/
+>>>>>>> 0e312773ee646562ace609008d5eb48dc50a3e11
+		}
+	};
+}
+
+
+
