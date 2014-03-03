@@ -155,7 +155,7 @@ void Scene::stavUvodnaObrazovka(FrameData* frame) {
 	zasobnikVstupov.clear();
 
 	// Hud
-	glUseProgram(0);
+	/*glUseProgram(0);
 	glDisable(GL_LIGHTING);
 	glLoadIdentity();
 	glTranslatef(0.0f,0.8f,0.0f);
@@ -163,7 +163,7 @@ void Scene::stavUvodnaObrazovka(FrameData* frame) {
 	glRasterPos2f(0.0f, 0.f); 
 	//glPrint("STLAC MEDZERNIK");
 	glEnable(GL_LIGHTING);
-
+	*/
 	///Ak sa dotkne obrazovky zacina sa hra
 	if(frame->getCommand() == ControllerCommands::UP) {
 		prepniStavNaHrania();

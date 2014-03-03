@@ -565,41 +565,45 @@ Mat RealModulSpracovania::najdiHorizont(Mat image)
 
 void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 {
-	const int ratio = 3;
+	const double ratio = 2.5; //3;
 	const int kernel_size = 3;
 	const int lowThreshold = 130;
+	const int minPixelThreshold = 180;
+	int i, j;
+	const int minSky = image.rows / 6; /// minimalna vyska oblohy
 	Mat detected_edges;
 
 	horizon.create( image.size(), CV_8UC1 );
 
-	vector<vector<Point> > contours;
-	vector<Vec4i> hierarchy;
-	/// Zmensit sum
+	/// Zmensit sum a zvyraznit hrany
 	blur( image, detected_edges, Size(3,3) );
+	addWeighted(image, 1.5, detected_edges, -0.5, 0, detected_edges);
 
 	/// Canny detector
-	Canny( detected_edges, detected_edges, lowThreshold, lowThreshold*ratio, kernel_size );
-	findContours( detected_edges, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
-
-	horizon = Scalar::all(0);
-
-	for( int i = 0; i< contours.size(); i++ )
-	{
-		drawContours( horizon, contours, i, Scalar::all(255), 2, 8, hierarchy);
-	}
+	Canny( detected_edges, horizon, lowThreshold, lowThreshold*ratio, kernel_size );
 
 	/// kreslenie oblohy po pasoch zhora nadol
-	for( int j= 0; j < horizon.cols; j++ )
+	for( j = 0; j < horizon.cols; j++ )
 	{
 		int color = 255;
-		for( int i = 0; i < horizon.rows; i++ )
+		for( i = 0; i < horizon.rows; i++ )
 		{
-			if(horizon.at<uchar>(i,j) != 0 && color == 255) color = 0;
+			if(horizon.at<uchar>(i,j) != 0 && color == 255) 
+			{
+				color = 0;
+				if( i < minSky ) /// malo miesta v oblohe na prechod lietadla, vratime "prazdnu" bitmapu bez horizontu
+				{
+					horizon = Scalar::all(255);
+					return;
+				}
+			}
 			horizon.at<uchar>(i,j) = color;
 		}
 	}
 
-	morphologyEx( horizon, horizon, MORPH_CLOSE, Mat(), Point(), 1 );
+	/// finalna uprava mapy morf. operaciou ("vyhladenie" mapy)
+	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(13, 13) );
+	morphologyEx( horizon, horizon, MORPH_ERODE, element);
 }
 
 IMPEXP void* callFactory() {

@@ -62,7 +62,9 @@ namespace DB {
 				SqlColumn<Object>("name",  makeAttr(&Object::name)),
 				SqlColumn<Object>("latitude",   makeAttr(&Object::latitude)),
 				SqlColumn<Object>("longitude",        makeAttr(&Object::longitude)),
-				SqlColumn<Object>("source_url",        makeAttr(&Object::source_url))
+				SqlColumn<Object>("source_url",        makeAttr(&Object::source_url)),
+				SqlColumn<Object>("short_description", makeAttr(&Object::short_description)),
+				SqlColumn<Object>("long_description", makeAttr(&Object::long_description))
 				);
 			return tab;
 		}
@@ -73,6 +75,8 @@ namespace DB {
 		double longitude;
 		string name;
 		string source_url;
+		string short_description;
+		string long_description;
 	};
 
 	// Tabulka v ktorej su ulozene informacie receptov pre dany objekt
@@ -92,4 +96,5 @@ namespace DB {
 		int object;
 		string path; /**< cesty k deskriptorom */
 	};
+
 }
