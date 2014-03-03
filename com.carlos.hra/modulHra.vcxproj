@@ -127,6 +127,10 @@
     <ClInclude Include="Hra\Scena\StavyHry.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Hra\Entity\class.Plain.cpp" />
+    <ClCompile Include="Hra\Help\class.FrameData.cpp" />
+    <ClCompile Include="Hra\Help\class.ResourceManager.cpp" />
+    <ClCompile Include="Hra\Help\class.VisualController.cpp" />
     <ClCompile Include="Hra\Scena\prepniStav.cpp" />
     <ClCompile Include="prepojenie\DllMain.cpp" />
     <ClCompile Include="prepojenie\class.DllModulVykreslovania.cpp" />
