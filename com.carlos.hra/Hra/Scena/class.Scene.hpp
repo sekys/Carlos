@@ -12,6 +12,8 @@
 #include "..\Help\class.ThreadSafeStack.hpp"
 #include "../../../com.carlos.architecture/modules/class.ModulVykreslovania.hpp"
 #include "..\Help\class.FrameData.hpp"
+#include <map>
+
 
 using namespace Architecture;
 
@@ -48,6 +50,8 @@ private:
 	void setBackgroud(CTexture texture);
 	void ziskajAktualnyVstup(FrameData* data);
 	void nastavPozadieZoVstupu(cv::Mat& img);
+
+	map<uint, DB::Object *> objectInfos;
 public:
 	Scene();
 	~Scene();

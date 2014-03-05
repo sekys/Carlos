@@ -181,7 +181,17 @@ void Scene::stateTouristInfo(FrameData *frame) {
 
 		// Vykreslime informacie o objektoch y databazy
 		for (int i = 0; i < najdeneObjekty.size(); i++) {
-			DB::Object *object = DB::DBService::getInstance().getObjectById(najdeneObjekty.at(i).id);
+			uint id = najdeneObjekty.at(i).id;
+			DB::Object *object;
+
+			if (!objectInfos.count(id)) {
+				object = DB::DBService::getInstance().getObjectById(id);
+				objectInfos[id] = object;
+			} else {
+				object = objectInfos[id];
+			}
+
+			
 		}
 	}
 }
