@@ -627,7 +627,7 @@ void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 	const int lowThreshold = 130;
 	const int minPixelThreshold = 180;
 	int i, j;
-	const int minSky = image.rows / 6; /// minimalna vyska oblohy
+	const int minSky = 5;//image.rows / 6; /// minimalna vyska oblohy
 	Mat detected_edges;
 
 	horizon.create( image.size(), CV_8UC1 );

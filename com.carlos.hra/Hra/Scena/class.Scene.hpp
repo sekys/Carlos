@@ -13,14 +13,10 @@
 #include "../../../com.carlos.architecture/modules/class.ModulVykreslovania.hpp"
 #include "..\Help\class.FrameData.hpp"
 
-// INSERT PP 5.3.2014 >>
-#include "..\..\..\com.carlos.architecture\db\class.DBService.hpp" 
-#include "..\..\..\com.carlos.architecture\db\sqlite\sqlite3.h"
-#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
-// INSERT PP 5.3.2014 <<
-
 #include <map>
 #include "..\Help\font.h"
+#include "..\..\..\com.carlos.architecture\db\entities.hpp" 
+
 
 using namespace Architecture;
 

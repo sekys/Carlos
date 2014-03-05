@@ -2,10 +2,9 @@
 * Trieda ktora sa stara o to co sa ma vykonat pri prepnuti stavu hry s logikou hry
 */ 
 #include "class.Scene.hpp"
-// DELETE PP 5.3.2014 >>
-// #include "..\..\..\com.carlos.architecture\db\entities.hpp"
-// #include "..\..\..\com.carlos.architecture\db\class.DBService.hpp"
-// DELETE PP 5.3.2014 <<
+#include "..\..\..\com.carlos.architecture\db\class.DBService.hpp"
+
+using namespace DB;
 
 /** 
 * Funkcia nema na vstupe ziadny parameter, stara sa o restartovanie hry
