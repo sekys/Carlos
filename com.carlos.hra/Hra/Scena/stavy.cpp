@@ -192,7 +192,14 @@ void Scene::stateTouristInfo(FrameData *frame) {
 				object = objectInfos[id];
 			}
 
-			
+			/*glDisable(GL_LIGHTING);
+			glLoadIdentity();
+			glTranslatef(0.0f,0.8f,0.0f);
+			glColor3f(0.0f, 0.f, 0.f);
+			glRasterPos2f(0.0f, 0.f); 
+			glPrint(object->name.c_str());
+			glPrint(object->long_description.c_str());
+			glEnable(GL_LIGHTING);*/
 		}
 	}
 }
