@@ -95,6 +95,8 @@ private:
 	void runSurf(const Mat &image, vector<KeyPoint> &keypoints, Mat &descriptors);
 	bool findMatrix(const vector<KeyPoint> &objectKeypoints, const vector<KeyPoint> &sceneKeypoints, vector<DMatch> &matches, Mat &H);
 	void cannyHorizonDetection(const Mat &image, Mat &horizon);
+	bool readDescriptors(const string path, const int id, vector<KeyPoint> &keyPoints, Mat &descriptors);
+	bool writeDescriptors(const string path, const int id, vector<KeyPoint> keyPoints, Mat descriptors);
 #ifdef GPU_MODE
 	void runSiftGpu(const Mat &image, vector<KeyPoint> &keypoints, Mat &descriptors);
 #endif

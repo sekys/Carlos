@@ -181,6 +181,55 @@ bool RealModulSpracovania::findObject(const Mat &image, const Mat &H, double con
 	return true;
 }
 
+/** pre obrazok z DB nacitaj keypoint-y a deskriptory zo suboru
+*	@param path zlozka s obrazkom
+*	@param id ID obrazku
+*	@param keyPoints keypoint-y
+*	@param descriptors deskriptory
+*	@return uspesnost nacitania
+*/
+bool RealModulSpracovania::readDescriptors(const string path, const int id, vector<KeyPoint> &keyPoints, Mat &descriptors)
+{
+	char *fileFormat = "images\\%s\\image-%04d.yml"; /// cesta ku keypoint-om a deskriptorom
+
+	FileStorage fs(format(fileFormat, path.c_str(), id), FileStorage::READ);
+	if(!fs.isOpened()) return false;
+	/// nacitaj keypoint-y
+	FileNode kptFileNode = fs["keypoints"];
+	read( kptFileNode, keyPoints );
+	/// nacitaj deskriptory
+	FileNode dscFileNode = fs["descriptors"];
+	read( dscFileNode, descriptors );
+	fs.release();
+
+	if(keyPoints.empty() || descriptors.empty()) return false;
+
+	return true;
+}
+
+/** pre obrazok z DB zapis keypoint-y a deskriptory do suboru
+*	@param path zlozka s obrazkom
+*	@param id ID obrazku
+*	@param keyPoints keypoint-y
+*	@param descriptors deskriptory
+*	@return uspesnost zapisu
+*/
+bool RealModulSpracovania::writeDescriptors(const string path, const int id, vector<KeyPoint> keyPoints, Mat descriptors)
+{
+	char *fileFormat = "images\\%s\\image-%04d.yml"; /// cesta ku keypoint-om a deskriptorom
+
+	if(keyPoints.empty() || descriptors.empty()) return false;
+	
+	FileStorage fs(format(fileFormat, path.c_str(), id), FileStorage::WRITE);
+	/// uloz keypoint-y
+	fs << "keypoints" << keyPoints; 
+	/// uloz deskriptory
+	fs << "descriptors" << descriptors;
+	fs.release();
+	
+	return false;
+}
+
 /** z moznych objektov kt. mozu byt na obrazku vytvor kandidatov
 *	@param candidates mnozina kandidatov
 *	@param objects mnozina potencialnych objektov
@@ -206,13 +255,21 @@ int RealModulSpracovania::importCandidates(vector<Candidate> &candidates, vector
 			if(candidate.image.empty()) break;
 #ifdef GPU_MODE
 			runSiftGpu(candidate.image, candidate.keyPoints, candidate.descriptors);
-#else
-			runSurf(candidate.image, candidate.keyPoints, candidate.descriptors); /// najdi keypoints a deskriptory
-#endif
-			
 			if(candidate.keyPoints.empty() || candidate.keyPoints.size() < minKeypointsPerObject || candidate.descriptors.empty()) continue;
 			candidates.push_back(candidate);
 			count++;
+#else
+			// runSurf(candidate.image, candidate.keyPoints, candidate.descriptors); 
+			/// pokus sa nacitat keypoint-y a deskriptory zo suboru, inak ich prepocitaj nanovo a zapis do suboru
+			if(!readDescriptors(object.cestyKSuborom[0], count+1, candidate.keyPoints, candidate.descriptors))
+			{	
+				runSurf(candidate.image, candidate.keyPoints, candidate.descriptors); /// najdi keypoint-y a deskriptory
+				writeDescriptors(object.cestyKSuborom[0], count+1, candidate.keyPoints, candidate.descriptors);
+			}
+			if(candidate.keyPoints.empty() || candidate.keyPoints.size() < minKeypointsPerObject || candidate.descriptors.empty()) continue;
+			candidates.push_back(candidate);
+			count++;
+#endif
 		}
 	}
 
