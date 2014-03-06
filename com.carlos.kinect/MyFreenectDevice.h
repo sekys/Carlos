@@ -1,5 +1,5 @@
 #pragma once
-#include "libfreenect.hpp"
+#include "freenect/libfreenect.hpp"
 #include <iostream>
 #include <vector>
 #include <cmath>

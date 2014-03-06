@@ -70,6 +70,7 @@ void ModulesController::installModules() {
 	kamera = add(new ModulKamera("../data/video/2013-10-20-12-25-52.avi") );
 	//kamera = add(new ModulKamera(0) );
 	kinect = add(new ModulKinect() );
+	//kinect = addDll<ModulKinect>("com.carlos.kinect.dll");
 	vykreslovanie = addDll<ModulVykreslovania>("com.carlos.hra.dll");
 	vyppolohy = add(new ModulVypocitaniaPolohy());
 	//spracovanie = add(new ModulSpracovania());

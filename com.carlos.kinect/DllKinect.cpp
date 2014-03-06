@@ -137,12 +137,12 @@ void DllKinect::spustiKalibraciu() {
 	while (j<4) {
 		device.getVideo(rgbMat);
 		device.getDepth(depthMat);
+		cvtColor(rgbMat, grayMat, CV_BGR2GRAY);
 		if(iter >= 100){
 			token=0;
 			device.setLed(LED_YELLOW);
 			//circle recognition
 
-			cvtColor(rgbMat, grayMat, CV_BGR2GRAY);
 			GaussianBlur( grayMat, grayMat, Size(9, 9), 2, 2);
 
 			HoughCircles( grayMat, circles[j], CV_HOUGH_GRADIENT, 1, grayMat.rows/8, 200, 100, 0, 0);
