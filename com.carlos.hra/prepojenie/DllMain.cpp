@@ -4,6 +4,8 @@
 #include "../../com.carlos.architecture/DllExports.h"
 #include "class.DllModulVykreslovania.hpp"
 
+#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
+
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
 	printf("Dll nacitane.\n");
 	return 1;

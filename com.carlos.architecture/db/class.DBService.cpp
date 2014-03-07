@@ -74,7 +74,7 @@ vector<WorldObject> DBService::najdiVsetkySvetoveObjektyBlizkoGPS(GPS gps) {
 	return zoznam;
 }
 
-DB::Object *DBService::getObjectById(uint id) {
+Object *DBService::getObjectById(uint id) {
 	Object *object = new Object();
 
 	std::ostringstream where;
@@ -94,6 +94,7 @@ DB::Object *DBService::getObjectById(uint id) {
 	
 	return object;
 }
+
 // Priklad metody, ako vytiahnut objekty z databazy, cez OOP mapovac
 // Pozn.: Callback sa nevola ked je insert alebo nozina je prazdna
 /*vector<Object> selectObjects() {

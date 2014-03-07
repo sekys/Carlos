@@ -15,7 +15,8 @@
 
 #include <map>
 #include "..\Help\font.h"
-#include "..\..\..\com.carlos.architecture\db\entities.hpp" 
+#include "..\..\..\com.carlos.architecture\db\entities.hpp"
+#include "../../com.carlos.architecture/db/class.DBService.hpp"
 
 
 using namespace Architecture;
