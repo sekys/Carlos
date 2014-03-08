@@ -5,6 +5,7 @@
 #include <gl/wglew.h>
 #include "..\Hra\Help\class.FrameData.hpp"
 
+
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
@@ -16,7 +17,7 @@ using namespace Architecture;
 void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
 	//int a = bg.channels();
 	//int b = horizont.channels();
-
+	
 	for( int j= 0; j < bg.cols; j++ )
 	{
 		int pocet;
@@ -30,6 +31,7 @@ void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
 				pocet++;
 				if(pocet == 2) break;
 			} 
+
 		}
 	}
 }
@@ -43,7 +45,9 @@ void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
 void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In* in) 
 {
 	// Spracuj obrazok
-	in->image.data = in->image.data.clone();
+	cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
+	//in->image.data = in->image.data.clone();
+	in->image.data =black; 
 	in->horizont = in->horizont.clone();
 	dokresliHorizont(in->image.data, in->horizont);
 	cv::flip(in->image.data, in->image.data, 0);

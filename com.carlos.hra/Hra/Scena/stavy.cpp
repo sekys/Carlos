@@ -3,6 +3,7 @@
 */ 
 #include "class.Scene.hpp"
 #include "..\..\..\com.carlos.architecture\db\class.DBService.hpp"
+#include "..\help\class.ResourceManager.hpp"
 
 using namespace DB;
 
@@ -115,7 +116,7 @@ void Scene::stavHrania(FrameData* frame) {
 	}
 
 	// Otestuj ci sa dotyka horizontu
-	/*if(frame->hasVstup()) {
+ if(frame->hasVstup()) {
 		cv::Mat horizont = frame->getHorizont();
 		contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
 		if(contain) {
@@ -125,7 +126,7 @@ void Scene::stavHrania(FrameData* frame) {
 			// toto vracia stale B
 			//cout << "Leti nad horizontom\n";
 		}
-	}*/
+	}
 
 	plain->logic(frame->getDeltaTime(), frame->getCommand() );
 	visualController->renderObject(resManager->plain, plain->getMatrix());

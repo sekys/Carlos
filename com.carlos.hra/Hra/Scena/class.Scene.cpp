@@ -10,6 +10,8 @@
 #include <stdarg.h>
 #include <stdexcept>
 
+
+
 void testGL() {
 	if(CARLOS_DEBUG_OPENGL) {
 		GLenum error = glGetError();
@@ -20,7 +22,7 @@ void testGL() {
 }
 
 Scene::Scene()  {
-	plain = new Plain(glm::vec2(10.0, 10.0));
+	plain = new Plain(glm::vec2(10.0, 10.0), typ_lietadla);
 	world = new World(glm::vec2(320.0, 240.0));
 }
 Scene::~Scene() {
@@ -38,7 +40,11 @@ void Scene::init() {
 	cout << "Spustam Scene::init()\n";
 	visualController  = new VisualController();
 	resManager = new ResourceManager();
-	resManager->load();
+
+	srand(time(NULL));
+	int randNum = (rand() % 3) + 1;
+	typ_lietadla = randNum;
+	resManager->load(randNum);
 	testGL();
 	visualController->load(resManager->shaders);
 	testGL();

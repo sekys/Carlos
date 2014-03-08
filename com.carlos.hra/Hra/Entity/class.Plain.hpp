@@ -9,6 +9,7 @@
 
 using namespace Architecture;
 
+
 class Plain : public AABB {
 protected:
 	glm::vec3 rotation; /**< Premenna ktora urcuje otacanie lietadla */
@@ -18,16 +19,17 @@ protected:
 	glm::vec2 size; /**< Velkost lietadla */
 
 public:
+	
 	glm::vec2 getsize();
-	Plain(glm::vec2 size);
+	Plain(glm::vec2 size, int typ);
 
 	/** 
 	* Funkcia nema na vstupe ziadne parametre, sluzi na nastavenie startovacej pozicie lietadla.
 	* @see SPlain(glm::vec2 size) : AABB(size)
 	* @return void
 	*/
-	void setStartPosition();
-
+	void setStartPosition(int typ);
+	
 	void setRotiation(glm::vec3 rotation);
 	glm::vec3 getRotation();
 
@@ -47,4 +49,6 @@ public:
 	* @return void
 	*/
 	glm::mat4 getMatrix();
+	
+
 };

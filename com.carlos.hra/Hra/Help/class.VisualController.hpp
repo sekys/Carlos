@@ -19,6 +19,7 @@ private:
 	glm::mat4 normalMatrix;
 
 public:
+
 	VisualController();
 
 	~VisualController();

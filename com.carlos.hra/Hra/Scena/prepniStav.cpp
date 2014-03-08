@@ -48,7 +48,8 @@ void Scene::prepniStavNaScore() {
 */
 void Scene::prepniStavNaHrania() {
 	aktualnyStav = StavyHry::HRAJE_HRU;
-	plain->setStartPosition();
+	plain->setStartPosition(typ_lietadla);
+
 	zasobnikVstupov.clear();
 	cout << "Prepinam stav na hraje hru.\n";
 }
