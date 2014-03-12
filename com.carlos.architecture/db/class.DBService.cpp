@@ -74,15 +74,23 @@ vector<WorldObject> DBService::najdiVsetkySvetoveObjektyBlizkoGPS(GPS gps) {
 	return zoznam;
 }
 
+/*
+ * V databaze sa z nejakeho neznameho dovodu nesmu nachadzat
+ * NULL hodnoty. Ak sa tam take najdu, vyhodi sa vynimka
+ * a program spadne.
+ */
+
 Object *DBService::getObjectById(uint id) {
-	Object *object = new Object();
+	Object *object = NULL;
 
 	std::ostringstream where;
 	where << "id = " << id;
-	auto sel(db->select<Object>(where.str()));
+	auto obj(db->select<Object>(where.str()));
 	SqliteDB::Iterator<Object> it;
 
-	for (it = sel.first ; it != sel.second; ++it) {
+	for (it = obj.first ; it != obj.second; ++it) {
+		object = new Object();
+
 		object->id = it->id;
 		object->name = it->name;
 		object->longitude = it->longitude;
