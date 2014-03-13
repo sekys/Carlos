@@ -31,9 +31,13 @@ void DllKinect::init() {
 	namedWindow("rgb",CV_WINDOW_AUTOSIZE);
 	namedWindow("depth",CV_WINDOW_AUTOSIZE);
 	device.setLed(LED_BLINK_RED_YELLOW);
+	//freenect_start_video(device);
 	device.startVideo();
+	printf("video started\n");
 	device.startDepth();
+	printf("depth started\n");
 	device.setDepthFormat(FREENECT_DEPTH_REGISTERED);
+	printf("format changed\n");
 	device.setLed(LED_GREEN);
 	while (!die) {
 		device.getVideo(rgbMat);
@@ -96,7 +100,11 @@ void DllKinect::init() {
 				Mat i = Mat(4, 1, CV_64F, mi);
 
 				Mat j = M*i;
-				printf("%.0f %.0f %.0f\n", wx, wy, wz);
+
+				//printf("%.0f %.0f %.0f\n", wx, wy, wz);
+				//cout <<i << endl;
+				//cout << M <<endl;
+				cout << j << endl;
 			}
 		}
 		iter++;
@@ -116,7 +124,7 @@ void DllKinect::spustiKalibraciu() {
 
 	double mx[4][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
 	//mx treba zistovat z kinectu
-	double my[4][4] = {{50, 100, 200, 300}, {50, 100, 200, 300}, {750, 750, 750, 800}, {1, 1, 1, 1}};
+	double my[4][4] = {{0, 0, 200, 100}, {0, 0, 0, 100}, {495, 621, 375, 490}, {1, 1, 1, 1}};
 
 	//nacitavanie bodov pre mx
 	Mat depthMat(Size(640,480),CV_16UC1);
@@ -131,8 +139,11 @@ void DllKinect::spustiKalibraciu() {
 	device.setLed(LED_BLINK_RED_YELLOW);
 
 	device.startVideo();
+	printf("video started\n");
 	device.startDepth();
+	printf("depth started\n");
 	device.setDepthFormat(FREENECT_DEPTH_REGISTERED);
+	printf("format changed\n");
 	device.setLed(LED_RED);
 	while (j<4) {
 		device.getVideo(rgbMat);
@@ -175,5 +186,5 @@ void DllKinect::spustiKalibraciu() {
 	//double mi[4] = {{51}, {36}, {87}, {1}};
 	//Mat i = Mat(4, 1, CV_64F, mi);
 	//Mat j = M*i;
-	//out << "M = "<< endl << " "  << j << endl << endl;
+	//cout << "M = "<< endl << " "  << j << endl << endl;
 }
