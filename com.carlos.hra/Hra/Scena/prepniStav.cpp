@@ -2,6 +2,13 @@
 * Trieda ktora sa stara o to co sa ma vykonat pri prepnuti stavu hry 
 */
 #include "class.Scene.hpp"
+#include <iostream>
+#include <cstdio>
+#include <ctime>
+
+
+using std::cerr;
+using std::endl;
 
 /** 
 * Funkcia nema na vstupe ziadny parameter, stara sa o zobrazenie uvodnej obrazovky hry
@@ -11,6 +18,8 @@
 void Scene::prepniStavNaObrazovku() {
 	aktualnyStav = StavyHry::UVODNA_OBRAZOVKA;
 	setBackgroud(resManager->bgUvod);
+
+
 	zasobnikVstupov.clear();
 	cout << "Prepinam stan na uvodnu obrazovku.\n";
 }
@@ -22,7 +31,11 @@ void Scene::prepniStavNaObrazovku() {
 * @return void 
 */
 void Scene::prepniStavNaGameOver() {
+	
 	aktualnyStav = StavyHry::OBRAZOVKA_PREHRAL;
+	duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+	std::cout<<"printf: "<< duration <<'\n';
+	
 	setBackgroud(resManager->bgGameOver);
 	casPrejdenyNaGameOver = 0.0;
 	zasobnikVstupov.clear();
@@ -35,6 +48,7 @@ void Scene::prepniStavNaGameOver() {
 * @return void 
 */
 void Scene::prepniStavNaScore() {
+
 	aktualnyStav = StavyHry::OBRAZOVKA_SKORE;
 	setBackgroud(resManager->bgScore);
 	zasobnikVstupov.clear();
@@ -47,6 +61,7 @@ void Scene::prepniStavNaScore() {
 * @return void 
 */
 void Scene::prepniStavNaHrania() {
+	start = std::clock();
 	aktualnyStav = StavyHry::HRAJE_HRU;
 	plain->setStartPosition(typ_lietadla);
 

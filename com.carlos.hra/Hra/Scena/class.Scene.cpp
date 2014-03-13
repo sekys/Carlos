@@ -50,7 +50,7 @@ void Scene::init() {
 	testGL();
 	prepniStavNaObrazovku();
 	testGL();
-	buildFont();
+	
 	testGL();
 	glEnable(GL_DEPTH_TEST);
 	cout << "Koncim Scene::init()\n";
@@ -131,15 +131,18 @@ void Scene::delenieStavov(FrameData* frame) {
 							  }
 	case StavyHry::OBRAZOVKA_PREHRAL: {
 		stavGameOver(frame);
+		
 		break;
 									  }
 	case StavyHry::OBRAZOVKA_SKORE: {
 		stavSkore(frame);
+		
 		break;
 									}
 
 	case StavyHry::UVODNA_OBRAZOVKA: {
 		stavUvodnaObrazovka(frame);
+		
 		break;
 									 }
 	case StavyHry::TOURIST_INFO: {

@@ -58,12 +58,16 @@ private:
 	map<uint, DB::Object *> objectInfos;
 public:
 	int typ_lietadla;
+	std::clock_t start;
+	double duration;
+
 	Scene();
 	~Scene();
 
 	void release();
 	void init();
 	void frame(float fDelta);
+
 
 	//void keyboard(unsigned char key, int x, int y);
 

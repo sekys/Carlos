@@ -20,6 +20,12 @@ void Scene::stavSkore(FrameData* frame) {
 		prepniStavNaHrania();
 	}
 }
+template <class T>
+string convertToStr(T *var) {
+  ostringstream ss;
+  ss << *var;
+  return ss.str();
+}
 
 /** 
 * Funkcia nema na vstupe ziadny parameter, stara sa o prepnutie obrazovky po ubehnuti casu
@@ -30,7 +36,26 @@ void Scene::stavSkore(FrameData* frame) {
 void Scene::stavGameOver(FrameData* frame) {
 	zasobnikVstupov.clear();
 	casPrejdenyNaGameOver += frame->getDeltaTime();
-	if(casPrejdenyNaGameOver > 3.0) {
+
+	// Hud
+	glUseProgram(0);
+	glDisable(GL_LIGHTING);
+	glLoadIdentity();
+	glTranslatef(-0.6f,-0.4f,0.0f);
+	glColor3f(0.0f, 0.f, 0.f);
+	glRasterPos2f(0.0f, 0.0f); 
+	buildFont();
+	double d = duration;
+	string str = convertToStr<double>(&d);
+	const char * c = str.c_str();
+	const char * result = "Aktualny cas letu: ";
+	glPrint(result);
+	glTranslatef(-0.1f,-0.4f,0.0f);
+	glPrint(c);
+	glEnable(GL_LIGHTING);
+	
+
+	if(casPrejdenyNaGameOver > 5.0) {
 		/// presiel cas a zmeni sa stav
 		prepniStavNaScore() ;
 	}
@@ -117,15 +142,16 @@ void Scene::stavHrania(FrameData* frame) {
 
 	// Otestuj ci sa dotyka horizontu
  if(frame->hasVstup()) {
+	
 		cv::Mat horizont = frame->getHorizont();
 		contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
-		if(contain) {
+		/*if(contain) {
 			cout << "Narazil do horizontu\n";
 			havaroval();
 		} else {
 			// toto vracia stale B
 			//cout << "Leti nad horizontom\n";
-		}
+		}*/
 	}
 
 	plain->logic(frame->getDeltaTime(), frame->getCommand() );
@@ -159,16 +185,7 @@ void Scene::havaroval() {
 void Scene::stavUvodnaObrazovka(FrameData* frame) {
 	zasobnikVstupov.clear();
 
-	// Hud
-	/*glUseProgram(0);
-	glDisable(GL_LIGHTING);
-	glLoadIdentity();
-	glTranslatef(0.0f,0.8f,0.0f);
-	glColor3f(0.0f, 0.f, 0.f);
-	glRasterPos2f(0.0f, 0.f); 
-	//glPrint("STLAC MEDZERNIK");
-	glEnable(GL_LIGHTING);
-	*/
+	
 	///Ak sa dotkne obrazovky zacina sa hra
 	if(frame->getCommand() == ControllerCommands::UP) {
 		prepniStavNaHrania();
