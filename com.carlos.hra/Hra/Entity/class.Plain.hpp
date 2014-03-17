@@ -11,6 +11,9 @@ using namespace Architecture;
 
 
 class Plain : public AABB {
+private:
+	ControllerCommands lastCommand;
+
 protected:
 	glm::vec3 rotation; /**< Premenna ktora urcuje otacanie lietadla */
 	glm::vec2 silaPohybu; /**< Rychlost stupania lietadla a klesania lietadla*/
@@ -19,7 +22,6 @@ protected:
 	glm::vec2 size; /**< Velkost lietadla */
 
 public:
-	
 	glm::vec2 getsize();
 	Plain(glm::vec2 size, int typ);
 
@@ -49,6 +51,7 @@ public:
 	* @return void
 	*/
 	glm::mat4 getMatrix();
-	
 
+	ControllerCommands getLastCommand();
+	void setLastCommand(ControllerCommands command);
 };

@@ -197,26 +197,44 @@ void Scene::stateTouristInfo(FrameData *frame) {
 		vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = frame->getVstup()->najdeneObjekty;
 		nastavPozadieZoVstupu(frame->getImage());
 
-		// Vykreslime informacie o objektoch y databazy
-		for (int i = 0; i < najdeneObjekty.size(); i++) {
-			uint id = najdeneObjekty.at(i).id;
-			DB::Object *object;
+		if (najdeneObjekty.size() > 0) {
+			// Vykreslime informacie o objektoch  databazy
+			for (int i = 0; i < najdeneObjekty.size() && najdeneObjekty.at(i).najdeny; i++) {
+				uint id = najdeneObjekty.at(i).id; 
+				DB::Object *object;
 
-			if (!objectInfos.count(id)) {
-				object = DB::DBService::getInstance().getObjectById(id);
-				objectInfos[id] = object;
-			} else {
-				object = objectInfos[id];
+				if (!objectInfos.count(id)) {
+					object = DB::DBService::getInstance().getObjectById(id);
+
+					if (object != NULL) {
+						objectInfos[id] = object;
+					}
+				} else {
+					object = objectInfos[id];
+				}
+
+				if (object != NULL) {
+					showTouristInfo(object, najdeneObjekty.at(i).polohaTextu);
+				}
 			}
-
-			/*glDisable(GL_LIGHTING);
-			glLoadIdentity();
-			glTranslatef(0.0f,0.8f,0.0f);
-			glColor3f(0.0f, 0.f, 0.f);
-			glRasterPos2f(0.0f, 0.f); 
-			glPrint(object->name.c_str());
-			glPrint(object->long_description.c_str());
-			glEnable(GL_LIGHTING);*/
+		} else {
+			plain->setLastCommand(ControllerCommands::NO_ACTION);
 		}
 	}
+}
+
+void Scene::showTouristInfo(DB::Object *object, Point2f pos) {
+	if (plain->getLastCommand() == ControllerCommands::WHAT_IS_OBJECT) {
+
+	} else if (plain->getLastCommand() == ControllerCommands::MORE_ABOUT_OBJECT) {
+
+	}
+	/*glDisable(GL_LIGHTING);
+	glLoadIdentity();
+	glTranslatef(0.0f,0.8f,0.0f);
+	glColor3f(0.0f, 0.f, 0.f);
+	glRasterPos2f(0.0f, 0.f); 
+	glPrint(object->name.c_str());
+	glPrint(object->long_description.c_str());
+	glEnable(GL_LIGHTING);*/
 }

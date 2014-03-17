@@ -5,7 +5,9 @@
 glm::vec2 Plain::getsize(){
 	return size;
 }
+
 Plain::Plain(glm::vec2 size, int typ) : AABB(size) {
+	this->lastCommand = ControllerCommands::NO_ACTION;
 	this->size = size;
 	
 	setStartPosition(typ);
@@ -37,6 +39,8 @@ void  Plain::logic(float fDelta, ControllerCommands pressedKey)
 {
 	float radians = 1.0 * 0.0174532925f;
 	glm::vec2 position = getPosition();
+
+	this->lastCommand = pressedKey;
 
 	/// Sila posobi na lietadlo
 	glm::vec2 F = glm::vec2(0.0);
@@ -81,4 +85,12 @@ glm::mat4  Plain::getMatrix() {
 	/// Naskalovanie modelu
 	mModelMatrix = glm::scale(mModelMatrix, glm::vec3(7,7,7));
 	return mModelMatrix;
+}
+
+ControllerCommands Plain::getLastCommand() {
+	return lastCommand;
+}
+
+void Plain::setLastCommand(ControllerCommands command) {
+	this->lastCommand = command;
 }

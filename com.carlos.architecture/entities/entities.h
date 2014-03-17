@@ -87,7 +87,9 @@ namespace Architecture
 		DOWN, 
 		LEFT, 
 		RIGHT, 
-		TAP
+		TAP,
+		WHAT_IS_OBJECT,
+		MORE_ABOUT_OBJECT
 	};
 
 	inline ostream& operator<< (ostream& out, ControllerCommands& command) {
@@ -98,6 +100,8 @@ namespace Architecture
 		case ControllerCommands::LEFT: { out << "LEFT";  break;}
 		case ControllerCommands::RIGHT: { out << "RIGHT";  break;}
 		case ControllerCommands::TAP: { out << "TAP";  break;}
+		case ControllerCommands::WHAT_IS_OBJECT: { out << "WHAT IS OBJECT";  break; }
+		case ControllerCommands::MORE_ABOUT_OBJECT: { out << "MORE ABOUT OBJECT";  break; }
 		default: {
 			throw new std::exception();
 				 }

@@ -39,6 +39,7 @@ private:
 	void stavSkore(FrameData* fDelta);
 
 	void stateTouristInfo(FrameData * frame);
+	void showTouristInfo(DB::Object *, Point2f);
 
 	// Pomocne premenne
 	float casPrejdenyNaGameOver;
