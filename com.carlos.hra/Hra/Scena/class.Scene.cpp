@@ -48,6 +48,7 @@ void Scene::init() {
 	testGL();
 	visualController->load(resManager->shaders);
 	testGL();
+	//switchStateToTouristInfo();
 	prepniStavNaObrazovku();
 	testGL();
 	

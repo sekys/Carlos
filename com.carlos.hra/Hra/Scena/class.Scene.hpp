@@ -31,6 +31,7 @@ private:
 	void havaroval();
 
 	void switchStateToTouristInfo();
+	void printLineOfText(const char *, int, int);
 
 	// Volanie stavu
 	void stavHrania(FrameData* fDelta);

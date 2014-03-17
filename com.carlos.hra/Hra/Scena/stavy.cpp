@@ -194,8 +194,9 @@ void Scene::stavUvodnaObrazovka(FrameData* frame) {
 
 void Scene::stateTouristInfo(FrameData *frame) {
 	if (frame->hasVstup()) {
-		vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = frame->getVstup()->najdeneObjekty;
 		nastavPozadieZoVstupu(frame->getImage());
+		ModulVykreslovania::In *in = frame->getVstup();
+		vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = in->najdeneObjekty;
 
 		if (najdeneObjekty.size() > 0) {
 			// Vykreslime informacie o objektoch  databazy
@@ -225,16 +226,20 @@ void Scene::stateTouristInfo(FrameData *frame) {
 
 void Scene::showTouristInfo(DB::Object *object, Point2f pos) {
 	if (plain->getLastCommand() == ControllerCommands::WHAT_IS_OBJECT) {
-
+		printLineOfText(object->name.c_str(), -1 , -1);
 	} else if (plain->getLastCommand() == ControllerCommands::MORE_ABOUT_OBJECT) {
 
 	}
-	/*glDisable(GL_LIGHTING);
+}
+
+void Scene::printLineOfText(const char * str, int x, int y) {
+	glUseProgram(0);
+	glDisable(GL_LIGHTING);
 	glLoadIdentity();
-	glTranslatef(0.0f,0.8f,0.0f);
+	glTranslatef(-0.6f,-0.4f,0.0f);
 	glColor3f(0.0f, 0.f, 0.f);
-	glRasterPos2f(0.0f, 0.f); 
-	glPrint(object->name.c_str());
-	glPrint(object->long_description.c_str());
-	glEnable(GL_LIGHTING);*/
+	glRasterPos2f(0.0f, 0.0f); 
+	buildFont();
+	glPrint(str);
+	glEnable(GL_LIGHTING);
 }
