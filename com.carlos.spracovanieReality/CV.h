@@ -66,6 +66,8 @@ private:
 	BruteForceMatcher<L2<float>> matcher; /**< matcher deskriptorov */
 	SurfFeatureDetector detector; /**< detektor keypoinotv */
 	SurfDescriptorExtractor extractor; /**< extraktor deskriptorov z keypointov */
+	Mat prevHorizon;
+	int *prevPos;
 
 	/** Thresholdy: */
 

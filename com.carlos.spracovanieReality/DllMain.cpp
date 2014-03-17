@@ -11,9 +11,11 @@ int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
 }
 
 void RealModulSpracovania::init() {
-	const int th = 400;
+	const int th = 500; // 400
 	detector.hessianThreshold = th;
 	setParameters();
+	if(!prevHorizon.empty()) prevHorizon.release();
+	prevPos = NULL;
 #ifdef GPU_MODE
 	siftGpu = NULL;
 #endif
@@ -497,39 +499,47 @@ void RealModulSpracovania::runSurf(const Mat &image, vector<KeyPoint> &keypoints
 #ifdef GPU_MODE
 void RealModulSpracovania::runSiftGpu(const Mat &image, vector<KeyPoint> &keypoints, Mat &descriptors)
 {
-	char *argv[] = {"-v", "0",  "-p", "1280x960"};
+	char *argv[] = {"-v", "1",  "-p", "640x480"};
 	int argc = sizeof(argv) / sizeof(char *);
-	siftGpu = new SiftGPU;
+	siftGpu = new SiftGPU();
 	siftGpu->ParseParam(argc, argv);
 
-	if(siftGpu->CreateContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED ) return;
-	if (!siftGpu->RunSIFT(image.cols, image.rows, image.data, 0x1909, 0x1401)) {
-		keypoints.resize(0);
-		descriptors = cv::Mat();
+	//	if (siftGpu->VerifyContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED) {
+	if (siftGpu->CreateContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED)
+	{
+		siftGpu = NULL;
 		return;
 	}
-	
+
+	//	}
+	if (!siftGpu->RunSIFT(image.cols, image.rows, image.data, GL_LUMINANCE, GL_UNSIGNED_BYTE)) {
+		keypoints.resize(0);
+		descriptors = Mat();
+		return;
+	}
+
 	const int numFeatures = siftGpu->GetFeatureNum();
 	SiftGPU::SiftKeypoint *siftKeypoints = new SiftGPU::SiftKeypoint[numFeatures];
-	descriptors.create(numFeatures, SIFT_DIMENSIONS, CV_32FC1);
+	descriptors.create(numFeatures, 128, CV_32FC1);
 	siftGpu->GetFeatureVector(siftKeypoints, (float *) descriptors.data);
 
 	keypoints.resize(0);
 	keypoints.reserve(numFeatures);
-	
+
 	KeyPoint keypoint;
 	Point2f *point;
 
 	for (int i = 0; i < numFeatures; ++i) {
 		point = (Point2f *) &siftKeypoints[i];
-		
-			keypoint.pt = *point;
-			//keypoint.size = siftKeypoints[i].s;
-			//keypoint.angle = siftKeypoints[i].o;
-			keypoints.push_back(keypoint);
+
+		keypoint.pt = *point;
+		//keypoint.size = siftKeypoints[i].s;
+		//keypoint.angle = siftKeypoints[i].o;
+		keypoints.push_back(keypoint);
 	}
 
 	delete [] siftKeypoints;
+	delete siftGpu;
 }
 #endif
 
@@ -622,45 +632,119 @@ Mat RealModulSpracovania::najdiHorizont(Mat image)
 
 void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 {
-	const double ratio = 2.5; //3;
+	const double ratio = 3;
 	const int kernel_size = 3;
 	const int lowThreshold = 130;
-	const int minPixelThreshold = 180;
-	int i, j;
-	const int minSky = 5;//image.rows / 6; /// minimalna vyska oblohy
-	Mat detected_edges;
+	const int delta = 50;
+	const int beta = 15;
+	const int increment = 3;
+	const int roi_width = 50;
+	const int minSky = 120;
+	const int color_white = 255;
+	const int color_black = 0;
+	const int maxPxDiff = 1500;
+	int *pos = new int[image.cols];
+
+	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(13, 13) );
 
 	horizon.create( image.size(), CV_8UC1 );
 
-	/// Zmensit sum a zvyraznit hrany
-	blur( image, detected_edges, Size(3,3) );
-	addWeighted(image, 1.5, detected_edges, -0.5, 0, detected_edges);
-
 	/// Canny detector
-	Canny( detected_edges, horizon, lowThreshold, lowThreshold*ratio, kernel_size );
+	Canny( image, horizon, lowThreshold, lowThreshold*ratio, kernel_size );
 
 	/// kreslenie oblohy po pasoch zhora nadol
-	for( j = 0; j < horizon.cols; j++ )
+	for( int j = 0; j < horizon.cols; j++ )
 	{
-		int color = 255;
-		for( i = 0; i < horizon.rows; i++ )
+		int color = color_white;
+		pos[j] = minSky;
+		for( int i = 0; i < horizon.rows; i++ )
 		{
-			if(horizon.at<uchar>(i,j) != 0 && color == 255) 
+			if(horizon.at<uchar>(i,j) != 0 && color == color_white) 
 			{
-				color = 0;
-				if( i < minSky ) /// malo miesta v oblohe na prechod lietadla, vratime "prazdnu" bitmapu bez horizontu
+				color = color_black;
+				if( i > minSky) pos[j] = i;
+			}
+		}
+		if(color == color_white ) pos[j] = 0;
+	}
+
+	if( !prevHorizon.empty() )
+	{
+		Mat tmp;
+		int nonZero;
+		bitwise_xor( prevHorizon, horizon, tmp );
+		nonZero = countNonZero( tmp );
+		cout << "Total number: " << nonZero << endl; 
+		if(nonZero > maxPxDiff)
+		{
+			for(int i = 0; i < image.cols; i++)
+			{
+				if( prevPos[i] - pos[i] > delta )
 				{
-					horizon = Scalar::all(255);
-					return;
+					int start = 0, end = image.cols - 1, new_height = 0;
+					if( i - roi_width / 2 > -1 ) start = i - roi_width / 2;
+					if( i + roi_width / 2 < image.cols ) end = i + roi_width / 2;
+					for( int j = start; j < end; j++ )
+						new_height += prevPos[j];
+
+					new_height /= end - start;
+					if( new_height < minSky ) new_height = minSky;
+					else if( new_height >= image.rows )  new_height = image.rows - 1;
+					pos[i] = new_height;
 				}
 			}
-			horizon.at<uchar>(i,j) = color;
 		}
 	}
 
-	/// finalna uprava mapy morf. operaciou ("vyhladenie" mapy)
-	Mat element = getStructuringElement(MORPH_ELLIPSE, Size(13, 13) );
-	morphologyEx( horizon, horizon, MORPH_ERODE, element);
+	for(int i = 1; i < image.cols; i++)
+	{
+		if( pos[i-1] - pos[i] > delta*2 )
+		{
+			if( pos[i-1] > pos[i] )
+			{
+				pos[i] = pos[i-1] - increment;
+			}
+			for(int j = i + 1; j < i + 200; j++)
+			{
+				if(j >= image.cols) break;
+				if( abs( pos[j] - pos[i] ) < beta)
+				{
+					pos[i] = pos[j];
+				}
+			}
+		}
+		else
+		{
+			int start = 0, end = image.cols - 1, new_height = 0;
+			if( i - roi_width / 2 > -1 ) start = i - roi_width / 2;
+			if( i + roi_width / 2 < image.cols ) end = i + roi_width / 2;
+			for( int j = start; j < end; j++ )
+				new_height += pos[j];
+
+			new_height /= end - start;
+			if( new_height < minSky ) new_height = minSky;
+			else if( new_height >= image.rows )  new_height = image.rows - 1;
+			pos[i] = new_height;
+		}
+	}
+
+	horizon.create( image.size(), CV_8UC1 );
+
+	horizon = Scalar::all(255);
+
+	for( int j = 0; j < horizon.cols; j++ )
+	{
+		for( int i = pos[j]; i < horizon.rows; i++ )
+		{
+			horizon.at<uchar>(i,j) = color_black;
+		}
+	}
+
+	morphologyEx( horizon, horizon, MORPH_CLOSE, element);
+
+	if(prevPos != NULL ) delete prevPos;
+	prevPos = pos;
+	horizon.copyTo( prevHorizon );
 }
 
 IMPEXP void* callFactory() {
