@@ -3,7 +3,11 @@
 #include <fstream>
 #include "class.Carlos.hpp"
 #include "../../com.carlos.architecture/configuration/class.Configuration.hpp"
-#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
+#ifdef _DEBUG
+	#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
+#else
+	#pragma comment(lib, "../Release/com.carlos.architecture.lib")
+#endif
 
 using namespace Architecture;
 
