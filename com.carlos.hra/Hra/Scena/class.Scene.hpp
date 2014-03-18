@@ -16,7 +16,7 @@
 #include <map>
 #include "..\Help\font.h"
 #include "..\..\..\com.carlos.architecture\db\entities.hpp"
-#include "../../com.carlos.architecture/db/class.DBService.hpp"
+#include "..\..\com.carlos.architecture\db\class.DBService.hpp"
 
 
 using namespace Architecture;
@@ -31,7 +31,6 @@ private:
 	void havaroval();
 
 	void switchStateToTouristInfo();
-	void printLineOfText(const char *, int, int);
 
 	// Volanie stavu
 	void stavHrania(FrameData* fDelta);
@@ -40,7 +39,7 @@ private:
 	void stavSkore(FrameData* fDelta);
 
 	void stateTouristInfo(FrameData * frame);
-	void showTouristInfo(DB::Object *, Point2f);
+	void showTouristInfo(DB::Object *, Point2f &);
 
 	// Pomocne premenne
 	float casPrejdenyNaGameOver;

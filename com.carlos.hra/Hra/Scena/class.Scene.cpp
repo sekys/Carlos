@@ -25,10 +25,12 @@ Scene::Scene()  {
 	plain = new Plain(glm::vec2(10.0, 10.0), typ_lietadla);
 	world = new World(glm::vec2(320.0, 240.0));
 }
+
 Scene::~Scene() {
 	// Vsetko by malo byt uz aktualne uvolnene
 	SAFE_DELETE(plain);
 	SAFE_DELETE(world);
+	killFont();
 }
 /** 
 * Funkcia nema na vstupe ziadne parametre, iba nastavi scenu na inicializacne hodnoty
@@ -54,6 +56,9 @@ void Scene::init() {
 	
 	testGL();
 	glEnable(GL_DEPTH_TEST);
+
+	buildFont();
+
 	cout << "Koncim Scene::init()\n";
 	testGL();
 }

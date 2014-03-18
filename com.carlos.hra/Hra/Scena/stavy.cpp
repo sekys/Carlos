@@ -44,7 +44,6 @@ void Scene::stavGameOver(FrameData* frame) {
 	glTranslatef(-0.6f,-0.4f,0.0f);
 	glColor3f(0.0f, 0.f, 0.f);
 	glRasterPos2f(0.0f, 0.0f); 
-	buildFont();
 	double d = duration;
 	string str = convertToStr<double>(&d);
 	const char * c = str.c_str();
@@ -222,24 +221,17 @@ void Scene::stateTouristInfo(FrameData *frame) {
 			plain->setLastCommand(ControllerCommands::NO_ACTION);
 		}
 	}
+
+	plain->setLastCommand(ControllerCommands::WHAT_IS_OBJECT);
+	Object *object = new Object();
+	object->name = "Testovacie meno";
+	showTouristInfo(object, Point2f(0,50));
 }
 
-void Scene::showTouristInfo(DB::Object *object, Point2f pos) {
+void Scene::showTouristInfo(DB::Object *object, Point2f &pos) {
 	if (plain->getLastCommand() == ControllerCommands::WHAT_IS_OBJECT) {
-		printLineOfText(object->name.c_str(), -1 , -1);
+		printLineOfText(object->name.c_str(), pos.x, pos.y);
 	} else if (plain->getLastCommand() == ControllerCommands::MORE_ABOUT_OBJECT) {
 
 	}
-}
-
-void Scene::printLineOfText(const char * str, int x, int y) {
-	glUseProgram(0);
-	glDisable(GL_LIGHTING);
-	glLoadIdentity();
-	glTranslatef(-0.6f,-0.4f,0.0f);
-	glColor3f(0.0f, 0.f, 0.f);
-	glRasterPos2f(0.0f, 0.0f); 
-	buildFont();
-	glPrint(str);
-	glEnable(GL_LIGHTING);
 }
