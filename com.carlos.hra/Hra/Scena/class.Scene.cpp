@@ -185,3 +185,15 @@ void Scene::setBackgroud(CTexture texture) {
 	}
 	resManager->square.setTexture(texture);
 }
+
+uint Scene::getWindowWidth() {
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	return viewport[2];
+}
+
+uint Scene::getWindowHeight() {
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	return viewport[3];
+}

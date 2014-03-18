@@ -222,16 +222,38 @@ void Scene::stateTouristInfo(FrameData *frame) {
 		}
 	}
 
-	plain->setLastCommand(ControllerCommands::WHAT_IS_OBJECT);
+	/*plain->setLastCommand(ControllerCommands::WHAT_IS_OBJECT);
+	//Object *object = DB::DBService::getInstance().getObjectById(4);
 	Object *object = new Object();
-	object->name = "Testovacie meno";
-	showTouristInfo(object, Point2f(0,50));
+	object->name = "Testovacie menoTestovacie meno";
+	showTouristInfo(object, Point2f(599, 449));*/
 }
 
 void Scene::showTouristInfo(DB::Object *object, Point2f &pos) {
-	if (plain->getLastCommand() == ControllerCommands::WHAT_IS_OBJECT) {
-		printLineOfText(object->name.c_str(), pos.x, pos.y);
-	} else if (plain->getLastCommand() == ControllerCommands::MORE_ABOUT_OBJECT) {
+	const char *str;
 
+	if (plain->getLastCommand() == ControllerCommands::WHAT_IS_OBJECT) {
+		str = object->name.c_str();
+	} else if (plain->getLastCommand() == ControllerCommands::MORE_ABOUT_OBJECT) {
+		str = object->short_description.c_str();
+	} else {
+		return;
+	}
+
+	vector<string> lines;
+	unsigned int maxCharsOnLine = 0;
+	formatter.formatTextToLines(str, lines);
+
+	for (int i=0; i<lines.size(); i++) {
+		if (lines[i].length() > maxCharsOnLine) {
+			maxCharsOnLine = lines[i].length();
+		}
+	}
+
+	for (int i=0; i<lines.size(); i++) {
+		Point2f newPos;
+		formatter.formatPosition(pos, newPos, i, lines.size(), 
+			maxCharsOnLine, getWindowWidth(), getWindowHeight());
+		printLineOfText(lines[i].c_str(), newPos.x, newPos.y);
 	}
 }

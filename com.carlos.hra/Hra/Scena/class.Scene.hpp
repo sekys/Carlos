@@ -17,6 +17,7 @@
 #include "..\Help\font.h"
 #include "..\..\..\com.carlos.architecture\db\entities.hpp"
 #include "..\..\com.carlos.architecture\db\class.DBService.hpp"
+#include "..\Help\class.TextAndPositionFormatter.h"
 
 
 using namespace Architecture;
@@ -49,12 +50,17 @@ private:
 	StavyHry aktualnyStav; /**< aktualny stav v akom sa hra nachadza */
 
 	VisualController* visualController; 
-	ResourceManager* resManager; 
+	ResourceManager* resManager;
+
+	TextAndPositionFormatter formatter;
 
 	void delenieStavov(FrameData* fDelta);
 	void setBackgroud(CTexture texture);
 	void ziskajAktualnyVstup(FrameData* data);
 	void nastavPozadieZoVstupu(cv::Mat& img);
+
+	uint getWindowWidth();
+	uint getWindowHeight();
 
 	map<uint, DB::Object *> objectInfos;
 public:

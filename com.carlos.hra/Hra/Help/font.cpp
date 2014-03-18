@@ -14,7 +14,7 @@ GLvoid buildFont()
 
 	base = glGenLists(96);
 
-	font = CreateFont(	-24,
+	font = CreateFont( -24,
 		0,
 		0,
 		0,
@@ -85,7 +85,7 @@ inline void popProjectionMatrix() {
 void printLineOfText(const char *str, int x, int y) {
 	glUseProgram(0);
 	pushScreenCoordinateMatrix();
-	glPushAttrib(GL_CURRENT_BIT  | GL_ENABLE_BIT | GL_TRANSFORM_BIT);	
+	glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT | GL_TRANSFORM_BIT);	
 	glDisable(GL_LIGHTING);
 
 	glPushMatrix();
