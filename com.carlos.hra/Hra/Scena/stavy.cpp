@@ -3,6 +3,7 @@
 */ 
 #include "class.Scene.hpp"
 #include "..\..\..\com.carlos.architecture\db\class.DBService.hpp"
+#include "..\help\class.ResourceManager.hpp"
 
 using namespace DB;
 
@@ -19,6 +20,12 @@ void Scene::stavSkore(FrameData* frame) {
 		prepniStavNaHrania();
 	}
 }
+template <class T>
+string convertToStr(T *var) {
+  ostringstream ss;
+  ss << *var;
+  return ss.str();
+}
 
 /** 
 * Funkcia nema na vstupe ziadny parameter, stara sa o prepnutie obrazovky po ubehnuti casu
@@ -29,7 +36,25 @@ void Scene::stavSkore(FrameData* frame) {
 void Scene::stavGameOver(FrameData* frame) {
 	zasobnikVstupov.clear();
 	casPrejdenyNaGameOver += frame->getDeltaTime();
-	if(casPrejdenyNaGameOver > 3.0) {
+
+	// Hud
+	glUseProgram(0);
+	glDisable(GL_LIGHTING);
+	glLoadIdentity();
+	glTranslatef(-0.6f,-0.4f,0.0f);
+	glColor3f(0.0f, 0.f, 0.f);
+	glRasterPos2f(0.0f, 0.0f); 
+	double d = duration;
+	string str = convertToStr<double>(&d);
+	const char * c = str.c_str();
+	const char * result = "Aktualny cas letu: ";
+	glPrint(result);
+	glTranslatef(-0.1f,-0.4f,0.0f);
+	glPrint(c);
+	glEnable(GL_LIGHTING);
+	
+
+	if(casPrejdenyNaGameOver > 5.0) {
 		/// presiel cas a zmeni sa stav
 		prepniStavNaScore() ;
 	}
@@ -115,17 +140,18 @@ void Scene::stavHrania(FrameData* frame) {
 	}
 
 	// Otestuj ci sa dotyka horizontu
-	/*if(frame->hasVstup()) {
+ if(frame->hasVstup()) {
+	
 		cv::Mat horizont = frame->getHorizont();
 		contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
-		if(contain) {
+		/*if(contain) {
 			cout << "Narazil do horizontu\n";
 			havaroval();
 		} else {
 			// toto vracia stale B
 			//cout << "Leti nad horizontom\n";
-		}
-	}*/
+		}*/
+	}
 
 	plain->logic(frame->getDeltaTime(), frame->getCommand() );
 	visualController->renderObject(resManager->plain, plain->getMatrix());
@@ -158,16 +184,7 @@ void Scene::havaroval() {
 void Scene::stavUvodnaObrazovka(FrameData* frame) {
 	zasobnikVstupov.clear();
 
-	// Hud
-	/*glUseProgram(0);
-	glDisable(GL_LIGHTING);
-	glLoadIdentity();
-	glTranslatef(0.0f,0.8f,0.0f);
-	glColor3f(0.0f, 0.f, 0.f);
-	glRasterPos2f(0.0f, 0.f); 
-	//glPrint("STLAC MEDZERNIK");
-	glEnable(GL_LIGHTING);
-	*/
+	
 	///Ak sa dotkne obrazovky zacina sa hra
 	if(frame->getCommand() == ControllerCommands::UP) {
 		prepniStavNaHrania();
@@ -176,29 +193,67 @@ void Scene::stavUvodnaObrazovka(FrameData* frame) {
 
 void Scene::stateTouristInfo(FrameData *frame) {
 	if (frame->hasVstup()) {
-		vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = frame->getVstup()->najdeneObjekty;
 		nastavPozadieZoVstupu(frame->getImage());
+		ModulVykreslovania::In *in = frame->getVstup();
+		vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = in->najdeneObjekty;
 
-		// Vykreslime informacie o objektoch y databazy
-		for (int i = 0; i < najdeneObjekty.size(); i++) {
-			uint id = najdeneObjekty.at(i).id;
-			DB::Object *object;
+		if (najdeneObjekty.size() > 0) {
+			// Vykreslime informacie o objektoch  databazy
+			for (int i = 0; i < najdeneObjekty.size() && najdeneObjekty.at(i).najdeny; i++) {
+				uint id = najdeneObjekty.at(i).id; 
+				DB::Object *object;
 
-			if (!objectInfos.count(id)) {
-				object = DB::DBService::getInstance().getObjectById(id);
-				objectInfos[id] = object;
-			} else {
-				object = objectInfos[id];
+				if (!objectInfos.count(id)) {
+					object = DB::DBService::getInstance().getObjectById(id);
+
+					if (object != NULL) {
+						objectInfos[id] = object;
+					}
+				} else {
+					object = objectInfos[id];
+				}
+
+				if (object != NULL) {
+					showTouristInfo(object, najdeneObjekty.at(i).polohaTextu);
+				}
 			}
-
-			/*glDisable(GL_LIGHTING);
-			glLoadIdentity();
-			glTranslatef(0.0f,0.8f,0.0f);
-			glColor3f(0.0f, 0.f, 0.f);
-			glRasterPos2f(0.0f, 0.f); 
-			glPrint(object->name.c_str());
-			glPrint(object->long_description.c_str());
-			glEnable(GL_LIGHTING);*/
+		} else {
+			plain->setLastCommand(ControllerCommands::NO_ACTION);
 		}
+	}
+
+	/*plain->setLastCommand(ControllerCommands::WHAT_IS_OBJECT);
+	//Object *object = DB::DBService::getInstance().getObjectById(4);
+	Object *object = new Object();
+	object->name = "Testovacie menoTestovacie meno";
+	showTouristInfo(object, Point2f(599, 449));*/
+}
+
+void Scene::showTouristInfo(DB::Object *object, Point2f &pos) {
+	const char *str;
+
+	if (plain->getLastCommand() == ControllerCommands::WHAT_IS_OBJECT) {
+		str = object->name.c_str();
+	} else if (plain->getLastCommand() == ControllerCommands::MORE_ABOUT_OBJECT) {
+		str = object->short_description.c_str();
+	} else {
+		return;
+	}
+
+	vector<string> lines;
+	unsigned int maxCharsOnLine = 0;
+	formatter.formatTextToLines(str, lines);
+
+	for (int i=0; i<lines.size(); i++) {
+		if (lines[i].length() > maxCharsOnLine) {
+			maxCharsOnLine = lines[i].length();
+		}
+	}
+
+	for (int i=0; i<lines.size(); i++) {
+		Point2f newPos;
+		formatter.formatPosition(pos, newPos, i, lines.size(), 
+			maxCharsOnLine, getWindowWidth(), getWindowHeight());
+		printLineOfText(lines[i].c_str(), newPos.x, newPos.y);
 	}
 }

@@ -20,6 +20,7 @@ private:
 	CTexture loadTexture(string path);
 
 public:
+	
 	CShader shaders[11]; /**< Premenna v ktorej su ulozene shadery. */
 	CObjModel plain; /**< Model lietadla */
 	CObjModel square; /**< Pozadie za lietadlom, stena na ktorej sa zobraju textura. */
@@ -38,6 +39,6 @@ public:
 	* @see Scene::init()
 	* @return void
 	*/
-	void load();
+	void load(int typ);
 
 };

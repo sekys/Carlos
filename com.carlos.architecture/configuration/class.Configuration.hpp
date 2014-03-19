@@ -20,6 +20,7 @@ private:
 
 	// Metoda na prerobenie retazca na float, ktora sa pouziva v ramci XML
 	float str_to_float(const std::string &in);
+	float int_to_float(const std::string &in);
 
 public: 
 	// Trieda je typu singleton
@@ -33,5 +34,6 @@ public:
 	const XMLElement* getConfig(const char *name);
 	const char* getTitle();
 	const float getConfigf(const char *name);
+	const int getConfigi(const char *name);
 	const char* getConfigTxt(const char *name);
 };

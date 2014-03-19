@@ -15,7 +15,9 @@
 
 #include <map>
 #include "..\Help\font.h"
-#include "..\..\..\com.carlos.architecture\db\entities.hpp" 
+#include "..\..\..\com.carlos.architecture\db\entities.hpp"
+#include "..\..\com.carlos.architecture\db\class.DBService.hpp"
+#include "..\Help\class.TextAndPositionFormatter.h"
 
 
 using namespace Architecture;
@@ -38,6 +40,7 @@ private:
 	void stavSkore(FrameData* fDelta);
 
 	void stateTouristInfo(FrameData * frame);
+	void showTouristInfo(DB::Object *, Point2f &);
 
 	// Pomocne premenne
 	float casPrejdenyNaGameOver;
@@ -47,21 +50,32 @@ private:
 	StavyHry aktualnyStav; /**< aktualny stav v akom sa hra nachadza */
 
 	VisualController* visualController; 
-	ResourceManager* resManager; 
+	ResourceManager* resManager;
+
+	TextAndPositionFormatter formatter;
 
 	void delenieStavov(FrameData* fDelta);
 	void setBackgroud(CTexture texture);
 	void ziskajAktualnyVstup(FrameData* data);
 	void nastavPozadieZoVstupu(cv::Mat& img);
 
+	uint getWindowWidth();
+	uint getWindowHeight();
+
 	map<uint, DB::Object *> objectInfos;
 public:
+	int typ_lietadla;
+	std::clock_t start;
+	double duration;
+
 	Scene();
 	~Scene();
 
 	void release();
 	void init();
 	void frame(float fDelta);
+
+
 	//void keyboard(unsigned char key, int x, int y);
 
 	ThreadSafeStack<ModulVykreslovania::In*> zasobnikVstupov; /**< buffer prijatych snimkov */

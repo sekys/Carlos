@@ -14,7 +14,7 @@ GLvoid buildFont()
 
 	base = glGenLists(96);
 
-	font = CreateFont(	-24,
+	font = CreateFont( -24,
 		0,
 		0,
 		0,
@@ -35,6 +35,12 @@ GLvoid buildFont()
 	SelectObject(hDC, oldfont);
 	DeleteObject(font);
 }
+
+GLvoid killFont(GLvoid)
+{
+	glDeleteLists(base, 96);
+}
+
 /** 
 * Funkcia sa stara o vypisovanie textu
 * @see Scene::stavHrania(float fDelta)
@@ -56,4 +62,41 @@ GLvoid glPrint(const char *fmt, ...)
 	glListBase(base - 32);
 	glCallLists(strlen(text), GL_UNSIGNED_BYTE, text);
 	glPopAttrib();
+}
+
+inline void pushScreenCoordinateMatrix() {
+	glPushAttrib(GL_TRANSFORM_BIT);
+	GLint	viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D(viewport[0],viewport[2],viewport[3],viewport[1]);
+	glPopAttrib();
+}
+
+inline void popProjectionMatrix() {
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glPopAttrib();
+}
+
+void printLineOfText(const char *str, int x, int y) {
+	glUseProgram(0);
+	pushScreenCoordinateMatrix();
+	glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT | GL_TRANSFORM_BIT);	
+	glDisable(GL_LIGHTING);
+
+	glPushMatrix();
+	glLoadIdentity();
+
+	glColor3ub(0,0,0);
+	glRasterPos2f(x, y);
+	glPrint(str);
+	glPopMatrix();
+
+	glEnable(GL_LIGHTING);
+	glPopAttrib();
+	popProjectionMatrix();
 }

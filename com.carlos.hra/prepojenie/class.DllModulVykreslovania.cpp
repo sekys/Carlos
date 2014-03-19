@@ -5,6 +5,7 @@
 #include <gl/wglew.h>
 #include "..\Hra\Help\class.FrameData.hpp"
 
+
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
@@ -16,22 +17,26 @@ using namespace Architecture;
 void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
 	//int a = bg.channels();
 	//int b = horizont.channels();
-
+	
 	for( int j= 0; j < bg.cols; j++ )
 	{
-		int pocet;
-		pocet = 0;
-		for( int i = 0; i < bg.rows; i++ )
+				bg.at<Vec3b>(119,j)[0] = 0;
+				bg.at<Vec3b>(119,j)[1] = 255;
+				bg.at<Vec3b>(119,j)[2] = 0;
+		for( int i = 120; i < bg.rows; i++ )
 		{
+			
 			if(horizont.at<uchar>(i,j) == 0){
 				bg.at<Vec3b>(i,j)[0] = 0;
-				bg.at<Vec3b>(i,j)[1] = 255;
-				bg.at<Vec3b>(i,j)[2] = 0;
-				pocet++;
-				if(pocet == 2) break;
-			} 
+				bg.at<Vec3b>(i,j)[1] = 0;
+				bg.at<Vec3b>(i,j)[2] = 255;
+				break;
+			}
+			
+
 		}
 	}
+	
 }
 
 /** 
@@ -43,7 +48,9 @@ void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
 void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In* in) 
 {
 	// Spracuj obrazok
-	in->image.data = in->image.data.clone();
+	cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
+	//in->image.data = in->image.data.clone();
+	in->image.data =black; 
 	in->horizont = in->horizont.clone();
 	dokresliHorizont(in->image.data, in->horizont);
 	cv::flip(in->image.data, in->image.data, 0);

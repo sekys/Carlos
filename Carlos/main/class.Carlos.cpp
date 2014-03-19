@@ -70,7 +70,6 @@ void Carlos::Init() {
 	// Inicializacia Carlosu spociva napriklad v nacitani konfiguracie ...
 	//db->selectObjects();
 	DB::DBService::getInstance();
-	Configuration::getInstance();
 	cout << "Configuration title '" << Configuration::getInstance().getTitle() << "'\n";
 
 	// Spociva aj v nacitani modulov

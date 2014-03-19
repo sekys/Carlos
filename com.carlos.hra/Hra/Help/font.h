@@ -16,6 +16,7 @@ extern GLuint	base; /**< Vytvoreny font */
 * @return GLvoid
 */
 GLvoid buildFont();
+GLvoid killFont(GLvoid);
 
 /** 
 * Funkcia sa stara o vypisovanie textu
@@ -23,3 +24,7 @@ GLvoid buildFont();
 * @return GLvoid
 */
 GLvoid glPrint(const char *fmt, ...);
+
+inline void popProjectionMatrix();
+inline void pushScreenCoordinateMatrix();
+void printLineOfText(const char * str, int x, int y);
