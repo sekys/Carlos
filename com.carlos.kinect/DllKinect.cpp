@@ -14,7 +14,7 @@ void DllKinect::init() {
 	int iter(0);
 	Point pt1, pt2, pt3;
 
-	this->spustiKalibraciu();
+	//this->spustiKalibraciu();
 
 	CascadeClassifier face_cascade;
 	face_cascade.load("haarcascade_frontalface_alt.xml");
@@ -25,19 +25,20 @@ void DllKinect::init() {
 	Mat ownMat(Size(640,480),CV_8UC3,Scalar(0));
 	Mat grayMat(Size(640,480), CV_8UC1);
 
-	Freenect::Freenect freenect;
-	MyFreenectDevice& device = freenect.createDevice<MyFreenectDevice>(0);
-
-	namedWindow("rgb",CV_WINDOW_AUTOSIZE);
-	namedWindow("depth",CV_WINDOW_AUTOSIZE);
 	device.setLed(LED_BLINK_RED_YELLOW);
-	//freenect_start_video(device);
 	device.startVideo();
 	printf("video started\n");
 	device.startDepth();
 	printf("depth started\n");
 	device.setDepthFormat(FREENECT_DEPTH_REGISTERED);
 	printf("format changed\n");
+
+	if(!NacitajMaticu())
+		this->spustiKalibraciu();
+
+	namedWindow("rgb",CV_WINDOW_AUTOSIZE);
+	namedWindow("depth",CV_WINDOW_AUTOSIZE);
+	
 	device.setLed(LED_GREEN);
 	while (!die) {
 		device.getVideo(rgbMat);
@@ -132,7 +133,7 @@ void DllKinect::spustiKalibraciu() {
 	Mat rgbMat(Size(640,480),CV_8UC3,Scalar(0));
 	Mat ownMat(Size(640,480),CV_8UC3,Scalar(0));
 	Mat grayMat(Size(640,480), CV_8UC1);
-
+/*
 	Freenect::Freenect freenect;
 	MyFreenectDevice& device = freenect.createDevice<MyFreenectDevice>(0);
 	//nastav LED na zapnute
@@ -143,7 +144,7 @@ void DllKinect::spustiKalibraciu() {
 	device.startDepth();
 	printf("depth started\n");
 	device.setDepthFormat(FREENECT_DEPTH_REGISTERED);
-	printf("format changed\n");
+	printf("format changed\n");*/
 	device.setLed(LED_RED);
 	while (j<4) {
 		device.getVideo(rgbMat);
@@ -161,10 +162,14 @@ void DllKinect::spustiKalibraciu() {
 				if(token == 0){
 					token=1;
 					result = DepthToWorld(cvRound(circles[j][i][0]), cvRound(circles[j][i][1]), depthMat.at<ushort>(cvRound(circles[j][i][1]), cvRound(circles[j][i][0])));
+					if(result[0] < 1){
+						cout << "bad read, try again" << endl;
+					} else {
 					mx[0][j] = result[0];
 					mx[1][j] = result[1];
 					mx[2][j] = result[2];
 					j++;
+					}
 					device.setLed(LED_RED);
 					iter=0;
 				}
@@ -173,15 +178,16 @@ void DllKinect::spustiKalibraciu() {
 		iter++;
 	}
 
-	device.stopVideo();
-	device.stopDepth();
-	device.setLed(LED_OFF);
+	//device.stopVideo();
+	//device.stopDepth();
+	//device.setLed(LED_OFF);
 
 	//vypocet
 	Mat x = Mat(4, 4, CV_64F, mx);
 	Mat y = Mat(4, 4, CV_64F, my);
 
 	M = y*(x.inv());
+	UlozMaticu();
 	//cout << "M = "<< endl << " "  << M << endl << endl;
 	//double mi[4] = {{51}, {36}, {87}, {1}};
 	//Mat i = Mat(4, 1, CV_64F, mi);

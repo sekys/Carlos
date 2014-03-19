@@ -1,6 +1,8 @@
 #pragma once
 #define NOMINMAX
 #include "../com.carlos.architecture/modules/class.ModulKinect.hpp"
+#include "../libs/include/freenect/libfreenect.hpp"
+#include "MyFreenectDevice.h"
 
 using namespace Architecture;
 

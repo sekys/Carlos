@@ -1,5 +1,5 @@
 #pragma once
-#include <carlos_global.h>
+#include "../../libs/include/carlos_global.h"
 #include "..\entities\entities.h"
 #include "..\entities\class.IModul.hpp"
 
@@ -23,6 +23,8 @@ namespace Architecture
 		virtual void spustiKalibraciu() {
 
 		}
+
+
 	};
 }
 

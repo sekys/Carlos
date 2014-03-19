@@ -1,5 +1,5 @@
 #include <windows.h>
-#include "../../com.carlos.architecture/DllExports.h"
+#include "../com.carlos.architecture/DllExports.h"
 #include <iostream>
 #include "DllKinect.h"
 

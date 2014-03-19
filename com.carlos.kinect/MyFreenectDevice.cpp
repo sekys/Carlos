@@ -1,4 +1,5 @@
 #include "MyFreenectDevice.h"
+#include <fstream>
 
 Mat M;
 
@@ -57,6 +58,9 @@ bool MyFreenectDevice::getDepth(Mat& output) {
 	}
 }
 
+Freenect::Freenect freenect;
+MyFreenectDevice& device = freenect.createDevice<MyFreenectDevice>(0);
+
 Vec3f DepthToWorld(int x, int y, int depthValue)
 {
 	static const double FovH = 1.0144686707507438;
@@ -69,4 +73,36 @@ Vec3f DepthToWorld(int x, int y, int depthValue)
 	result[1] = (0.5-y/480) * depthValue * YtoZ;
 	result[2] = depthValue;
 	return result;
+}
+
+void UlozMaticu(){
+ofstream file;
+int j, k;
+
+file.open("matica.txt");
+file << "1" << endl;
+for(j = 0; j<4; j++){
+for(k = 0; k<4; k++){
+file << M.at<double>(j, k) << endl;
+}
+}
+}
+
+bool NacitajMaticu(){
+ifstream file;
+int i, j, k;
+
+file.open("matica.txt");
+file >> i;
+if(i == 1){
+M = Mat(4, 4, CV_64F);
+for(j = 0; j<4; j++){
+for(k = 0; k<4; k++){
+file >> M.at<double>(j, k);
+}
+}
+file.close();
+return true;
+} else
+return false;
 }

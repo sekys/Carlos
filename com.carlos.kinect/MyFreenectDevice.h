@@ -1,5 +1,5 @@
 #pragma once
-#include "freenect/libfreenect.hpp"
+#include "../libs/include/freenect/libfreenect.hpp"
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -12,9 +12,23 @@ using namespace cv;
 using namespace std;
 
 extern Mat M;
-
 /// Trieda pre prácu s kinectom
 /** MyFreenectDevice je trieda knižnice freenect obstarávajúca všetkú prácu s dátami kinectu */
+
+class Mutex {
+public:
+	Mutex() {
+		pthread_mutex_init( &m_mutex, NULL );
+	}
+	void lock() {
+		pthread_mutex_lock( &m_mutex );
+	}
+	void unlock() {
+		pthread_mutex_unlock( &m_mutex );
+	}
+private:
+	pthread_mutex_t m_mutex;
+};
 
 class MyFreenectDevice : public Freenect::FreenectDevice {
 public:
@@ -34,11 +48,15 @@ private:
 	Mat depthMat;
 	Mat rgbMat;
 	Mat ownMat;
-	Mutex m_rgb_mutex;
-	Mutex m_depth_mutex;
+	::Mutex m_rgb_mutex;
+	::Mutex m_depth_mutex;
 	bool m_new_rgb_frame;
 	bool m_new_depth_frame;
 };
+
+extern Freenect::Freenect freenect;
+extern MyFreenectDevice& device;
+
 
 /**	Funkcia má na vstupe súradnice x a y videa z RGB kamery a vráti reálne súradnice x a y v reálnom svete z poh¾adu kinectu
 *	@param x x-ová súradnica vo videu
@@ -47,3 +65,5 @@ private:
 */
 
 Vec3f DepthToWorld(int x, int y, int depthValue);
+void UlozMaticu();
+bool NacitajMaticu();
