@@ -99,6 +99,9 @@
     <ClInclude Include="Hra\Model\common_header.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Hra\Help\class.TextAndPositionFormatter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Hra\Help\Math\AABB.cpp">
@@ -141,6 +144,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Hra\Entity\class.Plain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hra\Help\font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Hra\Help\class.TextAndPositionFormatter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -108,6 +108,7 @@
     <ClInclude Include="architecture\modules\class.ModulVykreslovania.hpp" />
     <ClInclude Include="architecture\modules\class.ModulVypocitaniaPolohy.hpp" />
     <ClInclude Include="Hra\Help\class.FrameData.hpp" />
+    <ClInclude Include="Hra\Help\class.TextAndPositionFormatter.h" />
     <ClInclude Include="Hra\Help\class.ThreadSafeStack.hpp" />
     <ClInclude Include="Hra\Help\class.ResourceManager.hpp" />
     <ClInclude Include="Hra\Help\Math\AABB.h" />
@@ -130,6 +131,7 @@
     <ClCompile Include="Hra\Entity\class.Plain.cpp" />
     <ClCompile Include="Hra\Help\class.FrameData.cpp" />
     <ClCompile Include="Hra\Help\class.ResourceManager.cpp" />
+    <ClCompile Include="Hra\Help\class.TextAndPositionFormatter.cpp" />
     <ClCompile Include="Hra\Help\class.VisualController.cpp" />
     <ClCompile Include="Hra\Help\font.cpp" />
     <ClCompile Include="Hra\Scena\prepniStav.cpp" />
