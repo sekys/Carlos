@@ -3,6 +3,9 @@
 #include <fstream>
 #include "class.Carlos.hpp"
 #include "../../com.carlos.architecture/configuration/class.Configuration.hpp"
+#include <log4cpp/Category.hh>
+#include <log4cpp/PropertyConfigurator.hh>
+
 #ifdef _DEBUG
 	#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
 #else
@@ -19,18 +22,10 @@ int main()
 	//_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
 	// Nastav logy
-	// Zapni / Vypni pomocnu konzolu 
-	/*AllocConsole();
-	freopen("CONIN$", "r",stdin);
-	freopen("CONOUT$", "w",stdout);
-	freopen("CONOUT$", "w",stderr);
-	*/
-	ShowWindow( GetConsoleWindow(), SW_HIDE );
-	// Presmeruj vystup do log suboru
-	ofstream out("../log.txt");
-	cout.rdbuf( out.rdbuf() );
-	cout.setf( std::ios_base::unitbuf ); // This will cause a flush at the end of every <<
-	
+	// ShowWindow( GetConsoleWindow(), SW_HIDE );
+	std::string initFileName = "../data/log4cpp.properties";
+	log4cpp::PropertyConfigurator::configure(initFileName);
+	log4cpp::Category::getRoot().debug("Starting log4cpp, configuration %s", initFileName.c_str());
 
 	// Carlos postupne inicializujeme, spustime, deinicializujeme
 	Carlos* carlos = new Carlos();

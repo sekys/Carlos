@@ -2,6 +2,7 @@
 #include <carlos_global.h>
 #include "class.ModulesController.hpp"
 #include "class.App.hpp"
+#include <log4cpp.h>
 
 namespace Architecture {
 
@@ -18,6 +19,8 @@ namespace Architecture {
 
 		// Metoda pre ziskanie snimku
 		void nacitajDalsiuSnimku();
+
+		log4cpp::Category* log;
 
 	protected:
 		// Inicializacia Carlosu

@@ -4,8 +4,10 @@
 #include "../../com.carlos.architecture/db/class.DBService.hpp"
 using namespace Architecture;
 
-Carlos::Carlos() {
+Carlos::Carlos()  {
 	// Nacitaj vsetky casti Carlosa
+	log = CREATE_LOG4CPP();
+	log->debug("Starting carlos");
 	controller = new ModulesController();
 }
 
