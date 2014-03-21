@@ -4,6 +4,7 @@
 */
 #include <carlos_global.h>
 #include "class.ModulesController.hpp"
+#include <log4cpp.h>
 
 using namespace Architecture;
 
@@ -18,7 +19,9 @@ void ModulesController::callInits() {
 
 void ModulesController::destroyThreads() {
 	// V ramci tejto metody musime znicit vsetky thready jednotlivych modulov
-	cout << "Interupting threads\n";
+	if(log != NULL) {
+		log->debugStream()  << "Interupting threads";
+	}
 
 	// V prvej faze sa snazime vsetky moduly stopnut ... to sa nemusi udiat hned
 	moduls_type::iterator it;
@@ -30,7 +33,9 @@ void ModulesController::destroyThreads() {
 	}
 
 	// V druhej faze cakame kym sa moduly stopnu
-	cout << "Joining threads\n";
+	if(log != NULL) {
+		log->debugStream()  << "Joining threads";
+	}
 	for (it = moduls.begin(); it!= moduls.end(); ++it) {
 		ModulWrapper* wrapper = *it;
 		if(wrapper->modul->isThreaded()) {
@@ -42,7 +47,9 @@ void ModulesController::destroyThreads() {
 void ModulesController::destroyModules() {
 	// V tejto metode musime vsetky moduly uvolnit
 	destroyThreads(); // teda uvolnime vlakna, ak existuju
-	cout << "Destroying modules\n";
+	if(log != NULL) {
+		log->debugStream()  << "Destroying modules";
+	}
 	moduls_type::iterator it;
 	for (it = moduls.begin(); it!= moduls.end(); ++it) {
 		delete *it; // uvolnime jednotlive instancie
@@ -78,6 +85,7 @@ void ModulesController::installModules() {
 }
 
 ModulesController::ModulesController() {
+	log = CREATE_LOG4CPP();
 	reset();
 }
 

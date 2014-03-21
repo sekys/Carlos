@@ -5,7 +5,7 @@ CTexture ResourceManager::loadTexture(string path) {
 	bool test;
 	test = texture.loadTexture2D(path, true);
 	if (test == false){
-		throw std::exception("Nenasiel sa obrazok!\n");
+		throw std::exception("Nenasiel sa obrazok!");
 	}
 	texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_NEAREST_MIPMAP);
 	return texture;

@@ -45,7 +45,6 @@ namespace Architecture {
 		template <typename T>
 		T* callFactory() {
 			T* instance = NULL;
-			//typedef void* (*pvFunctv)();
 			typedef int (WINAPI *pvFunctv)();
 			pvFunctv factory;
 			FARPROC metoda = GetProcAddress( hdll, "callFactory" ); 

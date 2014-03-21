@@ -22,9 +22,9 @@ void Scene::stavSkore(FrameData* frame) {
 }
 template <class T>
 string convertToStr(T *var) {
-  ostringstream ss;
-  ss << *var;
-  return ss.str();
+	ostringstream ss;
+	ss << *var;
+	return ss.str();
 }
 
 /** 
@@ -52,7 +52,7 @@ void Scene::stavGameOver(FrameData* frame) {
 	glTranslatef(-0.1f,-0.4f,0.0f);
 	glPrint(c);
 	glEnable(GL_LIGHTING);
-	
+
 
 	if(casPrejdenyNaGameOver > 5.0) {
 		/// presiel cas a zmeni sa stav
@@ -61,7 +61,9 @@ void Scene::stavGameOver(FrameData* frame) {
 }
 
 void Scene::nastavPozadieZoVstupu(cv::Mat& img) {
-	cout << "Nastavujem texturu z videa.\n";
+	if(log != NULL) {
+		log->debugStream() << "Nastavujem texturu z videa.";
+	}
 	GLenum inputColourFormat = GL_BGR;
 	if (img.channels() == 1) {
 		inputColourFormat = GL_LUMINANCE;
@@ -109,7 +111,9 @@ bool otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plain* plain) {
 */
 void Scene::stavHrania(FrameData* frame) {
 	if(!frame->hasVstup()) {
-		cout << "Neprisiel mi snimok z videa, preskakujem nastavenie textury.\n";
+		if(log != NULL) {
+			log->debugStream() << "Neprisiel mi snimok z videa, preskakujem nastavenie textury.";
+		}
 	} else {
 		/// Kazdu snimku updatni pozadie
 		nastavPozadieZoVstupu(frame->getImage());
@@ -140,16 +144,16 @@ void Scene::stavHrania(FrameData* frame) {
 	}
 
 	// Otestuj ci sa dotyka horizontu
- if(frame->hasVstup()) {
-	
+	if(frame->hasVstup()) {
+
 		cv::Mat horizont = frame->getHorizont();
 		contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
 		/*if(contain) {
-			cout << "Narazil do horizontu\n";
-			havaroval();
+		cout << "Narazil do horizontu\n";
+		havaroval();
 		} else {
-			// toto vracia stale B
-			//cout << "Leti nad horizontom\n";
+		// toto vracia stale B
+		//cout << "Leti nad horizontom\n";
 		}*/
 	}
 
@@ -184,7 +188,7 @@ void Scene::havaroval() {
 void Scene::stavUvodnaObrazovka(FrameData* frame) {
 	zasobnikVstupov.clear();
 
-	
+
 	///Ak sa dotkne obrazovky zacina sa hra
 	if(frame->getCommand() == ControllerCommands::UP) {
 		prepniStavNaHrania();

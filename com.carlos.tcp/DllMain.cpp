@@ -8,10 +8,12 @@
 #include <process.h> 
 #include <iostream>
 #include "../com.carlos.architecture/configuration/class.Configuration.hpp"
+#include <log4cpp.h>
+
 #ifdef _DEBUG
-	#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
+#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
 #else
-	#pragma comment(lib, "../Release/com.carlos.architecture.lib")
+#pragma comment(lib, "../Release/com.carlos.architecture.lib")
 #endif
 
 using namespace Architecture;
@@ -24,17 +26,21 @@ using namespace std;
 class TCPServer : public FakeModulAndroid, MessageHandler {
 private:
 	ServerSocket* server;
+	log4cpp::Category* log;
 
 public:
 	// Nas modul ma zatial nacitavat fake GPS suranice zo suboru 
 	TCPServer() : FakeModulAndroid("../data/video/2013-10-20-12-25-52.txt") {
 		server = NULL;
+		log = CREATE_LOG4CPP();
 	}
 
 	// Nas modul sa spusta
 	virtual void init() {
 		FakeModulAndroid::init();
-		cout << "Native TCP server starting\n";
+		if(log != NULL) {
+			log->debugStream() << "Native TCP server starting";
+		}
 		Configuration& config = Configuration::getInstance();
 		server = new MyServerSocket(this, config.getConfigTxt("MY_IP"), config.getConfigTxt("MY_PORT"));
 		server->start();
@@ -43,10 +49,14 @@ public:
 	// Zachytavam spravy od clienta
 	void HandleMessage(char* input) {
 		string inputText = input;
-		cout << "Reading\n" + inputText + "\n";
+		if(log != NULL) {
+			log->debugStream() << "Reading\n" + inputText + "\n";
+		}
 		size_t pos = inputText.find(":");
 		if(pos == -1) {
-			cout << "Sprava nieje spravne formatovana.\n";
+			if(log != NULL) {
+				log->debugStream() << "Sprava nieje spravne formatovana.";
+			}
 			return;
 		}
 		string key = inputText.substr(0, pos);
@@ -55,12 +65,11 @@ public:
 		// Citaj prikaz
 		if (key.compare("Command") == 0) {
 			//sendRandomNumberResponse();
-			updateCommand(value); // TODO: tu ostava :
+			updateCommand(value); 
 			return;
 		} 
 
 		// Citaj GPS
-		
 		if (key.compare("gps") == 0) {
 			vector<string> v;
 			split(value, v);
@@ -71,7 +80,9 @@ public:
 			return;
 		} 
 
-		cout << "Unkown command from tcp!\n";
+		if(log != NULL) {
+			log->debugStream() << "Unkown command from tcp!";
+		}
 	}
 
 	// Posielam clientovy odpoved

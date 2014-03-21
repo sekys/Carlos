@@ -4,6 +4,7 @@
 #include "../../com.carlos.architecture/entities/class.IModul.hpp"
 #include <iostream> 
 #include "class.Dll.hpp"
+#include <log4cpp.h>
 
 namespace Architecture
 {
@@ -20,6 +21,8 @@ namespace Architecture
 		bool initCalled; /**< Bol uz modul inicializovany ? Predchadzame dvojitemu spusteniu. */
 		Dll* dll; /**< Dll subor, z ktoreho bol modul nacitany. */
 		IModul* modul; /**< Priamo modul ulozeny */
+
+		log4cpp::Category* log;
 
 		ModulWrapper(IModul* modul, Dll* dll = NULL);
 		~ModulWrapper();

@@ -11,6 +11,7 @@
 using namespace std;
 
 ServerSocket::ServerSocket(const char* ip, const char* port) {
+	log = CREATE_LOG4CPP();
 	ListenSocket = INVALID_SOCKET;
 	ClientSocket = INVALID_SOCKET;
 	listening = true;
@@ -36,7 +37,9 @@ DWORD ServerSocket::start() {
 	// Initialize Winsock
 	iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
 	if (iResult != 0) {
-		cout << "WSAStartup failed\n";
+		if(log != NULL) {
+			log->debugStream() << "WSAStartup failed";
+		}
 		return 1;
 	}
 
@@ -49,7 +52,9 @@ DWORD ServerSocket::start() {
 	// Resolve the server address and port
 	iResult = getaddrinfo(ip, port, &hints, &result);
 	if ( iResult != 0 ) {
-		cout << "TCP getaddrinfo failed" << ip << port << "\n";
+		if(log != NULL) {
+			log->debugStream() << "TCP getaddrinfo failed" << ip << ":" << port;
+		}
 		WSACleanup();
 		return 1;
 	}
@@ -57,7 +62,9 @@ DWORD ServerSocket::start() {
 	// Create a SOCKET for connecting to server
 	ListenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 	if (ListenSocket == INVALID_SOCKET) {
-		 cout << "socket failed " << ip << port << "\n";
+		if(log != NULL) {
+			log->debugStream() << "socket failed " << ip << ":" << port;
+		}
 		freeaddrinfo(result);
 		WSACleanup();
 		return 1;
@@ -66,7 +73,9 @@ DWORD ServerSocket::start() {
 	// Setup the TCP listening socket
 	iResult = bind( ListenSocket, result->ai_addr, (int)result->ai_addrlen);
 	if (iResult == SOCKET_ERROR) {
-		cout << "bind failed - zla ip adresa? " << ip << port << "\n";
+		if(log != NULL) {
+			log->debugStream() << "bind failed - zla ip adresa? " << ip << ":" << port;
+		}
 		freeaddrinfo(result);
 		closesocket(ListenSocket);
 		WSACleanup();
@@ -77,18 +86,24 @@ DWORD ServerSocket::start() {
 
 	iResult = listen(ListenSocket, SOMAXCONN);
 	if (iResult == SOCKET_ERROR) {
-		cout << "listen failed  " << ip << port << "\n";
+		if(log != NULL) {
+			log->debugStream() << "listen failed  " << ip << ":" << port;
+		}
 		closesocket(ListenSocket);
 		WSACleanup();
 		return 1;
 	}
 
-	cout << "Listing for clients on port " << port << " \n";
+	if(log != NULL) {
+		log->debugStream() << "Listing for clients on port " << port;
+	}
 	while ( listening ) {
 		// Accept a client socket
 		ClientSocket = accept(ListenSocket, NULL, NULL);
 		if (ClientSocket != INVALID_SOCKET) {
-			cout << "Client connected\n";
+			if(log != NULL) {
+				log->debugStream() << "Client connected";
+			}
 
 			// Create socket listener and sender to handle this client
 			if ( listener != NULL ) {
@@ -99,12 +114,16 @@ DWORD ServerSocket::start() {
 			// Setup the socket sender and listener
 			listener = buildListener(ClientSocket);
 			if(listener == NULL) {
-				cout <<"buildListener return null\n";
+				if(log != NULL) {
+					log->debugStream() << "buildListener return null";
+				}
 				return 1;
 			}
 			// listener->startThread();
 			listener->start();
-			cout <<"listener start has end\n";
+			if(log != NULL) {
+				log->debugStream() << "listener start has end";
+			}
 			if(listener != NULL) {
 				delete listener;
 				listener = NULL;
@@ -112,7 +131,9 @@ DWORD ServerSocket::start() {
 		}
 		else {
 			int error = WSAGetLastError();
-			cout << "accept failed\n";
+			if(log != NULL) {
+				log->debugStream() << "accept failed";
+			}
 			switch ( error ) {
 			case 10093:
 				listening = false;

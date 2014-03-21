@@ -5,6 +5,8 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include "class.MessageHandler.hpp"
+#include <log4cpp.h>
+
 #define DEFAULT_BUFLEN 512
 
 /**
@@ -13,15 +15,17 @@
 */
 class SocketListener {
 protected:
-    WSADATA wsaData;
-    SOCKET ClientSocket;
-    struct addrinfo *result;
+	WSADATA wsaData;
+	SOCKET ClientSocket;
+	struct addrinfo *result;
 	struct addrinfo *hints;
-    char recvbuf[DEFAULT_BUFLEN];
-    int iResult, iSendResult;
-    int recvbuflen;
+	char recvbuf[DEFAULT_BUFLEN];
+	int iResult, iSendResult;
+	int recvbuflen;
 	bool listening;
 	MessageHandler* handler;
+
+	log4cpp::Category* log;
 
 public:
 	// Metoda pre zabalenie scoketu

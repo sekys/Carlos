@@ -30,6 +30,8 @@ namespace Architecture {
 		void destroyModules();			// Uvolni vsetky moduly
 		void reset();			// Restartuj vsetky premenne na zakaldne hodnoty
 
+		log4cpp::Category* log;
+
 	protected:
 		// Metoda na zaregistrovanie modula z instancie
 		template <typename T> T* add(T* instance) {

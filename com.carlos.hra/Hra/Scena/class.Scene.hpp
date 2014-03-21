@@ -12,6 +12,7 @@
 #include "..\Help\class.ThreadSafeStack.hpp"
 #include "../../../com.carlos.architecture/modules/class.ModulVykreslovania.hpp"
 #include "..\Help\class.FrameData.hpp"
+#include <log4cpp.h>
 
 #include <map>
 #include "..\Help\font.h"
@@ -51,7 +52,7 @@ private:
 
 	VisualController* visualController; 
 	ResourceManager* resManager;
-
+	log4cpp::Category* log;
 	TextAndPositionFormatter formatter;
 
 	void delenieStavov(FrameData* fDelta);

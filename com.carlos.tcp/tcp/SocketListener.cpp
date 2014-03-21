@@ -10,6 +10,7 @@
 using namespace std;
 
 SocketListener::SocketListener(SOCKET socket) {
+	log = CREATE_LOG4CPP();
 	recvbuflen = DEFAULT_BUFLEN;
 	this->ClientSocket = socket;
 }
@@ -27,22 +28,19 @@ DWORD SocketListener::start() {
 	while ( listening ) {
 		int iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) {
-			cout << "Bytes received: " << iResult << "\n";
 			// Ukonci retazec na zakalde prijatej dlzky
-
 			recvbuf[iResult] = 0;
 
 			if(handler == NULL) {
-				cout << "handler is null\n";
+				throw new exception("handler is null");
 				return 1;
 			}
 
 			// Posial spravu dalej na handler
 			handler->HandleMessage(recvbuf);
-		}
-		else {
+		} else {
 			// Client sa odpojil
-			cout << "Client connection closing\n";
+			throw new exception("Client connection closing");
 			closesocket(ClientSocket);
 			return 1;
 		}
@@ -54,11 +52,13 @@ DWORD SocketListener::start() {
 void SocketListener::sendTEXT2Client(const char* txt) {
 	// Metoda pre poslanie spravy cleintovy
 	int len = strlen(txt);
-	cout << "Sending\n" << txt;
+	if(log != NULL) {
+		log->debugStream() << "Sending\n" << txt;
+	}
 	int sent = send( this->ClientSocket, txt, len, 0 );
 
 	if ( sent == SOCKET_ERROR ) {
-		cout << "Send failed.\n";
+		throw new exception("Send failed.\n");
 		closesocket( this->ClientSocket );
 		return;
 	}

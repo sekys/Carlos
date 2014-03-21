@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../Help/Math/AABB.h"
 #include "../../../com.carlos.architecture/entities/entities.h"
+#include <log4cpp.h>
 
 using namespace Architecture;
 
@@ -13,6 +14,7 @@ using namespace Architecture;
 class Plain : public AABB {
 private:
 	ControllerCommands lastCommand;
+	log4cpp::Category* log;
 
 protected:
 	glm::vec3 rotation; /**< Premenna ktora urcuje otacanie lietadla */

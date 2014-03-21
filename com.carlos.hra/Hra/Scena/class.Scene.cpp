@@ -16,12 +16,14 @@ void testGL() {
 	if(CARLOS_DEBUG_OPENGL) {
 		GLenum error = glGetError();
 		if( error != GL_NO_ERROR ) {
-			cout << "Error initializing OpenGL! " << gluErrorString( error ) << "\n";
+			const GLubyte * sprava =  gluErrorString( error );
+			throw new exception("Error initializing OpenGL! ");
 		}
 	}
 }
 
 Scene::Scene()  {
+	log = CREATE_LOG4CPP();
 	plain = new Plain(glm::vec2(10.0, 10.0), typ_lietadla);
 	world = new World(glm::vec2(320.0, 240.0));
 }
@@ -39,7 +41,9 @@ Scene::~Scene() {
 */
 void Scene::init() {
 	testGL();
-	cout << "Spustam Scene::init()\n";
+	if(log != NULL) {
+		log->debugStream() << "Spustam Scene::init()";
+	}
 	visualController  = new VisualController();
 	resManager = new ResourceManager();
 
@@ -53,13 +57,15 @@ void Scene::init() {
 	//switchStateToTouristInfo();
 	prepniStavNaObrazovku();
 	testGL();
-	
+
 	testGL();
 	glEnable(GL_DEPTH_TEST);
 
 	buildFont();
 
-	cout << "Koncim Scene::init()\n";
+	if(log != NULL) {
+		log->debugStream() << "Koncim Scene::init()";
+	}
 	testGL();
 }
 
@@ -71,30 +77,7 @@ void Scene::release() {
 	SAFE_DELETE( plain );
 	SAFE_DELETE( world );
 }
-/** 
-* Funkcia ma na vstupe 3 parametre, stacenu klavesu a aktualnu poziciu lietadla x a y koordinaty
-* @param key - stlacena klavesa
-* @param x - pozicia lietadla na osi x
-* @param y - pozicia lietadla na osi y
-* @see keyboard(unsigned char key, int x, int y)
-* @return void
-*/
-/*
-void Scene::keyboard(unsigned char key, int x, int y)
-{
-switch(key)
-{
-case 'q': {
-exit(0);
-break;
-}
-default: {
-pressedKey = key;
-break;
-}
-}
-}
-*/
+
 /** 
 * Funkcia ma na vstupe 1 parameter a to zmenu casu, stara sa vykreslenie 1 framu
 * @param fDelta - zmena casu
@@ -137,27 +120,23 @@ void Scene::delenieStavov(FrameData* frame) {
 							  }
 	case StavyHry::OBRAZOVKA_PREHRAL: {
 		stavGameOver(frame);
-		
 		break;
 									  }
 	case StavyHry::OBRAZOVKA_SKORE: {
 		stavSkore(frame);
-		
 		break;
 									}
-
 	case StavyHry::UVODNA_OBRAZOVKA: {
 		stavUvodnaObrazovka(frame);
-		
 		break;
 									 }
 	case StavyHry::TOURIST_INFO: {
 		stateTouristInfo(frame);
 		break;
-	}
+								 }
 
 	default: {
-		throw std::exception("Neocakavany stav\n");
+		throw std::exception("Neocakavany stav");
 			 }
 	}
 }
@@ -165,10 +144,11 @@ void Scene::delenieStavov(FrameData* frame) {
 void Scene::ziskajAktualnyVstup(FrameData* frame) {
 	try {
 		frame->setVstup( zasobnikVstupov.poll() );
-		cout << "[Hra] Prijmam  vstupy " << *frame << "\n";
+		if(log != NULL) {
+			log->debugStream() << "Hra, prijmam  vstupy "; // << frame;
+		}
 	} catch (const std::out_of_range& oor) {
 		// Zasobnik je prazdny, ponechaj tam staru texturu do kedy nepride obrazok
-		// Ponechaj staru texturu, ....
 	}
 }
 

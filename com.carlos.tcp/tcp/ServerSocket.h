@@ -5,6 +5,7 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include "SocketListener.h"
+#include <log4cpp.h>
 
 /**
 * Trieda ktorra reprezentuje server.
@@ -23,6 +24,8 @@ protected:
 	const char* ip;
 	const char* port;
 	virtual SocketListener* buildListener(SOCKET socket) = 0;
+
+	log4cpp::Category* log;
 
 public:
 	// Nakonfiguruj server na urcitej ip adrese a porte

@@ -2,6 +2,7 @@
 #include <carlos_global.h>
 #include "..\entities\entities.h"
 #include "..\entities\class.IModul.hpp"
+#include <log4cpp.h>
 
 namespace Architecture
 {
@@ -10,7 +11,13 @@ namespace Architecture
 	* spracovat snimku a detekovat na nej objekty.
 	*/
 	class ModulSpracovania : public IModul  {
+	protected:
+		log4cpp::Category* log;
+
 	public:
+		ModulSpracovania() {
+			log = CREATE_LOG4CPP();
+		}
 
 		/**
 		* Tu su definovane vstupy do modulu
@@ -50,7 +57,9 @@ namespace Architecture
 
 
 		virtual Out detekujObjekty(In in) {
-			//cout << "Dostal som\n\n" << in<< "\n\n";
+			/*if(log != NULL) {
+				log->debugStream() << "Dostal som\n\n" << in;
+			}*/
 
 			// Hladam na obrazovky a ked najdem objekt ulozim ho + jeho poziciu
 			DetekovanyObjekt najdenyObjekt;
@@ -66,14 +75,15 @@ namespace Architecture
 		}
 
 		virtual cv::Mat kalibruj(cv::Mat image1, cv::Mat image2) {
-			cout << "Hladam homografiu ... \n\n";
-
+			/*if(log != NULL) {
+				log->debugStream() << "Hladam homografiu ...";
+			}*/
+			
 			// Hladam homografiu medzi dvoma obrazmi a vypocitam maticu transformacie
 			cv::Mat H = cv::Mat::zeros(3,3,CV_32F);
 			H.at<float>(0,0)= 1.;
 			H.at<float>(1,1)= 1.;
 			H.at<float>(2,2)= 1.;
-
 			return H;
 		}
 

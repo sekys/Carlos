@@ -34,11 +34,10 @@ namespace Architecture
 		}
 
 		virtual bool updateCommand(std::string command) {
-			// TODO: synchronizacia
 			bm_type::left_const_iterator left_iter = bm.left.find(command);
 			if(left_iter == bm.left.end() ) {
 				setActualCommand(ControllerCommands::NO_ACTION);
-				//cout << "Unkown key !\n";
+				// "Unkown key !\n";
 				return false;
 			}
 			setActualCommand(left_iter->second);

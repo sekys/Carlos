@@ -102,16 +102,3 @@ Object *DBService::getObjectById(uint id) {
 	
 	return object;
 }
-
-// Priklad metody, ako vytiahnut objekty z databazy, cez OOP mapovac
-// Pozn.: Callback sa nevola ked je insert alebo nozina je prazdna
-/*vector<Object> selectObjects() {
-auto sel(db->select<Object>());
-vector<Object> list;
-SqliteDB::Iterator<Object> it; // toto je iterator z kniznice
-for (it = sel.first ; it != sel.second; ++it) {
-int number = it->id;
-std::cout <<  number << '\n';
-}
-return list;
-}*/

@@ -22,14 +22,14 @@ void FrameData::setDeltaTime(float f) {
 	deltaTime = f;
 }
 
-ostream& operator<< (ostream& out, FrameData& object) {
+ostringstream& operator<< (ostringstream& out, FrameData* object) {
 	out << "FrameData(";
-	if(object.vstup == NULL) {
+	if(object->vstup == NULL) {
 		out << "vstup: NULL, ";
 	} else {
-		out << "vstup: ( " << *(object.vstup) << " ), ";
+		out << "vstup: ( " << *(object->vstup) << " ), ";
 	}
-	out << "deltaTime: " << object.deltaTime << ", ";
+	out << "deltaTime: " << object->deltaTime << ", ";
 	out << "));";
 	return out;
 }

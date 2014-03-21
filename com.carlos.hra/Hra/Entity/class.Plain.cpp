@@ -7,9 +7,10 @@ glm::vec2 Plain::getsize(){
 }
 
 Plain::Plain(glm::vec2 size, int typ) : AABB(size) {
+	log = CREATE_LOG4CPP();
 	this->lastCommand = ControllerCommands::NO_ACTION;
 	this->size = size;
-	
+
 	setStartPosition(typ);
 }
 
@@ -46,21 +47,22 @@ void  Plain::logic(float fDelta, ControllerCommands pressedKey)
 	glm::vec2 F = glm::vec2(0.0);
 	glm::vec2 Fg = glm::vec2(0.0f, -3.0f);
 	F += Fg;
+
 	if (pressedKey == ControllerCommands::UP) {
-		cout << "W\n";
 		F.y += silaPohybu.x;
 	}
 	if (pressedKey == ControllerCommands::DOWN) {
-		cout << "S\n";
 		F.y += silaPohybu.y * -1.0f;
 	}
 	if (pressedKey == ControllerCommands::RIGHT) {
-		cout << "W\n";
 		F.x += silaPohybu.x;
 	}
 	if (pressedKey == ControllerCommands::LEFT) {
-		cout << "A\n";
 		F.x += silaPohybu.x * -1.0f;
+	}
+
+	if(log != NULL) {
+		log->debugStream() << pressedKey;
 	}
 
 	/// Vzorce na fyziku f = m* a		a = f / m		m = 1kg

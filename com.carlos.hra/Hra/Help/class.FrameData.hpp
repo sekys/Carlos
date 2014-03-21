@@ -21,5 +21,5 @@ public:
 	bool hasVstup();
 	ModulVykreslovania::In* getVstup();
 
-	friend ostream& operator<< (ostream& out, FrameData& object);
+	friend ostringstream& operator<< (ostringstream& out, FrameData* object);
 };

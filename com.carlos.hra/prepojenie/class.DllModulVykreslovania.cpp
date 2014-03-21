@@ -14,29 +14,28 @@
 
 using namespace Architecture;
 
+DllModulVykreslovania::DllModulVykreslovania() {
+	log = CREATE_LOG4CPP();
+	window = NULL;
+}
+
 void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
-	//int a = bg.channels();
-	//int b = horizont.channels();
-	
 	for( int j= 0; j < bg.cols; j++ )
 	{
-				bg.at<Vec3b>(119,j)[0] = 0;
-				bg.at<Vec3b>(119,j)[1] = 255;
-				bg.at<Vec3b>(119,j)[2] = 0;
+		bg.at<Vec3b>(119,j)[0] = 0;
+		bg.at<Vec3b>(119,j)[1] = 255;
+		bg.at<Vec3b>(119,j)[2] = 0;
 		for( int i = 120; i < bg.rows; i++ )
 		{
-			
+
 			if(horizont.at<uchar>(i,j) == 0){
 				bg.at<Vec3b>(i,j)[0] = 0;
 				bg.at<Vec3b>(i,j)[1] = 0;
 				bg.at<Vec3b>(i,j)[2] = 255;
 				break;
 			}
-			
-
 		}
 	}
-	
 }
 
 /** 
@@ -56,9 +55,6 @@ void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In* in)
 	cv::flip(in->image.data, in->image.data, 0);
 
 	// Posli obrazok dalej
-	/*if(scene == NULL) {
-	throw std::exception("scene is null\n");
-	}*/
 	scene.zasobnikVstupov.push(in);	
 }
 
@@ -82,7 +78,9 @@ void DllModulVykreslovania::render() {
 	try {
 		scene.frame(fDelta);
 	} catch (std::exception e) {
-		cout << e.what();
+		if(log != NULL) {
+			log->debugStream() << e.what();
+		}
 	} 
 }
 
@@ -104,65 +102,23 @@ void DllModulVykreslovania::init() {
 	*/
 	window = SDL_CreateWindow("Carlos game", 100, 100, 600, 480, SDL_WINDOW_OPENGL);
 	if (window == NULL) {
-		throw std::exception("Failed to initialize SDL_CreateWindow\n");
+		throw std::exception("Failed to initialize SDL_CreateWindow");
 	}
 	SDL_GLContext context = SDL_GL_CreateContext(window);
 	if (!context){
-		throw std::exception("Failed to initialize SDL_GL_CreateContext\n");
+		throw std::exception("Failed to initialize SDL_GL_CreateContext");
 	}
 	if (glewInit() != GLEW_OK) {
-		throw std::exception("Failed to initialize GLEW\n");
-	}
-	/*
-	SDL_SysWMinfo sdlinfo;
-	SDL_version sdlver;
-	SDL_VERSION(&sdlver);
-	sdlinfo.version = sdlver;
-	SDL_GetWindowWMInfo(window, &sdlinfo);
-
-	HGLRC hRC;
-	HDC hDC;
-	hDC = GetDC( sdlinfo.info.win.window );
-	PIXELFORMATDESCRIPTOR pfd;
-
-	const int iPixelFormatAttribList[] =
-	{
-		WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
-		WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
-		WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-		WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-		WGL_COLOR_BITS_ARB, 32,
-		WGL_DEPTH_BITS_ARB, 24,
-		WGL_STENCIL_BITS_ARB, 8,
-		0 // End of attributes list
-	};
-	int iContextAttribs[] =
-	{
-		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-		WGL_CONTEXT_MINOR_VERSION_ARB, 3,
-		WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
-		0 // End of attributes list
-	};
-
-	int iPixelFormat, iNumFormats;
-	wglChoosePixelFormatARB(hDC, iPixelFormatAttribList, NULL, 1, &iPixelFormat, (UINT*)&iNumFormats);
-
-	// PFD seems to be only redundant parameter now
-	if(!SetPixelFormat(hDC, iPixelFormat, &pfd)) {
-		throw std::exception("Failed to initialize SetPixelFormat\n");
+		throw std::exception("Failed to initialize GLEW");
 	}
 
-	hRC = wglCreateContextAttribsARB(hDC, 0, iContextAttribs);
-	// If everything went OK
-	if(hRC) wglMakeCurrent(hDC, hRC);
-	else {
-		throw std::exception("Failed to initialize wglMakeCurrent\n");
+
+	if(log != NULL) {
+		log->debugStream() << "Vendor: " <<  glGetString( GL_VENDOR );
+		log->debugStream() << "Renderer: " << glGetString( GL_RENDERER );
+		log->debugStream() << "Version: " << glGetString( GL_VERSION   );
+		log->debugStream() << "Shading ver: " << glGetString ( GL_SHADING_LANGUAGE_VERSION );
 	}
-	*/
-	cout << "Vendor: " <<  glGetString( GL_VENDOR ) << "\n";
-	cout << "Renderer: " << glGetString( GL_RENDERER )  << "\n";
-	cout << "Version: " << glGetString( GL_VERSION   )  << "\n";
-	cout << "Shading ver: " << glGetString ( GL_SHADING_LANGUAGE_VERSION )  << "\n";
 
 	should_stop = false;
 	oldTimeSinceStart = 0;
@@ -180,8 +136,11 @@ void DllModulVykreslovania::init() {
 		SDL_GL_SwapWindow(window);
 	}
 
-	scene.release();
+	if(log != NULL) {
+		log->debugStream() << "Vypinam cyklus hry";
+	}
 
+	scene.release();
 	SDL_GL_DeleteContext(context);
 	SDL_Quit();
 }

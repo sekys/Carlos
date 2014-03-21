@@ -4,9 +4,9 @@
 #include "CV.h"
 #include <iostream>
 #ifdef _DEBUG
-	#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
+#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
 #else
-	#pragma comment(lib, "../Release/com.carlos.architecture.lib")
+#pragma comment(lib, "../Release/com.carlos.architecture.lib")
 #endif
 
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
@@ -39,7 +39,7 @@ ModulSpracovania::Out RealModulSpracovania::detekujObjekty(ModulSpracovania::In 
 
 	if( in.image.data.empty() || in.recepts.empty() ) return out; /// chyba nacitania streamu alebo ziadne mozne objekty
 	cvtColor( in.image.data, scene, CV_BGR2GRAY );
-	
+
 #ifdef GPU_MODE
 	runSiftGpu(scene, sceneKeyPoints, sceneDescriptors);
 #else
@@ -54,7 +54,7 @@ ModulSpracovania::Out RealModulSpracovania::detekujObjekty(ModulSpracovania::In 
 		Mat H; /**< matica perspektivnej transformacie */
 		vector<DMatch> matches; /**< zhody */
 		robustMatching( candidates[i].descriptors, sceneDescriptors, matches, distanceRatioThreshold ); /// najdi dobre zhody
-			
+
 		candidates[i].valid = selectInliers( candidates[i].keyPoints, sceneKeyPoints, matches, H ); /// odstran outliers a ziskaj maticu perspektivnej transformacie
 		if( candidates[i].valid == false ) continue; /// neuspesna detekcia objektu na vstupnom obrazku
 		else
@@ -65,26 +65,28 @@ ModulSpracovania::Out RealModulSpracovania::detekujObjekty(ModulSpracovania::In 
 		}
 	}
 
- 	int index = getBestCandidate( candidates ); /**< najlepsi kandidat za objekt */
+	int index = getBestCandidate( candidates ); /**< najlepsi kandidat za objekt */
 
 	if( index >= 0 ) /// najdenie pozicie najlepsieho kandidata
 	{
 		DetekovanyObjekt najdenyObjekt;
-		
+
 		najdenyObjekt.objekt = in.recepts[ candidates[index].pos ]; /**< detegovany objekt */
-		
+
 		najdenyObjekt.boundary = RotatedRect(
 			Point2f( candidates[index].position1.x + ( candidates[index].position2.x - candidates[index].position1.x ) /2, candidates[index].position1.y + ( candidates[index].position2.y - candidates[index].position1.y) / 2 ), 
 			Size( candidates[index].position2.x - candidates[index].position1.x ,  candidates[index].position2.y - candidates[index].position1.y ), 
 			0
 			); /**< pozicia objektu */
-		
-		cout << "Najdeny objekt #" << index << endl;
-	
+
+		if(log != NULL) {
+			log->debugStream() << "Najdeny objekt #" << index;
+		}
+
 		// Poslem vysledok dalej
 		out.objects.push_back(najdenyObjekt); /**< vlozit vysledok */
 	}
-	
+
 	return out;
 }
 
@@ -102,7 +104,7 @@ Candidate::Candidate():confidence(0.),avgDistance(0.),valid(true)
 int RealModulSpracovania::getBestCandidate(const vector<Candidate> &candidates)
 {
 	int index = -1;
-	
+
 	for(int i = 0; i < candidates.size(); i++)
 	{
 		if( candidates[i].valid && candidates[i].confidence >= 0 && candidates[i].avgDistance < maxAvgDistance
@@ -174,7 +176,7 @@ bool RealModulSpracovania::findObject(const Mat &image, const Mat &H, double con
 	try{
 		perspectiveTransform( obj_corners, scene_corners, H );
 		roi = boundingRect( scene_corners );
-		
+
 		if(roi.width < minWidth || roi.height < minHeight ) return false; /// objekt musi splnat min. velkost
 
 		position1 = Point2f( roi.x, roi.y );
@@ -225,14 +227,14 @@ bool RealModulSpracovania::writeDescriptors(const string path, const int id, vec
 	char *fileFormat = "images\\%s\\image-%04d.yml"; /// cesta ku keypoint-om a deskriptorom
 
 	if(keyPoints.empty() || descriptors.empty()) return false;
-	
+
 	FileStorage fs(format(fileFormat, path.c_str(), id), FileStorage::WRITE);
 	/// uloz keypoint-y
 	fs << "keypoints" << keyPoints; 
 	/// uloz deskriptory
 	fs << "descriptors" << descriptors;
 	fs.release();
-	
+
 	return false;
 }
 
@@ -247,7 +249,7 @@ int RealModulSpracovania::importCandidates(vector<Candidate> &candidates, vector
 	int count = 0; /// pocet nacitanych kandidatov
 	char *fileFormat = "images\\%s\\image-%04d.jpg"; /// zatial bude cesta k suborom takato
 	WorldObject object;
-	
+
 	for (int pos = 0; pos < objects.size(); pos++)
 	{
 		object = objects.at(pos);
@@ -308,24 +310,24 @@ bool RealModulSpracovania::selectInliers(const vector<KeyPoint> &objectKeypoints
 
 		try{
 			H = findHomography( obj_points, scene_points, inliers, CV_RANSAC ); /// najdi homografiu - maticu perspektivnej transformacie
-					
+
 			if(ransacOutliersRemovalEnabled)
 				extractInlierMatches(matches, inliers);
 
 			/*objects[ii].confidence = (double) objects[ii].matches.size() / ( ( objects[ii].keyPoints.size() + sceneKeyPoints.size() )*0.5 );
 			if( objects[ii].confidence > minRecognitionConfidence )
 			{
-				objects[ii].H = H;
-					
-				vector<Point2f> obj_corners(4);
-				obj_corners[0] = cvPoint(0,0); 
-				obj_corners[1] = cvPoint( objects[ii].image.cols, 0 );
-				obj_corners[2] = cvPoint( objects[ii].image.cols, objects[ii].image.rows ); 
-				obj_corners[3] = cvPoint( 0, objects[ii].image.rows );
-						
-				std::vector<Point2f> scene_corners(4);
-				perspectiveTransform( obj_corners, scene_corners, objects[ii].H );
-				objects[ii].scene_corners = scene_corners;
+			objects[ii].H = H;
+
+			vector<Point2f> obj_corners(4);
+			obj_corners[0] = cvPoint(0,0); 
+			obj_corners[1] = cvPoint( objects[ii].image.cols, 0 );
+			obj_corners[2] = cvPoint( objects[ii].image.cols, objects[ii].image.rows ); 
+			obj_corners[3] = cvPoint( 0, objects[ii].image.rows );
+
+			std::vector<Point2f> scene_corners(4);
+			perspectiveTransform( obj_corners, scene_corners, objects[ii].H );
+			objects[ii].scene_corners = scene_corners;
 			}*/
 		}catch(Exception &e)
 		{
@@ -350,7 +352,7 @@ bool RealModulSpracovania::selectInliers(const vector<KeyPoint> &objectKeypoints
 void RealModulSpracovania::crossCheckFilter(vector<vector<DMatch>> matches12, vector<vector<DMatch>> matches21, vector<DMatch> &matches)
 {
 	DMatch match;
-	
+
 	matches.clear();
 	int size = maximum(matches12.size(), matches21.size());
 
@@ -359,7 +361,7 @@ void RealModulSpracovania::crossCheckFilter(vector<vector<DMatch>> matches12, ve
 		if(matches12[i].size() < 2) continue;
 
 		match = matches12[i][0];
-		
+
 
 		if( !( matches21[match.trainIdx].size() < 2 ) && ( matches21[match.trainIdx][0].trainIdx == match.queryIdx ) )
 			matches.push_back(match);
@@ -408,7 +410,7 @@ void RealModulSpracovania::distanceRatioFilter(vector<vector<DMatch>> &matches, 
 void RealModulSpracovania::extractInlierMatches(vector<DMatch> &matches, vector<uchar> inliers)
 {
 	int lastBadMatchIndex = -1;
-	
+
 	for (int i = 0; i < matches.size(); ++i) {
 		if (inliers[i]) {
 			if (lastBadMatchIndex < 0)
@@ -430,10 +432,10 @@ void RealModulSpracovania::extractInlierMatches(vector<DMatch> &matches, vector<
 void RealModulSpracovania::setParameters(double distanceRatioThreshold, int minMatchesToFindHomography, bool ransacOutliersRemovalEnabled, int minKeypointsPerObject, double minRecognitionConfidence, double maxAvgDistance)
 {
 	this->distanceRatioThreshold = distanceRatioThreshold, 
-	this->minMatchesToFindHomography = minMatchesToFindHomography,
-	this->ransacOutliersRemovalEnabled = ransacOutliersRemovalEnabled,
-	this->minKeypointsPerObject = minKeypointsPerObject,
-	this->minRecognitionConfidence = minRecognitionConfidence;
+		this->minMatchesToFindHomography = minMatchesToFindHomography,
+		this->ransacOutliersRemovalEnabled = ransacOutliersRemovalEnabled,
+		this->minKeypointsPerObject = minKeypointsPerObject,
+		this->minRecognitionConfidence = minRecognitionConfidence;
 	this->maxAvgDistance = maxAvgDistance;
 }
 
@@ -574,9 +576,9 @@ Mat RealModulSpracovania::kalibruj(Mat image1, Mat image2) {
 	Mat H;
 	vector<DMatch> matches;
 	robustMatching( descriptors1, descriptors2, matches, distanceRatioThreshold ); /// najdi dobre zhody
-			
+
 	if(findMatrix( keypoints1, keypoints2, matches, H ) == false) return out; /// odstran outliers a ziskaj maticu perspektivnej transformacie
-	
+
 	out= H;
 	return out;
 }
@@ -678,7 +680,9 @@ void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 		int nonZero;
 		bitwise_xor( prevHorizon, horizon, tmp );
 		nonZero = countNonZero( tmp );
-		cout << "Total number: " << nonZero << endl; 
+		if(log != NULL) {
+			log->debugStream() << "Total number: " << nonZero; 
+		}
 		if(nonZero > maxPxDiff)
 		{
 			for(int i = 0; i < image.cols; i++)
@@ -761,7 +765,7 @@ int main()
 	String folder;
 	String imagePath1, imagePath2, tmp;
 	int mode;
-	
+
 	RealModulSpracovania modul;
 	ModulSpracovania::In in;
 	ModulSpracovania::Out out;
@@ -770,45 +774,45 @@ int main()
 	object.cestyKSuborom.push_back(path);
 	object.id = 1;
 	Mat image = imread("images\\kostol\\example-0001.jpg");
-	
+
 	Mat output;
 
 	in.image.data = image;
 	in.recepts.push_back(object);
-		
+
 	while((c=getchar()) != 'Q')
 	{
 		switch(c)
 		{
-			case 'R':
-			case 'r':
-				image.copyTo(output);
-				modul.init();
-				
-				out = modul.detekujObjekty(in);
-			
-				for( int i = 0; i< out.objects.size(); i++)
-				{
-					RotatedRect rect = out.objects[i].boundary;
-					rectangle(output, rect.boundingRect(), Scalar(0, 255, 0), 4);
-				}
-				resize( output, output, Size(output.cols / 3, output.rows / 3) );
-				imshow("FINAL", output);
-				waitKey();
-				destroyAllWindows();
-				break;
-			case 'C':
-			case 'c':
-				break;
-			case 'H':
-			case 'h':
-				output = modul.najdiHorizont(image);
-				imshow("FINAL", output);
-				waitKey();
-				destroyAllWindows();
-				break;
+		case 'R':
+		case 'r':
+			image.copyTo(output);
+			modul.init();
+
+			out = modul.detekujObjekty(in);
+
+			for( int i = 0; i< out.objects.size(); i++)
+			{
+				RotatedRect rect = out.objects[i].boundary;
+				rectangle(output, rect.boundingRect(), Scalar(0, 255, 0), 4);
+			}
+			resize( output, output, Size(output.cols / 3, output.rows / 3) );
+			imshow("FINAL", output);
+			waitKey();
+			destroyAllWindows();
+			break;
+		case 'C':
+		case 'c':
+			break;
+		case 'H':
+		case 'h':
+			output = modul.najdiHorizont(image);
+			imshow("FINAL", output);
+			waitKey();
+			destroyAllWindows();
+			break;
 		}
 	}
-	
+
 	return 0;
 }

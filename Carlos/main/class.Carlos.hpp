@@ -13,14 +13,13 @@ namespace Architecture {
 	{
 	private:
 		ModulesController* controller; /**< Carlos spaja rozne moduly */
+		log4cpp::Category* log;
 
 		// Metoda na spracovanie snimku
 		void spracujJedenSnimok(Image image);
 
 		// Metoda pre ziskanie snimku
 		void nacitajDalsiuSnimku();
-
-		log4cpp::Category* log;
 
 	protected:
 		// Inicializacia Carlosu
