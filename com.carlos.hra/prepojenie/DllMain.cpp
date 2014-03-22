@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "../../com.carlos.architecture/DllExports.h"
 #include "class.DllModulVykreslovania.hpp"
+#include <log4cpp/PropertyConfigurator.hh>
 
 #ifdef _DEBUG
 	#pragma comment(lib, "../Debug/com.carlos.architecture.lib")
@@ -18,6 +19,8 @@ int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
 using namespace Architecture;
 
 IMPEXP void* callFactory() {
+	std::string initFileName = "../data/log4cpp.properties";
+	log4cpp::PropertyConfigurator::configure(initFileName);
 	return static_cast< void* > (new DllModulVykreslovania());
 }
 
@@ -26,7 +29,8 @@ IMPEXP void* callFactory() {
 * @return int
 */
 int main(int argc, char **argv) {
-	DllModulVykreslovania moja;
-	moja.init();
+	DllModulVykreslovania* a = static_cast<DllModulVykreslovania*> (callFactory());;
+	a->init();
+	delete a;
 	return 0;
 }

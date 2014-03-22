@@ -9,6 +9,7 @@
 #include <iostream>
 #include "../com.carlos.architecture/configuration/class.Configuration.hpp"
 #include <log4cpp.h>
+#include <log4cpp/PropertyConfigurator.hh>
 
 #ifdef _DEBUG
 #pragma comment(lib, "../Debug/com.carlos.architecture.lib")
@@ -106,12 +107,14 @@ public:
 
 // Ked nas modul ma byt vytvoreny cez riadiaci modul
 IMPEXP void* callFactory() {
+	std::string initFileName = "../data/log4cpp.properties";
+	log4cpp::PropertyConfigurator::configure(initFileName);
 	return static_cast< void* > (new TCPServer());
 }
 
 // Ked chceme modul spustit ako normalnu aplikaciu
 int main() { 
-	TCPServer* a = new TCPServer();
+	TCPServer* a = static_cast<TCPServer*> (callFactory());;
 	a->init();
 	delete a;
 }

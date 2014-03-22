@@ -3,6 +3,8 @@
 #include "../com.carlos.architecture/modules/class.ModulSpracovania.hpp"
 #include "CV.h"
 #include <iostream>
+#include <log4cpp/PropertyConfigurator.hh>
+
 #ifdef _DEBUG
 #pragma comment(lib, "../Debug/com.carlos.architecture.lib")
 #else
@@ -756,11 +758,16 @@ void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 }
 
 IMPEXP void* callFactory() {
+	std::string initFileName = "../data/log4cpp.properties";
+	log4cpp::PropertyConfigurator::configure(initFileName);
 	return static_cast< void* > (new RealModulSpracovania());
 }
 
 int main()
 {
+	std::string initFileName = "../data/log4cpp.properties";
+	log4cpp::PropertyConfigurator::configure(initFileName);
+
 	char c;
 	String folder;
 	String imagePath1, imagePath2, tmp;

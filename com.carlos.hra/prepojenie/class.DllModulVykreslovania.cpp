@@ -4,7 +4,7 @@
 #include <gl/glew.h>
 #include <gl/wglew.h>
 #include "..\Hra\Help\class.FrameData.hpp"
-
+#include <log4cpp/PropertyConfigurator.hh>
 
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")

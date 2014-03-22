@@ -10,8 +10,6 @@
 #include <stdarg.h>
 #include <stdexcept>
 
-
-
 void testGL() {
 	if(CARLOS_DEBUG_OPENGL) {
 		GLenum error = glGetError();
@@ -145,7 +143,7 @@ void Scene::ziskajAktualnyVstup(FrameData* frame) {
 	try {
 		frame->setVstup( zasobnikVstupov.poll() );
 		if(log != NULL) {
-			log->debugStream() << "Hra, prijmam  vstupy "; // << frame;
+			log->debugStream() << "Hra, prijmam  vstupy " << frame;
 		}
 	} catch (const std::out_of_range& oor) {
 		// Zasobnik je prazdny, ponechaj tam staru texturu do kedy nepride obrazok
