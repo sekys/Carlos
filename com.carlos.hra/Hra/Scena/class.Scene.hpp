@@ -47,7 +47,8 @@ private:
 	float casPrejdenyNaGameOver;
 	//unsigned char pressedKey; /**< premenna so stlacenou klavesou */
 	Plain* plain; /**<  model lietadla */
-	World* world; /**< svet */ 
+	World* world; /**< svet */
+	World* world2; /**< vacsi svet */
 	StavyHry aktualnyStav; /**< aktualny stav v akom sa hra nachadza */
 
 	VisualController* visualController; 

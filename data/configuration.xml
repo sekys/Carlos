@@ -13,7 +13,7 @@
   
   
   <!-- Modul tcp servera -->
-  <MY_IP>192.168.1.3</MY_IP>
+  <MY_IP>192.168.1.102</MY_IP>
   <MY_PORT>1234</MY_PORT>
   
 </configuration>

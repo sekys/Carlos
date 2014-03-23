@@ -23,13 +23,15 @@ void testGL() {
 Scene::Scene()  {
 	log = CREATE_LOG4CPP();
 	plain = new Plain(glm::vec2(10.0, 10.0), typ_lietadla);
-	world = new World(glm::vec2(320.0, 240.0));
+	world = new World(glm::vec2(320.0, 240.0)); //640x480
+	//world2 = new World(glm::vec2(512.0, 384.0)); //1024x768
 }
 
 Scene::~Scene() {
 	// Vsetko by malo byt uz aktualne uvolnene
 	SAFE_DELETE(plain);
 	SAFE_DELETE(world);
+	SAFE_DELETE(world2);
 	killFont();
 }
 /** 
@@ -96,7 +98,10 @@ void Scene::frame(float fDelta) {
 	testGL();
 	visualController->setPerspektive();
 	testGL();
+	
+	//visualController->renderObject(resManager->square, world2->getMatrix());
 	visualController->renderObject(resManager->square, world->getMatrix());
+
 	testGL();
 	delenieStavov(&frame);
 	testGL();

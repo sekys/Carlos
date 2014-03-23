@@ -80,22 +80,24 @@ void Scene::nastavPozadieZoVstupu(cv::Mat& img) {
 }
 
 bool otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plain* plain) {
+	cv::flip(horizont, horizont, 0);
 	glm::vec2 aktualnaPozicia = plain->getPosition();
 	glm::vec2 velkostLiedatla = plain->getsize();
 
-	int os_min_x = aktualnaPozicia.x - velkostLiedatla.x/2 + 320;
-	int os_max_x = aktualnaPozicia.x + velkostLiedatla.x/2 + 320;
-	int os_min_y = aktualnaPozicia.y - velkostLiedatla.y/2 + 240;
+	//int os_min_x = aktualnaPozicia.x - velkostLiedatla.x/2 + 320;
+	//int os_max_x = aktualnaPozicia.x + velkostLiedatla.x/2 + 320;
+	int os_min_y = aktualnaPozicia.y - velkostLiedatla.y/2 + 240; 
 	int os_max_y = aktualnaPozicia.y + velkostLiedatla.y/2 + 240;
 
-	if (os_min_x < 0) return false; 
-	if (os_max_x > 640) return false; 
-	if (os_min_y < 0) return false; 
-	if (os_max_y > 480) return false; 
+	//if (os_min_x < 0) return false; 
+	//if (os_max_x > 640) return false; 
+	if (os_min_y < 0 || os_min_y > 480) return false; 
+	if (os_max_y > 480 || os_max_y < 0) return false; 
 
-	for (int j = os_min_y; j < os_max_y; j++ ){
-		for (int i = os_min_x; i < os_max_x; i++ ){
-			if(horizont.at<uchar>(j,i) != 0) return true;
+	for (int j = 465; j < 475; j++ ){
+		for (int i = os_min_y; i < os_max_y; i++ ){
+			if(horizont.at<uchar>(os_min_y,j) != 0) return true;
+
 		}
 	}
 
@@ -148,13 +150,13 @@ void Scene::stavHrania(FrameData* frame) {
 
 		cv::Mat horizont = frame->getHorizont();
 		contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
-		/*if(contain) {
+		if(!contain) {
 		cout << "Narazil do horizontu\n";
 		havaroval();
 		} else {
 		// toto vracia stale B
 		//cout << "Leti nad horizontom\n";
-		}*/
+		}
 	}
 
 	plain->logic(frame->getDeltaTime(), frame->getCommand() );

@@ -38,20 +38,20 @@ glm::vec3  Plain::getRotation() {
 
 void  Plain::logic(float fDelta, ControllerCommands pressedKey) 
 {
-	float radians = 1.0 * 0.0174532925f;
+	//float radians = 1.0 * 0.0174532925f;
 	glm::vec2 position = getPosition();
 
 	this->lastCommand = pressedKey;
 
 	/// Sila posobi na lietadlo
 	glm::vec2 F = glm::vec2(0.0);
-	glm::vec2 Fg = glm::vec2(0.0f, -3.0f);
+	glm::vec2 Fg = glm::vec2(0.0f, -20.0f);
 	F += Fg;
 
 	if (pressedKey == ControllerCommands::UP) {
-		F.y += silaPohybu.x;
+		F.y += silaPohybu.x * 1.2;
 	}
-	if (pressedKey == ControllerCommands::DOWN) {
+	/*if (pressedKey == ControllerCommands::DOWN) {
 		F.y += silaPohybu.y * -1.0f;
 	}
 	if (pressedKey == ControllerCommands::RIGHT) {
@@ -59,7 +59,7 @@ void  Plain::logic(float fDelta, ControllerCommands pressedKey)
 	}
 	if (pressedKey == ControllerCommands::LEFT) {
 		F.x += silaPohybu.x * -1.0f;
-	}
+	}*/
 
 	if(log != NULL) {
 		log->debugStream() << pressedKey;
