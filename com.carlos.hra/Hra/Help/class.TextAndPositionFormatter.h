@@ -21,5 +21,8 @@ public:
 
 	void formatPosition(Point2f &, Point2f &, unsigned int, unsigned int, 
 		unsigned int, unsigned int, unsigned int);
+
 	void formatTextToLines(const char *, vector<string> &);
+
+	unsigned int countMaxCharsOnLine(vector<string> lines);
 };

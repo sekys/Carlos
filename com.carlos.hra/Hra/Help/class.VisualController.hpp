@@ -45,4 +45,10 @@ public:
 	* @return void
 	*/
 	void renderObject(CObjModel& model, glm::mat4& mModelMatrix);
+
+	static void popProjectionMatrix();
+
+	static void pushScreenCoordinateMatrix();
+
+	void renderTexture(CTexture &, int, int); 
 };

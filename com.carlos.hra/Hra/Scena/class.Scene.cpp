@@ -58,14 +58,14 @@ void Scene::init() {
 	prepniStavNaObrazovku();
 	testGL();
 
-	testGL();
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
 
 	buildFont();
 
 	if(log != NULL) {
 		log->debugStream() << "Koncim Scene::init()";
 	}
+
 	testGL();
 }
 

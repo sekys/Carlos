@@ -8,6 +8,8 @@
 #include <gl/glew.h>
 #include <gl/wglew.h>
 
+#include "class.VisualController.hpp"
+
 extern GLuint	base; /**< Vytvoreny font */
 
 /** 
@@ -25,6 +27,4 @@ GLvoid killFont(GLvoid);
 */
 GLvoid glPrint(const char *fmt, ...);
 
-inline void popProjectionMatrix();
-inline void pushScreenCoordinateMatrix();
 void printLineOfText(const char * str, int x, int y);

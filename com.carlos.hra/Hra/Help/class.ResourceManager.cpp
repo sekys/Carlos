@@ -19,9 +19,12 @@ ResourceManager::~ResourceManager() {
 	bgScore.releaseTexture();
 	bgUvod.releaseTexture();
 	bgGameOver.releaseTexture();
+	infoImage.releaseTexture();
 
 	plain.releaseModel();
+
 	square.releaseModel();
+
 	for(int i=0; i < 11; i++) {
 		shaders[i].deleteShader();
 	}
@@ -49,6 +52,6 @@ void ResourceManager::load(int typ) {
 	bgScore = loadTexture("../data/screens/Carlos_Score.png");
 	bgUvod = loadTexture("../data/screens/Carlos_uvod.png");
 	bgGameOver = loadTexture("../data/screens/Carlos_game_over.png");
-
+	infoImage = loadTexture("../data/textures/info_image.png");
 }
 

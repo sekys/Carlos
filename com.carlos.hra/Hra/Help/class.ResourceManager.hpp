@@ -29,6 +29,7 @@ public:
 	CTexture bgScore; /**< Textura na ktorej sa zobrazuje skore*/
 	CTexture bgUvod; /**< Textura s uvodnom obrazovkou*/
 	CTexture bgGameOver; /**< Textura s hlasko Game over*/
+	CTexture infoImage;
 
 	ResourceManager();
 	~ResourceManager();

@@ -232,7 +232,8 @@ void Scene::stateTouristInfo(FrameData *frame) {
 	//Object *object = DB::DBService::getInstance().getObjectById(4);
 	Object *object = new Object();
 	object->name = "Testovacie menoTestovacie meno";
-	showTouristInfo(object, Point2f(599, 449));*/
+	showTouristInfo(object, Point2f(599, 449));
+	//visualController->renderTexture(resManager->infoImage, 0, 0);*/
 }
 
 void Scene::showTouristInfo(DB::Object *object, Point2f &pos) {
@@ -243,18 +244,15 @@ void Scene::showTouristInfo(DB::Object *object, Point2f &pos) {
 	} else if (plain->getLastCommand() == ControllerCommands::MORE_ABOUT_OBJECT) {
 		str = object->short_description.c_str();
 	} else {
+		visualController->renderTexture(resManager->infoImage, pos.x, pos.y);
 		return;
 	}
 
 	vector<string> lines;
-	unsigned int maxCharsOnLine = 0;
+
 	formatter.formatTextToLines(str, lines);
 
-	for (int i=0; i<lines.size(); i++) {
-		if (lines[i].length() > maxCharsOnLine) {
-			maxCharsOnLine = lines[i].length();
-		}
-	}
+	unsigned int maxCharsOnLine = formatter.countMaxCharsOnLine(lines);
 
 	for (int i=0; i<lines.size(); i++) {
 		Point2f newPos;

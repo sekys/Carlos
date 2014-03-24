@@ -52,3 +52,15 @@ void TextAndPositionFormatter::formatTextToLines(const char *s, vector<string> &
 		lines.push_back(line);
 	}
 }
+
+unsigned int TextAndPositionFormatter::countMaxCharsOnLine(vector<string> lines) {
+	int maxCharsOnLine = 0;
+
+	for (int i=0; i<lines.size(); i++) {
+		if (lines[i].length() > maxCharsOnLine) {
+			maxCharsOnLine = lines[i].length();
+		}
+	}
+
+	return maxCharsOnLine;
+}

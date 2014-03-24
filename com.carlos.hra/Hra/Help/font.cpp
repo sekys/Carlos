@@ -64,27 +64,9 @@ GLvoid glPrint(const char *fmt, ...)
 	glPopAttrib();
 }
 
-inline void pushScreenCoordinateMatrix() {
-	glPushAttrib(GL_TRANSFORM_BIT);
-	GLint	viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	gluOrtho2D(viewport[0],viewport[2],viewport[3],viewport[1]);
-	glPopAttrib();
-}
-
-inline void popProjectionMatrix() {
-	glPushAttrib(GL_TRANSFORM_BIT);
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glPopAttrib();
-}
-
 void printLineOfText(const char *str, int x, int y) {
 	glUseProgram(0);
-	pushScreenCoordinateMatrix();
+	VisualController::pushScreenCoordinateMatrix();
 	glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT | GL_TRANSFORM_BIT);	
 	glDisable(GL_LIGHTING);
 
@@ -98,5 +80,5 @@ void printLineOfText(const char *str, int x, int y) {
 
 	glEnable(GL_LIGHTING);
 	glPopAttrib();
-	popProjectionMatrix();
+	VisualController::popProjectionMatrix();
 }

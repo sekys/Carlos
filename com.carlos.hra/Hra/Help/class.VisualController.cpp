@@ -40,3 +40,48 @@ void VisualController::renderObject(CObjModel& model, glm::mat4& mModelMatrix) {
 	control.setUniform("matrices.modelMatrix", &mModelMatrix);
 	model.renderModel();
 }
+
+void VisualController::pushScreenCoordinateMatrix() {
+	glPushAttrib(GL_TRANSFORM_BIT);
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D(viewport[0],viewport[2],viewport[3],viewport[1]);
+	glPopAttrib();
+}
+
+void VisualController::popProjectionMatrix() {
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glPopAttrib();
+}
+
+void VisualController::renderTexture(CTexture &texture, int centerX, int centerY) {
+	glUseProgram(0);
+	VisualController::pushScreenCoordinateMatrix();
+
+	GLfloat w = texture.getWidth();
+	GLfloat h = texture.getHeight();
+
+	GLfloat x = centerX - w/2;
+	GLfloat y = centerY - h/2;
+
+	x = x < 0.0f ? 0.0f : x;
+	y = y < 0.0f ? 0.0f : y;
+
+	texture.bindTexture(GL_TEXTURE_2D);
+
+	glBegin(GL_QUADS);
+
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(x    , h + y,  0.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(x + w, h + y,  0.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(x + w, y    ,  0.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(x    , y    ,  0.0f);
+
+	glEnd();
+
+	VisualController::popProjectionMatrix();
+}
