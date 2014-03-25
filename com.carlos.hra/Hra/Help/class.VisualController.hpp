@@ -50,5 +50,5 @@ public:
 
 	static void pushScreenCoordinateMatrix();
 
-	void renderTexture(CTexture &, int, int); 
+	void renderTexture(CTexture &, unsigned int, unsigned int, unsigned int, unsigned int); 
 };

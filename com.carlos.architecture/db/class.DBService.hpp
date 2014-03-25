@@ -6,7 +6,7 @@
 // http://stackoverflow.com/questions/120295/what-is-a-good-oo-c-wrapper-for-sqlite
 
 namespace DB {
-	using namespace std;
+	using namespace Architecture;
 
 	/**
 	* Trieda ktora ma na starosti celu databazu.
@@ -22,6 +22,7 @@ namespace DB {
 		DBService();
 		~DBService();
 
+		map<uint, DB::Object *> objectInfos;
 
 	public:
 		static DBService& getInstance() {

@@ -205,22 +205,14 @@ void Scene::stateTouristInfo(FrameData *frame) {
 
 		if (najdeneObjekty.size() > 0) {
 			// Vykreslime informacie o objektoch  databazy
-			for (int i = 0; i < najdeneObjekty.size() && najdeneObjekty.at(i).najdeny; i++) {
-				uint id = najdeneObjekty.at(i).id; 
-				DB::Object *object;
-
-				if (!objectInfos.count(id)) {
-					object = DB::DBService::getInstance().getObjectById(id);
+			for (int i = 0; i < najdeneObjekty.size(); i++) {
+				if (najdeneObjekty.at(i).najdeny) {
+					uint id = najdeneObjekty.at(i).id; 
+					DB::Object *object = DB::DBService::getInstance().getObjectById(id);
 
 					if (object != NULL) {
-						objectInfos[id] = object;
+						showTouristInfo(object, najdeneObjekty.at(i).polohaTextu);
 					}
-				} else {
-					object = objectInfos[id];
-				}
-
-				if (object != NULL) {
-					showTouristInfo(object, najdeneObjekty.at(i).polohaTextu);
 				}
 			}
 		} else {
@@ -233,7 +225,8 @@ void Scene::stateTouristInfo(FrameData *frame) {
 	Object *object = new Object();
 	object->name = "Testovacie menoTestovacie meno";
 	showTouristInfo(object, Point2f(599, 449));
-	//visualController->renderTexture(resManager->infoImage, 0, 0);*/
+	visualController->renderTexture(resManager->infoImage, 0, 0, getWindowWidth(), getWindowHeight());*/
+	Object *object = DB::DBService::getInstance().getObjectById(4);
 }
 
 void Scene::showTouristInfo(DB::Object *object, Point2f &pos) {
@@ -244,7 +237,8 @@ void Scene::showTouristInfo(DB::Object *object, Point2f &pos) {
 	} else if (plain->getLastCommand() == ControllerCommands::MORE_ABOUT_OBJECT) {
 		str = object->short_description.c_str();
 	} else {
-		visualController->renderTexture(resManager->infoImage, pos.x, pos.y);
+		visualController->renderTexture(resManager->infoImage, pos.x,
+			pos.y, getWindowWidth(), getWindowHeight());
 		return;
 	}
 

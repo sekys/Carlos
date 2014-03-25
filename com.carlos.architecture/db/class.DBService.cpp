@@ -83,21 +83,29 @@ vector<WorldObject> DBService::najdiVsetkySvetoveObjektyBlizkoGPS(GPS gps) {
 Object *DBService::getObjectById(uint id) {
 	Object *object = NULL;
 
-	std::ostringstream where;
-	where << "id = " << id;
-	auto obj(db->select<Object>(where.str()));
-	SqliteDB::Iterator<Object> it;
+	if (!objectInfos.count(id)) {
+		std::ostringstream where;
+		where << "id = " << id;
+		auto obj(db->select<Object>(where.str()));
+		SqliteDB::Iterator<Object> it;
 
-	for (it = obj.first ; it != obj.second; ++it) {
-		object = new Object();
+		for (it = obj.first ; it != obj.second; ++it) {
+			object = new Object();
 
-		object->id = it->id;
-		object->name = it->name;
-		object->longitude = it->longitude;
-		object->latitude = it->latitude;
-		object->short_description = it->short_description;
-		object->long_description = it->long_description;
-		object->source_url = it->source_url;
+			object->id = it->id;
+			object->name = it->name;
+			object->longitude = it->longitude;
+			object->latitude = it->latitude;
+			object->short_description = it->short_description;
+			object->long_description = it->long_description;
+			object->source_url = it->source_url;
+		}
+
+		if (object != NULL) {
+			objectInfos[id] = object;
+		}
+	} else {
+		object = objectInfos[id];
 	}
 	
 	return object;

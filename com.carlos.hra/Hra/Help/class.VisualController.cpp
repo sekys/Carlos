@@ -59,7 +59,11 @@ void VisualController::popProjectionMatrix() {
 	glPopAttrib();
 }
 
-void VisualController::renderTexture(CTexture &texture, int centerX, int centerY) {
+void VisualController::renderTexture(CTexture &texture,
+										unsigned int centerX, 
+										unsigned int centerY,
+										unsigned int windowWidth,
+										unsigned int windowHeight) {
 	glUseProgram(0);
 	VisualController::pushScreenCoordinateMatrix();
 
@@ -71,6 +75,9 @@ void VisualController::renderTexture(CTexture &texture, int centerX, int centerY
 
 	x = x < 0.0f ? 0.0f : x;
 	y = y < 0.0f ? 0.0f : y;
+
+	x = x+w > windowWidth  ? windowWidth-w  : x;
+	y = y+h > windowHeight ? windowHeight-h : y;
 
 	texture.bindTexture(GL_TEXTURE_2D);
 
