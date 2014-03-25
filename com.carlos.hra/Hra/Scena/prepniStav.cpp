@@ -74,3 +74,10 @@ void Scene::switchStateToTouristInfo() {
 	zasobnikVstupov.clear();
 	cout << "Switching state to tourist info.\n";
 }
+
+void Scene::switchStateToChooseDialog() {
+	aktualnyStav = StavyHry::CHOOSE_DIALOG;
+	setBackgroud(resManager->bgChooseDialog);
+	zasobnikVstupov.clear();
+	cout << "Switching state to choose dialog.\n";
+}

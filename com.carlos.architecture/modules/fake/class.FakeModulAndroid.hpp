@@ -24,6 +24,8 @@ namespace Architecture
 			bm.insert( bm_type::value_type("tap", ControllerCommands::TAP) );
 			bm.insert( bm_type::value_type("whatIsObject", ControllerCommands::WHAT_IS_OBJECT));
 			bm.insert( bm_type::value_type("moreAboutObject", ControllerCommands::MORE_ABOUT_OBJECT));
+			bm.insert( bm_type::value_type("game", ControllerCommands::GAME));
+			bm.insert( bm_type::value_type("tourist", ControllerCommands::TOURIST_INFO));
 		}
 
 		virtual void checkInput() {

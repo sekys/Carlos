@@ -33,6 +33,7 @@ private:
 	void havaroval();
 
 	void switchStateToTouristInfo();
+	void switchStateToChooseDialog();
 
 	// Volanie stavu
 	void stavHrania(FrameData* fDelta);
@@ -40,7 +41,8 @@ private:
 	void stavGameOver(FrameData* fDelta);
 	void stavSkore(FrameData* fDelta);
 
-	void stateTouristInfo(FrameData * frame);
+	void stateTouristInfo(FrameData *);
+	void stateChooseDialog(FrameData *);
 	void showTouristInfo(DB::Object *, Point2f &);
 
 	// Pomocne premenne
@@ -64,7 +66,6 @@ private:
 	uint getWindowWidth();
 	uint getWindowHeight();
 
-	map<uint, DB::Object *> objectInfos;
 public:
 	int typ_lietadla;
 	std::clock_t start;

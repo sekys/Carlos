@@ -197,6 +197,16 @@ void Scene::stavUvodnaObrazovka(FrameData* frame) {
 	}
 }
 
+void Scene::stateChooseDialog(FrameData *frame) {
+	zasobnikVstupov.clear();
+
+	if (frame->getCommand() == ControllerCommands::GAME) {
+		prepniStavNaObrazovku();
+	} else if (frame->getCommand() == ControllerCommands::TOURIST_INFO) {
+		switchStateToTouristInfo();
+	}
+}
+
 void Scene::stateTouristInfo(FrameData *frame) {
 	if (frame->hasVstup()) {
 		nastavPozadieZoVstupu(frame->getImage());
@@ -226,7 +236,6 @@ void Scene::stateTouristInfo(FrameData *frame) {
 	object->name = "Testovacie menoTestovacie meno";
 	showTouristInfo(object, Point2f(599, 449));
 	visualController->renderTexture(resManager->infoImage, 0, 0, getWindowWidth(), getWindowHeight());*/
-	Object *object = DB::DBService::getInstance().getObjectById(4);
 }
 
 void Scene::showTouristInfo(DB::Object *object, Point2f &pos) {

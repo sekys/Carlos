@@ -47,11 +47,11 @@ void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
 void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In* in) 
 {
 	// Spracuj obrazok
-	cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
+	//cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
 	//in->image.data = in->image.data.clone();
-	in->image.data =black; 
+	//in->image.data =black; 
 	in->horizont = in->horizont.clone();
-	dokresliHorizont(in->image.data, in->horizont);
+	//dokresliHorizont(in->image.data, in->horizont);
 	cv::flip(in->image.data, in->image.data, 0);
 
 	// Posli obrazok dalej
@@ -100,7 +100,7 @@ void DllModulVykreslovania::init() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	*/
-	window = SDL_CreateWindow("Carlos game", 100, 100, 640, 480, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Carlos App", 100, 100, 640, 480, SDL_WINDOW_OPENGL);
 	//window = SDL_CreateWindow("Carlos game", 100, 100, 1024, 768, SDL_WINDOW_OPENGL);
 	if (window == NULL) {
 		throw std::exception("Failed to initialize SDL_CreateWindow");

@@ -20,6 +20,7 @@ ResourceManager::~ResourceManager() {
 	bgUvod.releaseTexture();
 	bgGameOver.releaseTexture();
 	infoImage.releaseTexture();
+	bgChooseDialog.releaseTexture();
 
 	plain.releaseModel();
 
@@ -53,5 +54,6 @@ void ResourceManager::load(int typ) {
 	bgUvod = loadTexture("../data/screens/Carlos_uvod.png");
 	bgGameOver = loadTexture("../data/screens/Carlos_game_over.png");
 	infoImage = loadTexture("../data/textures/info_image.png");
+	bgChooseDialog = loadTexture("../data/screens/Carlos_choose_dialog.png");
 }
 

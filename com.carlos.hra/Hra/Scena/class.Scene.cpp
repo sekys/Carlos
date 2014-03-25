@@ -55,9 +55,11 @@ void Scene::init() {
 	visualController->load(resManager->shaders);
 	testGL();
 	//switchStateToTouristInfo();
-	prepniStavNaObrazovku();
+	//prepniStavNaObrazovku();
+	switchStateToChooseDialog();
 	testGL();
 
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 
 	buildFont();
@@ -136,7 +138,12 @@ void Scene::delenieStavov(FrameData* frame) {
 	case StavyHry::TOURIST_INFO: {
 		stateTouristInfo(frame);
 		break;
-								 }
+	}
+
+	case StavyHry::CHOOSE_DIALOG: {
+		stateChooseDialog(frame);
+		break;
+	}
 
 	default: {
 		throw std::exception("Neocakavany stav");
