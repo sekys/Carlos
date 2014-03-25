@@ -63,6 +63,8 @@ private:
 	void ziskajAktualnyVstup(FrameData* data);
 	void nastavPozadieZoVstupu(cv::Mat& img);
 
+	void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont);
+
 	uint getWindowWidth();
 	uint getWindowHeight();
 

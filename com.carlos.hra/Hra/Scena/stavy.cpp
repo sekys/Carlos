@@ -117,6 +117,12 @@ void Scene::stavHrania(FrameData* frame) {
 			log->debugStream() << "Neprisiel mi snimok z videa, preskakujem nastavenie textury.";
 		}
 	} else {
+		Architecture::ModulVykreslovania::In *in = frame->getVstup();
+		cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
+		in->image.data = black; 
+		in->horizont = in->horizont.clone();
+		dokresliHorizont(in->image.data, in->horizont);
+
 		/// Kazdu snimku updatni pozadie
 		nastavPozadieZoVstupu(frame->getImage());
 	}

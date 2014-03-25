@@ -19,25 +19,6 @@ DllModulVykreslovania::DllModulVykreslovania() {
 	window = NULL;
 }
 
-void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
-	for( int j= 0; j < bg.cols; j++ )
-	{
-		bg.at<Vec3b>(119,j)[0] = 0;
-		bg.at<Vec3b>(119,j)[1] = 255;
-		bg.at<Vec3b>(119,j)[2] = 0;
-		for( int i = 120; i < bg.rows; i++ )
-		{
-
-			if(horizont.at<uchar>(i,j) == 0){
-				bg.at<Vec3b>(i,j)[0] = 0;
-				bg.at<Vec3b>(i,j)[1] = 0;
-				bg.at<Vec3b>(i,j)[2] = 255;
-				break;
-			}
-		}
-	}
-}
-
 /** 
 * Funkcia ma na vstupe 1 parameter a to je prijaty obrazok, stara sa o ulozenie do buffera
 * Spusta sa v 2. vlakne !
