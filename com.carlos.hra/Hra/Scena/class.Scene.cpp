@@ -55,8 +55,8 @@ void Scene::init() {
 	visualController->load(resManager->shaders);
 	testGL();
 	//switchStateToTouristInfo();
-	//prepniStavNaObrazovku();
-	switchStateToChooseDialog();
+	prepniStavNaObrazovku();
+	//switchStateToChooseDialog();
 	testGL();
 
 	glEnable(GL_DEPTH_TEST);
@@ -97,6 +97,7 @@ void Scene::frame(float fDelta) {
 	FrameData frame;
 	frame.setDeltaTime(fDelta);
 	ziskajAktualnyVstup(&frame);
+	delenieStavov(&frame);
 	testGL();
 	visualController->setPerspektive();
 	testGL();
@@ -105,7 +106,7 @@ void Scene::frame(float fDelta) {
 	visualController->renderObject(resManager->square, world->getMatrix());
 
 	testGL();
-	delenieStavov(&frame);
+	
 	testGL();
 	glFlush();
 	testGL();

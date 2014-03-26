@@ -81,7 +81,8 @@ void DllModulVykreslovania::init() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	*/
-	window = SDL_CreateWindow("Carlos App", 100, 100, 640, 480, SDL_WINDOW_OPENGL);
+	//window = SDL_CreateWindow("Carlos App", 100, 100, 640, 480, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Carlos App", 100, 100, 1024, 480, SDL_WINDOW_OPENGL);
 	//window = SDL_CreateWindow("Carlos game", 100, 100, 1024, 768, SDL_WINDOW_OPENGL);
 	if (window == NULL) {
 		throw std::exception("Failed to initialize SDL_CreateWindow");

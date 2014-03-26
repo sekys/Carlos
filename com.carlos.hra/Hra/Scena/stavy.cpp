@@ -122,7 +122,7 @@ void Scene::stavHrania(FrameData* frame) {
 		in->image.data = black; 
 		in->horizont = in->horizont.clone();
 		dokresliHorizont(in->image.data, in->horizont);
-
+		cv::flip(in->image.data, in->image.data, 0);
 		/// Kazdu snimku updatni pozadie
 		nastavPozadieZoVstupu(frame->getImage());
 	}
@@ -195,8 +195,6 @@ void Scene::havaroval() {
 */
 void Scene::stavUvodnaObrazovka(FrameData* frame) {
 	zasobnikVstupov.clear();
-
-
 	///Ak sa dotkne obrazovky zacina sa hra
 	if(frame->getCommand() == ControllerCommands::UP) {
 		prepniStavNaHrania();

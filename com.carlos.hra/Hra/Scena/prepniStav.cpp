@@ -18,8 +18,6 @@ using std::endl;
 void Scene::prepniStavNaObrazovku() {
 	aktualnyStav = StavyHry::UVODNA_OBRAZOVKA;
 	setBackgroud(resManager->bgUvod);
-
-
 	zasobnikVstupov.clear();
 	cout << "Prepinam stan na uvodnu obrazovku.\n";
 }

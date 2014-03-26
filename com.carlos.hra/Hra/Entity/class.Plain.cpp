@@ -85,7 +85,7 @@ glm::mat4  Plain::getMatrix() {
 	/// Natocenie podla osi z
 	mModelMatrix = glm::rotate(mModelMatrix, getRotation().z, glm::vec3(0.0f, 0.0f, 1.0f));
 	/// Naskalovanie modelu
-	mModelMatrix = glm::scale(mModelMatrix, glm::vec3(7,7,7));
+	mModelMatrix = glm::scale(mModelMatrix, glm::vec3(7,5,7));
 	return mModelMatrix;
 }
 
