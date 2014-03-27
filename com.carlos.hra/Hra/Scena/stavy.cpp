@@ -118,6 +118,7 @@ void Scene::stavHrania(FrameData* frame) {
 		}
 	} else {
 		Architecture::ModulVykreslovania::In *in = frame->getVstup();
+		aktualnaPozicia = frame->getpozicia();
 		cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
 		in->image.data = black; 
 		in->horizont = in->horizont.clone();
@@ -166,7 +167,17 @@ void Scene::stavHrania(FrameData* frame) {
 	}
 
 	plain->logic(frame->getDeltaTime(), frame->getCommand() );
-	visualController->renderObject(resManager->plain, plain->getMatrix());
+	int miesto;
+	//tu je niekde chyba
+	if (aktualnaPozicia< 0){
+		miesto = 150 - aktualnaPozicia;
+	}
+	if (aktualnaPozicia> 0){
+		miesto = aktualnaPozicia +  150;
+	}
+
+	//visualController->renderObject(resManager->plain, plain->getMatrix(miesto));
+	visualController->renderObject(resManager->plain, plain->getMatrix(150));
 
 	// Hud
 	/*glUseProgram(0);
@@ -194,6 +205,7 @@ void Scene::havaroval() {
 * @return void 
 */
 void Scene::stavUvodnaObrazovka(FrameData* frame) {
+	
 	zasobnikVstupov.clear();
 	///Ak sa dotkne obrazovky zacina sa hra
 	if(frame->getCommand() == ControllerCommands::UP) {

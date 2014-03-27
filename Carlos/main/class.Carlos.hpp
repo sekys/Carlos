@@ -31,6 +31,7 @@ namespace Architecture {
 	public:
 		Carlos();
 		~Carlos();
+		float poz;
 	};
 
 }

@@ -76,6 +76,7 @@ public:
 	Scene();
 	~Scene();
 
+	int aktualnaPozicia;
 	void release();
 	void init();
 	void frame(float fDelta);

@@ -19,9 +19,9 @@ public:
 
 	}
 
-	glm::mat4 getMatrix() {
+	glm::mat4 getMatrix(int position) {
 		glm::mat4 mModelMatrix = glm::mat4(1.0f);
-		mModelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(0, 0, 0 ));
+		mModelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(position, 0, 0 ));
 		//mModelMatrix = glm::scale(mModelMatrix, glm::vec3(size.x, size.y, 1.0));
 		mModelMatrix = glm::scale(mModelMatrix, glm::vec3(220, size.y, 1.0));
 		return mModelMatrix;

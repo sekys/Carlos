@@ -24,14 +24,14 @@ Scene::Scene()  {
 	log = CREATE_LOG4CPP();
 	plain = new Plain(glm::vec2(10.0, 10.0), typ_lietadla);
 	world = new World(glm::vec2(320.0, 240.0)); //640x480
-	//world2 = new World(glm::vec2(512.0, 384.0)); //1024x768
+	
 }
 
 Scene::~Scene() {
 	// Vsetko by malo byt uz aktualne uvolnene
 	SAFE_DELETE(plain);
 	SAFE_DELETE(world);
-	SAFE_DELETE(world2);
+
 	killFont();
 }
 /** 
@@ -46,7 +46,7 @@ void Scene::init() {
 	}
 	visualController  = new VisualController();
 	resManager = new ResourceManager();
-
+	aktualnaPozicia = 0;
 	srand(time(NULL));
 	int randNum = (rand() % 3) + 1;
 	typ_lietadla = randNum;
@@ -88,7 +88,7 @@ void Scene::release() {
 */
 void Scene::frame(float fDelta) {
 	testGL();
-	glClearColor(0,0,1,1);
+	glClearColor(0,0,0,1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	testGL();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -97,16 +97,15 @@ void Scene::frame(float fDelta) {
 	FrameData frame;
 	frame.setDeltaTime(fDelta);
 	ziskajAktualnyVstup(&frame);
+	
 	delenieStavov(&frame);
 	testGL();
 	visualController->setPerspektive();
 	testGL();
 	
-	//visualController->renderObject(resManager->square, world2->getMatrix());
-	visualController->renderObject(resManager->square, world->getMatrix());
+	//Tu potrebujem poziciu vzdy
+	visualController->renderObject(resManager->square, world->getMatrix(aktualnaPozicia));
 
-	testGL();
-	
 	testGL();
 	glFlush();
 	testGL();

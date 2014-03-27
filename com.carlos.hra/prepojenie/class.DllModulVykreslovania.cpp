@@ -14,6 +14,8 @@
 
 using namespace Architecture;
 
+
+
 DllModulVykreslovania::DllModulVykreslovania() {
 	log = CREATE_LOG4CPP();
 	window = NULL;
@@ -81,12 +83,16 @@ void DllModulVykreslovania::init() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	*/
-	//window = SDL_CreateWindow("Carlos App", 100, 100, 640, 480, SDL_WINDOW_OPENGL);
-	window = SDL_CreateWindow("Carlos App", 100, 100, 1024, 480, SDL_WINDOW_OPENGL);
-	//window = SDL_CreateWindow("Carlos game", 100, 100, 1024, 768, SDL_WINDOW_OPENGL);
+     
+    //toto spravi full screen
+    //window = SDL_CreateWindow( "Carlos App", 100, 100, 1024, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN|SDL_WINDOW_FULLSCREEN ); 
+    //SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED ); 
+
+	window = SDL_CreateWindow("Carlos game", 100, 100, 1024, 480, SDL_WINDOW_OPENGL);
 	if (window == NULL) {
 		throw std::exception("Failed to initialize SDL_CreateWindow");
 	}
+
 	SDL_GLContext context = SDL_GL_CreateContext(window);
 	if (!context){
 		throw std::exception("Failed to initialize SDL_GL_CreateContext");

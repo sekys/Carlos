@@ -52,7 +52,7 @@ public:
 	* @see Scene::stavHrania(float fDelta)
 	* @return void
 	*/
-	glm::mat4 getMatrix();
+	glm::mat4 getMatrix(int pozicia);
 
 	ControllerCommands getLastCommand();
 	void setLastCommand(ControllerCommands command);

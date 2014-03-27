@@ -43,6 +43,15 @@ bool FrameData::hasVstup() {
 	return vstup != NULL;
 }
 
+int FrameData::getpozicia(){
+	if (vstup->position*100 < -100 || vstup->position*100 > 100){
+		//out << "Zla poslana pozicia: " << vstup->position*100;
+	return 0;
+	}
+	return vstup->position*100;
+}
+
 ModulVykreslovania::In* FrameData::getVstup() {
 	return vstup;
 }
+

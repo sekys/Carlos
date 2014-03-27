@@ -62,7 +62,7 @@ void Scene::prepniStavNaHrania() {
 	start = std::clock();
 	aktualnyStav = StavyHry::HRAJE_HRU;
 	plain->setStartPosition(typ_lietadla);
-
+	
 	zasobnikVstupov.clear();
 	cout << "Prepinam stav na hraje hru.\n";
 }

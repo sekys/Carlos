@@ -17,6 +17,7 @@ namespace Architecture
 			vector<ModulVypocitaniaPolohy::Out> najdeneObjekty; /**< Najdene objekty */
 			ControllerCommands command;
 			Mat horizont;
+			float position;
 
 			friend ostream& operator<< (ostream& out, In& object) {
 				out << "ModulVykreslovaniaIn(";

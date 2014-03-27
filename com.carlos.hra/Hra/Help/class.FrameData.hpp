@@ -14,6 +14,7 @@ public:
 
 	void setVstup(ModulVykreslovania::In* vstup);
 	ControllerCommands getCommand();
+	int getpozicia();
 	float getDeltaTime();
 	void setDeltaTime(float f);
 	cv::Mat getImage();

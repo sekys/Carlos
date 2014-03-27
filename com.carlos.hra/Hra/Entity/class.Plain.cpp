@@ -74,10 +74,10 @@ void  Plain::logic(float fDelta, ControllerCommands pressedKey)
 }
 
 
-glm::mat4  Plain::getMatrix() {
+glm::mat4  Plain::getMatrix(int pozicia) {
 	glm::vec2 position = getPosition();
 	glm::mat4 mModelMatrix = glm::mat4(1.0f);
-	mModelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(position.x, position.y, 0.0f) );
+	mModelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(pozicia, position.y, 0.0f) );
 	/// Natocenie podla osi x
 	mModelMatrix = glm::rotate(mModelMatrix, getRotation().x, glm::vec3(1.0f, 0.0f, 0.0f));
 	/// Natocenie podla osi y
@@ -85,7 +85,7 @@ glm::mat4  Plain::getMatrix() {
 	/// Natocenie podla osi z
 	mModelMatrix = glm::rotate(mModelMatrix, getRotation().z, glm::vec3(0.0f, 0.0f, 1.0f));
 	/// Naskalovanie modelu
-	mModelMatrix = glm::scale(mModelMatrix, glm::vec3(7,5,7));
+	mModelMatrix = glm::scale(mModelMatrix, glm::vec3(7,7,7));
 	return mModelMatrix;
 }
 
