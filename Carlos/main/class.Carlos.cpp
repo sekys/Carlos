@@ -68,15 +68,15 @@ void Carlos::spracujJedenSnimok(Image image) {
 	vykreslovanie->command = command;
 	//vykreslovanie->position = poz; // tu by mi mala prist pozicia - cislo z intervalu -1,1
 	
-	vykreslovanie->position = 0.0;
+	vykreslovanie->position = poz;
 	//testovanie posuvania
-	/*if( poz <= 1.0){
+	if( poz <= 1.0){
 		poz += 0.01;
 	}
 
 	if (poz >= 1.0) {
 		poz = -1.0;
-	}*/
+	}
 
 	//vykreslovanie->najdeneObjekty = najdeneObjekty;
 	vykreslovanie->horizont = vysledokSpracovania.horizont;

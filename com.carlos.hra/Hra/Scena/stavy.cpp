@@ -41,7 +41,10 @@ void Scene::stavGameOver(FrameData* frame) {
 	glUseProgram(0);
 	glDisable(GL_LIGHTING);
 	glLoadIdentity();
-	glTranslatef(-0.6f,-0.4f,0.0f);
+	
+	
+	
+	glTranslatef(-0.2,-0.4f,0.0f);
 	glColor3f(0.0f, 0.f, 0.f);
 	glRasterPos2f(0.0f, 0.0f); 
 	double d = duration;
@@ -79,22 +82,22 @@ void Scene::nastavPozadieZoVstupu(cv::Mat& img) {
 	setBackgroud(texture);
 }
 
-bool otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plain* plain) {
+bool otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plain* plain, int poziciaobrazu) {
 	cv::flip(horizont, horizont, 0);
-	glm::vec2 aktualnaPozicia = plain->getPosition();
+	glm::vec2 aktualnaPozicialietadla = plain->getPosition();
 	glm::vec2 velkostLiedatla = plain->getsize();
 
 	//int os_min_x = aktualnaPozicia.x - velkostLiedatla.x/2 + 320;
 	//int os_max_x = aktualnaPozicia.x + velkostLiedatla.x/2 + 320;
-	int os_min_y = aktualnaPozicia.y - velkostLiedatla.y/2 + 240; 
-	int os_max_y = aktualnaPozicia.y + velkostLiedatla.y/2 + 240;
+	int os_min_y = aktualnaPozicialietadla.y - velkostLiedatla.y/2 + 240; 
+	int os_max_y = aktualnaPozicialietadla.y + velkostLiedatla.y/2 + 240;
 
 	//if (os_min_x < 0) return false; 
 	//if (os_max_x > 640) return false; 
 	if (os_min_y < 0 || os_min_y > 480) return false; 
 	if (os_max_y > 480 || os_max_y < 0) return false; 
 
-	for (int j = 465; j < 475; j++ ){
+	for (int j = 465+poziciaobrazu; j < 475+poziciaobrazu; j++ ){
 		for (int i = os_min_y; i < os_max_y; i++ ){
 			if(horizont.at<uchar>(os_min_y,j) != 0) return true;
 
@@ -156,7 +159,7 @@ void Scene::stavHrania(FrameData* frame) {
 	if(frame->hasVstup()) {
 
 		cv::Mat horizont = frame->getHorizont();
-		contain = otestujHorizontCiSaDotykaLietadla(horizont, plain);
+		contain = otestujHorizontCiSaDotykaLietadla(horizont, plain, aktualnaPozicia);
 		if(!contain) {
 		cout << "Narazil do horizontu\n";
 		havaroval();
@@ -168,16 +171,11 @@ void Scene::stavHrania(FrameData* frame) {
 
 	plain->logic(frame->getDeltaTime(), frame->getCommand() );
 	int miesto;
-	//tu je niekde chyba
-	if (aktualnaPozicia< 0){
-		miesto = 150 - aktualnaPozicia;
-	}
-	if (aktualnaPozicia> 0){
-		miesto = aktualnaPozicia +  150;
-	}
 
-	//visualController->renderObject(resManager->plain, plain->getMatrix(miesto));
-	visualController->renderObject(resManager->plain, plain->getMatrix(150));
+	
+
+	visualController->renderObject(resManager->plain, plain->getMatrix(aktualnaPozicia+150));
+	//visualController->renderObject(resManager->plain, plain->getMatrix(150));
 
 	// Hud
 	/*glUseProgram(0);
