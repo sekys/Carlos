@@ -37,9 +37,17 @@ DBService::DBService() {
 	db = new SqliteDB("../data/carlos.db3");
 	sqlite3_create_function(db->getConnection(), "distance", 4, SQLITE_UTF8, NULL, &distanceFunc, NULL, NULL);
 }
+
 DBService::~DBService() {
 	delete db;
 	db = NULL;
+
+	for (std::map<uint, Object *>::iterator it=objectInfos.begin(); it!=objectInfos.end(); ++it) {
+		delete it->second;
+		objectInfos[it->first] = NULL;
+	}
+
+	objectInfos.clear();
 }
 
 
@@ -80,7 +88,7 @@ vector<WorldObject> DBService::najdiVsetkySvetoveObjektyBlizkoGPS(GPS gps) {
  * a program spadne.
  */
 
-Object *DBService::getObjectById(uint id) {
+const Object *DBService::getObjectById(uint id) {
 	Object *object = NULL;
 
 	if (!objectInfos.count(id)) {

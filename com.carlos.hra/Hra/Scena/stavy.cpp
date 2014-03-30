@@ -63,6 +63,11 @@ void Scene::stavGameOver(FrameData* frame) {
 	}
 }
 
+void Scene::setBlackBackground() {
+	cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
+	nastavPozadieZoVstupu(black);
+}
+
 void Scene::nastavPozadieZoVstupu(cv::Mat& img) {
 	if(log != NULL) {
 		log->debugStream() << "Nastavujem texturu z videa.";
@@ -223,18 +228,16 @@ void Scene::stateChooseDialog(FrameData *frame) {
 
 void Scene::stateTouristInfo(FrameData *frame) {
 	if (frame->hasVstup()) {
+		setBlackBackground();
 		ModulVykreslovania::In *in = frame->getVstup();
-		cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
-		in->image.data = black;
-		nastavPozadieZoVstupu(frame->getImage());
 		vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = in->najdeneObjekty;
 
-		if (najdeneObjekty.size() > 0) {
+		if (!najdeneObjekty.empty()) {
 			// Vykreslime informacie o objektoch  databazy
 			for (int i = 0; i < najdeneObjekty.size(); i++) {
 				if (najdeneObjekty.at(i).najdeny) {
 					uint id = najdeneObjekty.at(i).id; 
-					DB::Object *object = DB::DBService::getInstance().getObjectById(id);
+					const DB::Object *object = DB::DBService::getInstance().getObjectById(id);
 
 					if (object != NULL) {
 						showTouristInfo(object, najdeneObjekty.at(i).polohaTextu);
@@ -254,7 +257,7 @@ void Scene::stateTouristInfo(FrameData *frame) {
 	visualController->renderTexture(resManager->infoImage, 0, 0, getWindowWidth(), getWindowHeight());*/
 }
 
-void Scene::showTouristInfo(DB::Object *object, Point2f &pos) {
+void Scene::showTouristInfo(const DB::Object *object, Point2f &pos) {
 	const char *str;
 
 	if (plain->getLastCommand() == ControllerCommands::WHAT_IS_OBJECT) {

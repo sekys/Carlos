@@ -43,7 +43,7 @@ private:
 
 	void stateTouristInfo(FrameData *);
 	void stateChooseDialog(FrameData *);
-	void showTouristInfo(DB::Object *, Point2f &);
+	void showTouristInfo(const DB::Object *, Point2f &);
 
 	// Pomocne premenne
 	float casPrejdenyNaGameOver;
@@ -62,6 +62,8 @@ private:
 	void setBackgroud(CTexture texture);
 	void ziskajAktualnyVstup(FrameData* data);
 	void nastavPozadieZoVstupu(cv::Mat& img);
+
+	void setBlackBackground();
 
 	void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont);
 

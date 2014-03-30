@@ -33,7 +33,7 @@ namespace DB {
 		virtual vector<Architecture::WorldObject> najdiVsetkySvetoveObjektyBlizkoGPS(Architecture::GPS gps);
 		// REPLACE PP 5.3.2014 >>
 		// virtual Object *getObjectById(uint id);
-		virtual Object *getObjectById(Architecture::uint id);
+		virtual const Object *getObjectById(Architecture::uint id);
 		// REPLACE PP 5.3.2014 <<
 	};
 
