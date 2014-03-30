@@ -40,7 +40,9 @@ DWORD SocketListener::start() {
 			handler->HandleMessage(recvbuf);
 		} else {
 			// Client sa odpojil
-			throw new exception("Client connection closing");
+			if(log != NULL) {
+				log->debugStream() << "Client connection closing";
+			}
 			closesocket(ClientSocket);
 			return 1;
 		}

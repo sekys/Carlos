@@ -17,15 +17,16 @@ namespace Architecture
 
 	protected:
 		virtual void prepareBimap() {
+			// Mapovanie kalvesnice na prikazi - tu ma byt len 1 pismenko !
 			bm.insert( bm_type::value_type("w", ControllerCommands::UP) );
 			bm.insert( bm_type::value_type("s", ControllerCommands::DOWN) );
 			bm.insert( bm_type::value_type("d", ControllerCommands::RIGHT) );
 			bm.insert( bm_type::value_type("a", ControllerCommands::LEFT) );
-			bm.insert( bm_type::value_type("tap", ControllerCommands::TAP) );
-			bm.insert( bm_type::value_type("whatIsObject", ControllerCommands::WHAT_IS_OBJECT));
-			bm.insert( bm_type::value_type("moreAboutObject", ControllerCommands::MORE_ABOUT_OBJECT));
-			bm.insert( bm_type::value_type("game", ControllerCommands::GAME));
-			bm.insert( bm_type::value_type("tourist", ControllerCommands::TOURIST_INFO));
+			bm.insert( bm_type::value_type("r", ControllerCommands::TAP) );
+			bm.insert( bm_type::value_type("t", ControllerCommands::WHAT_IS_OBJECT));
+			bm.insert( bm_type::value_type("y", ControllerCommands::MORE_ABOUT_OBJECT));
+			bm.insert( bm_type::value_type("u", ControllerCommands::GAME));
+			bm.insert( bm_type::value_type("i", ControllerCommands::TOURIST_INFO));
 		}
 
 		virtual void checkInput() {

@@ -1,5 +1,6 @@
 #include "class.ResourceManager.hpp"
-#include "../Entity/class.Plain.hpp"
+#include "../Entity/class.Plane.hpp"
+
 CTexture ResourceManager::loadTexture(string path) {
 	CTexture texture;
 	bool test;
@@ -22,8 +23,7 @@ ResourceManager::~ResourceManager() {
 	infoImage.releaseTexture();
 	bgChooseDialog.releaseTexture();
 
-	plain.releaseModel();
-
+	plane.releaseModel();
 	square.releaseModel();
 
 	for(int i=0; i < 11; i++) {
@@ -43,9 +43,9 @@ void ResourceManager::load(int typ) {
 	}
 	
 	/// Load 3D models
-	if (typ == 1)plain.loadModel("../data/models/Nighthawk/F-117_Nighthawk.obj", "F-117_Nighthawk.mtl");
-	if (typ == 2)plain.loadModel("../data/models/Mig-25_Foxbat/Mig-25_Foxbat/Mig-25_Foxbat.obj", "Mig-25_Foxbat.mtl");
-	if (typ == 3)plain.loadModel("../data/models/A6M_ZERO/A6M_ZERO/A6M_ZERO.obj", "A6M_ZERO.mtl");
+	if (typ == 1)plane.loadModel("../data/models/Nighthawk/F-117_Nighthawk.obj", "F-117_Nighthawk.mtl");
+	if (typ == 2)plane.loadModel("../data/models/Mig-25_Foxbat/Mig-25_Foxbat/Mig-25_Foxbat.obj", "Mig-25_Foxbat.mtl");
+	if (typ == 3)plane.loadModel("../data/models/A6M_ZERO/A6M_ZERO/A6M_ZERO.obj", "A6M_ZERO.mtl");
 
 	square.loadModel("../data/models/square.obj", "");
 

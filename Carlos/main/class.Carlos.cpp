@@ -66,10 +66,10 @@ void Carlos::spracujJedenSnimok(Image image) {
 	vykreslovanie = new ModulVykreslovania::In();
 	vykreslovanie->image = image;
 	vykreslovanie->command = command;
-	//vykreslovanie->position = poz; // tu by mi mala prist pozicia - cislo z intervalu -1,1
+	vykreslovanie->position = 0.0; // tu by mi mala prist pozicia - cislo z intervalu -1,1
 	
 	vykreslovanie->position = 0.0;
-	//testovanie posuvania
+	//testovanie posuvania - tak toto je logicka bomba :D
 	/*if( poz <= 1.0){
 		poz += 0.01;
 	}
@@ -86,7 +86,6 @@ void Carlos::spracujJedenSnimok(Image image) {
 
 void Carlos::Init() {
 	// Inicializacia Carlosu spociva napriklad v nacitani konfiguracie ...
-	poz = -1.0;
 	DB::DBService::getInstance();
 	if(log != NULL) {
 		log->debugStream() << "Configuration title '" << Configuration::getInstance().getTitle();

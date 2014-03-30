@@ -7,9 +7,8 @@
 #include <gl/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <stdarg.h>
-#include <stdexcept>
 
+// Metoda pre potreby debugovania OpengGl
 void testGL() {
 	if(CARLOS_DEBUG_OPENGL) {
 		GLenum error = glGetError();
@@ -21,18 +20,11 @@ void testGL() {
 }
 
 Scene::Scene()  {
-	log = CREATE_LOG4CPP();
-	plain = new Plain(glm::vec2(10.0, 10.0), typ_lietadla);
-	world = new World(glm::vec2(320.0, 240.0)); //640x480
-	
+	log = CREATE_LOG4CPP();	
 }
 
 Scene::~Scene() {
-	// Vsetko by malo byt uz aktualne uvolnene
-	SAFE_DELETE(plain);
-	SAFE_DELETE(world);
 
-	killFont();
 }
 /** 
 * Funkcia nema na vstupe ziadne parametre, iba nastavi scenu na inicializacne hodnoty
@@ -40,44 +32,55 @@ Scene::~Scene() {
 * @return void
 */
 void Scene::init() {
+	// Komentar
 	testGL();
 	if(log != NULL) {
 		log->debugStream() << "Spustam Scene::init()";
 	}
-	visualController  = new VisualController();
-	resManager = new ResourceManager();
-	aktualnaPozicia = 0;
-	srand(time(NULL));
-	int randNum = (rand() % 3) + 1;
-	typ_lietadla = randNum;
-	resManager->load(randNum);
-	testGL();
-	visualController->load(resManager->shaders);
-	testGL();
-	//switchStateToTouristInfo();
-	prepniStavNaObrazovku();
-	//switchStateToChooseDialog();
-	testGL();
 
+	// Nacitaj controllery
+	srand(time(NULL));
+	mVisualController  = new VisualController();
+	mResManager = new ResourceManager();
+	mStates = new GameStateController(this);
+
+	// Nacitaj objekty
+	int typ_lietadla = (rand() % 3) + 1 ;
+	mPlane = new Plane(glm::vec2(10.0, 10.0), typ_lietadla);
+	mWorld = new World(glm::vec2(320.0, 240.0)); //640x480
+	mResManager->load(typ_lietadla);
+	testGL();
+	mVisualController->load(mResManager->shaders);
+	mStates->loadAll();
+	testGL();
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
-
 	buildFont();
+
+	// Prepni na uvodny stav
+	mStates->switchTo(UVODNA_OBRAZOVKA);
 
 	if(log != NULL) {
 		log->debugStream() << "Koncim Scene::init()";
 	}
-
 	testGL();
 }
 
 
 void Scene::release() {
+	if(log != NULL) {
+		log->debugStream() << "Spustil som Scene::release.";
+	}
 	zasobnikVstupov.clear();
-	SAFE_DELETE( visualController );
-	SAFE_DELETE( resManager );
-	SAFE_DELETE( plain );
-	SAFE_DELETE( world );
+	SAFE_DELETE( mStates );
+	SAFE_DELETE( mVisualController );
+	SAFE_DELETE( mResManager );
+	SAFE_DELETE( mPlane );
+	SAFE_DELETE( mWorld );
+	killFont();
+	if(log != NULL) {
+		log->debugStream() << "Ukoncil som Scene::release.";
+	}
 }
 
 /** 
@@ -97,69 +100,18 @@ void Scene::frame(float fDelta) {
 	FrameData frame;
 	frame.setDeltaTime(fDelta);
 	ziskajAktualnyVstup(&frame);
-	
-	delenieStavov(&frame);
+	mStates->frame(&frame);
 	testGL();
-	visualController->setPerspektive();
+	mVisualController->setPerspektive();
 	testGL();
-	
+
 	//Tu potrebujem poziciu vzdy
-	visualController->renderObject(resManager->square, world->getMatrix(aktualnaPozicia));
+	int aktualnaPozicia = 0; // Neviem, naco to je dobre ... ked Svet ma POZICIU dva krat ... 
+	mVisualController->renderObject(mResManager->square, mWorld->getMatrix(aktualnaPozicia));
 
 	testGL();
 	glFlush();
 	testGL();
-}
-
-
-/** 
-* Funkcia na overenie v akom stave sa nachadza aktualny frame, ma na vstupe jeden parameter a to aktualny frame
-* @param FrameData* frame - aktualny frame 
-* @return void
-*/
-void Scene::delenieStavov(FrameData* frame) {
-	switch(aktualnyStav) {
-	case StavyHry::HRAJE_HRU: {
-		stavHrania(frame);
-		break;
-							  }
-	case StavyHry::OBRAZOVKA_PREHRAL: {
-		stavGameOver(frame);
-		break;
-									  }
-	case StavyHry::OBRAZOVKA_SKORE: {
-		stavSkore(frame);
-		break;
-									}
-	case StavyHry::UVODNA_OBRAZOVKA: {
-		stavUvodnaObrazovka(frame);
-		break;
-									 }
-	case StavyHry::TOURIST_INFO: {
-		stateTouristInfo(frame);
-		break;
-	}
-
-	case StavyHry::CHOOSE_DIALOG: {
-		stateChooseDialog(frame);
-		break;
-	}
-
-	default: {
-		throw std::exception("Neocakavany stav");
-			 }
-	}
-}
-
-void Scene::ziskajAktualnyVstup(FrameData* frame) {
-	try {
-		frame->setVstup( zasobnikVstupov.poll() );
-		if(log != NULL) {
-			log->debugStream() << "Hra, prijmam  vstupy " << frame;
-		}
-	} catch (const std::out_of_range& oor) {
-		// Zasobnik je prazdny, ponechaj tam staru texturu do kedy nepride obrazok
-	}
 }
 
 /** 
@@ -169,11 +121,30 @@ void Scene::ziskajAktualnyVstup(FrameData* frame) {
 * @return void
 */
 void Scene::setBackgroud(CTexture texture) {
-	CTexture actualTex = resManager->square.getTexture();
+	CTexture actualTex = mResManager->square.getTexture();
 	if(actualTex.flagDelete) {
 		actualTex.releaseTexture();
 	}
-	resManager->square.setTexture(texture);
+	mResManager->square.setTexture(texture);
+}
+
+void Scene::nastavPozadieZoVstupu(cv::Mat& img) {
+	if(log != NULL) {
+		log->debugStream() << "Nastavujem texturu z videa.";
+	}
+	GLenum inputColourFormat = GL_BGR;
+	if (img.channels() == 1) {
+		inputColourFormat = GL_LUMINANCE;
+	}
+
+	// 2. Prerob unsigned char na texturu
+	CTexture texture;
+	texture.createFromData(img.ptr(), img.cols, img.rows, GL_RGB, inputColourFormat, true);
+	texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_NEAREST_MIPMAP);
+	texture.flagDelete = true;
+
+	// 3. nastav texturu na pozadie kocky
+	setBackgroud(texture);
 }
 
 uint Scene::getWindowWidth() {
@@ -188,21 +159,13 @@ uint Scene::getWindowHeight() {
 	return viewport[3];
 }
 
-void Scene::dokresliHorizont(cv::Mat& bg, cv::Mat& horizont) {
-	for( int j= 0; j < bg.cols; j++ )
-	{
-		bg.at<Vec3b>(119,j)[0] = 0;
-		bg.at<Vec3b>(119,j)[1] = 255;
-		bg.at<Vec3b>(119,j)[2] = 0;
-		for( int i = 120; i < bg.rows; i++ )
-		{
-
-			if(horizont.at<uchar>(i,j) == 0){
-				bg.at<Vec3b>(i,j)[0] = 0;
-				bg.at<Vec3b>(i,j)[1] = 0;
-				bg.at<Vec3b>(i,j)[2] = 255;
-				break;
-			}
+void Scene::ziskajAktualnyVstup(FrameData* frame) {
+	try {
+		frame->setVstup( zasobnikVstupov.poll() );
+		if(log != NULL) {
+			log->debugStream() << "Hra, prijmam  vstupy " << frame;
 		}
+	} catch (const std::out_of_range& oor) {
+		// Zasobnik je prazdny, ponechaj tam staru texturu do kedy nepride obrazok
 	}
 }

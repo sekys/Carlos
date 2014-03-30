@@ -1,0 +1,50 @@
+#pragma once
+
+#include "class.IGameState.hpp"
+#include "../class.Scene.hpp"
+
+template <class T>
+string convertToStr(T *var) {
+	ostringstream ss;
+	ss << *var;
+	return ss.str();
+}
+
+class GameOverState : public IGameState {
+private :
+	double skore;
+
+public:
+	GameOverState() : IGameState(GameStates::OBRAZOVKA_PREHRAL) { 
+		skore = 0;
+	}
+
+	virtual void switchOn(IGameState* predchodca) {
+		if(predchodca != NULL && predchodca->getType() == GameStates::HRAJE_HRU) {
+			skore = predchodca->getCasBehu();
+		}
+
+		mScene->setBackgroud(mScene->mResManager->bgGameOver);
+		mScene->zasobnikVstupov.clear();
+	}
+
+	virtual void frame(FrameData* frame) {	
+		mScene->zasobnikVstupov.clear();
+
+		// Hud
+		glUseProgram(0);
+		glDisable(GL_LIGHTING);
+		glLoadIdentity();
+		glTranslatef(-0.6f,-0.4f,0.0f);
+		glColor3f(0.0f, 0.f, 0.f);
+		glRasterPos2f(0.0f, 0.0f); 
+		string str = "Aktualny cas letu: " + convertToStr<double>(&skore);
+		glPrint( str.c_str());
+		glEnable(GL_LIGHTING);
+
+		if(this->getCasBehu() > 5.0) {
+			/// presiel cas a zmeni sa stav
+			mScene->mStates->switchTo(GameStates::OBRAZOVKA_SKORE);
+		}
+	}
+};

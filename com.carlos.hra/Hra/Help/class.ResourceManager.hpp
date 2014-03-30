@@ -22,7 +22,7 @@ private:
 public:
 	
 	CShader shaders[11]; /**< Premenna v ktorej su ulozene shadery. */
-	CObjModel plain; /**< Model lietadla */
+	CObjModel plane; /**< Model lietadla */
 	CObjModel square; /**< Pozadie za lietadlom, stena na ktorej sa zobraju textura. */
 
 	CTexture bgBratislavsky; /**< Pozadie ktora sa zobrazovalo namiesto videa*/

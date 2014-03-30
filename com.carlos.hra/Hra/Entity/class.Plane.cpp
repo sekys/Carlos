@@ -1,26 +1,27 @@
-#include "class.Plain.hpp"
+#include "class.Plane.hpp"
 
 
 
-glm::vec2 Plain::getsize(){
+glm::vec2 Plane::getsize(){
 	return size;
 }
 
-Plain::Plain(glm::vec2 size, int typ) : AABB(size) {
+Plane::Plane(glm::vec2 size, int typ) : AABB(size) {
 	log = CREATE_LOG4CPP();
-	this->lastCommand = ControllerCommands::NO_ACTION;
+	//this->lastCommand = ControllerCommands::NO_ACTION;
 	this->size = size;
+	mTyp = typ;
 
-	setStartPosition(typ);
+	setStartPosition();
 }
 
-void  Plain::setStartPosition(int typ) {
+void  Plane::setStartPosition() {
 	/// Hranice  sveta su -100, 100
 	setPosition( glm::vec2(150, 150) ); /// Starovacia pozicia lietadla
 	//rotation = glm::vec3(-270, 180, 270);
-	if (typ == 1)rotation = glm::vec3(-270, 180, 270);
-	if (typ == 2)rotation = glm::vec3(-270, 180, 270);
-	if (typ == 3)rotation = glm::vec3(0, -90, 0);
+	if (mTyp == 1)rotation = glm::vec3(-270, 180, 270);
+	if (mTyp == 2)rotation = glm::vec3(-270, 180, 270);
+	if (mTyp == 3)rotation = glm::vec3(0, -90, 0);
 
 	silaPohybu = glm::vec2(350.0f, 30.0f); /// Defaultna rychlost stupania a rychlost klesania - pri pade
 	speed = glm::vec2();
@@ -29,19 +30,19 @@ void  Plain::setStartPosition(int typ) {
 
 
 
-void  Plain::setRotiation(glm::vec3 rotation) {
+void  Plane::setRotiation(glm::vec3 rotation) {
 	this->rotation = rotation;
 }
-glm::vec3  Plain::getRotation() {
+glm::vec3  Plane::getRotation() {
 	return rotation;
 }
 
-void  Plain::logic(float fDelta, ControllerCommands pressedKey) 
+void  Plane::logic(float fDelta, ControllerCommands pressedKey) 
 {
 	//float radians = 1.0 * 0.0174532925f;
 	glm::vec2 position = getPosition();
 
-	this->lastCommand = pressedKey;
+	//this->lastCommand = pressedKey;
 
 	/// Sila posobi na lietadlo
 	glm::vec2 F = glm::vec2(0.0);
@@ -74,7 +75,7 @@ void  Plain::logic(float fDelta, ControllerCommands pressedKey)
 }
 
 
-glm::mat4  Plain::getMatrix(int pozicia) {
+glm::mat4  Plane::getMatrix(int pozicia) {
 	glm::vec2 position = getPosition();
 	glm::mat4 mModelMatrix = glm::mat4(1.0f);
 	mModelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(pozicia, position.y, 0.0f) );
@@ -88,11 +89,15 @@ glm::mat4  Plain::getMatrix(int pozicia) {
 	mModelMatrix = glm::scale(mModelMatrix, glm::vec3(7,7,7));
 	return mModelMatrix;
 }
-
-ControllerCommands Plain::getLastCommand() {
+/*
+ControllerCommands Plane::getLastCommand() {
 	return lastCommand;
 }
 
-void Plain::setLastCommand(ControllerCommands command) {
+void Plane::setLastCommand(ControllerCommands command) {
 	this->lastCommand = command;
+}
+*/
+int Plane::getTyp() {
+	return mTyp;
 }

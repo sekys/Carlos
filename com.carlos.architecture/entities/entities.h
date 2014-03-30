@@ -1,5 +1,5 @@
 #pragma once
-#include "../../libs/include/carlos_global.h"
+#include <carlos_global.h>
 #include "opencv2/opencv.hpp"
 #include <opencv2\core\core.hpp>
 #include "cv_entities.h"

@@ -3,7 +3,6 @@
 */
 #pragma once
 #include <stdlib.h>
-//#include <gl/glut.h> AAAAAAAAAAAAAAAA RIADOK SMRTI NEZAPINAT
 #include "../Model/objModel.h"
 #include "../Help/Math/AABB.h"
 
