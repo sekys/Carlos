@@ -223,8 +223,10 @@ void Scene::stateChooseDialog(FrameData *frame) {
 
 void Scene::stateTouristInfo(FrameData *frame) {
 	if (frame->hasVstup()) {
-		nastavPozadieZoVstupu(frame->getImage());
 		ModulVykreslovania::In *in = frame->getVstup();
+		cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
+		in->image.data = black;
+		nastavPozadieZoVstupu(frame->getImage());
 		vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = in->najdeneObjekty;
 
 		if (najdeneObjekty.size() > 0) {

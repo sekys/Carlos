@@ -73,7 +73,7 @@ void printLineOfText(const char *str, int x, int y) {
 	glPushMatrix();
 	glLoadIdentity();
 
-	glColor3ub(0,0,0);
+	glColor3ub(255,255,255);
 	glRasterPos2f(x, y);
 	glPrint(str);
 	glPopMatrix();
