@@ -11,14 +11,15 @@
 #include <opencv2\nonfree\nonfree.hpp>
 #include <opencv2/nonfree/gpu.hpp>
 #include <opencv2\legacy\legacy.hpp>
-#include <opencv2\gpu\gpu.hpp>
-//#include <opencv2\gpu\gpumat.hpp>
 #include <windows.h>
 #define GPU_MODE
-#undef GPU_MODE
+//#undef GPU_MODE
 
 #ifdef GPU_MODE
+#define SIFT_SIZE 128
 #include <SiftGPU\SiftGPU.h>
+#include <GL\glew.h>
+#include <GL\GL.h>
 #endif
 
 using namespace Architecture;
@@ -62,10 +63,14 @@ public:
 	virtual Mat najdiHorizont(Mat image);
 
 private:
-	
+#ifdef GPU_MODE
+	SiftGPU *siftGpu;
+	SiftMatchGPU matcherGPU;
+#endif
 	BruteForceMatcher<L2<float>> matcher; /**< matcher deskriptorov */
-	SurfFeatureDetector detector; /**< detektor keypoinotv */
+	SurfFeatureDetector detector; /**< detektor keypointov */
 	SurfDescriptorExtractor extractor; /**< extraktor deskriptorov z keypointov */
+	vector<Candidate> candidates; /**< kandidati na detekovany objekt */
 	Mat prevHorizon;
 	int *prevPos;
 
@@ -80,7 +85,7 @@ private:
 	
 private:
 	void setParameters(double distanceRatioThreshold = 0.85, int minMatchesToFindHomography = 5, bool ransacOutliersRemovalEnabled = true, 
-		int minKeypointsPerObject = 10, double minRecognitionConfidence = 0.0014 /*0.01*/, double maxAvgDistance = 0.21 /*0.35*/ );
+		int minKeypointsPerObject = 10, double minRecognitionConfidence = 0.004, double maxAvgDistance = 0.25 /*0.35*/ );
 	int importCandidates(vector<Candidate> &candidates, vector<WorldObject> &objects);
 	double computeAvgDistance(const vector<DMatch> &matches);
 	double computeConfidence(int keypoints1_size, int keypoints2_size, int matches_size);
@@ -94,6 +99,7 @@ private:
 	void distanceMatching(const Mat &descriptors1, const Mat &descriptors2, vector<DMatch> &matches, double minRatioThreshold);
 	void simpleMatching(const Mat &descriptors1, const Mat &descriptors2, vector<DMatch> &matches);
 	int getBestCandidate(const vector<Candidate> &candidates);
+	void getValidObjects(const vector<Candidate> &candidates, const vector<WorldObject> &objectList, vector<DetekovanyObjekt> &validObjects);
 	void runSurf(const Mat &image, vector<KeyPoint> &keypoints, Mat &descriptors);
 	bool findMatrix(const vector<KeyPoint> &objectKeypoints, const vector<KeyPoint> &sceneKeypoints, vector<DMatch> &matches, Mat &H);
 	void cannyHorizonDetection(const Mat &image, Mat &horizon);
