@@ -96,7 +96,6 @@ Debug/com.carlos.spracovanieReality.lib
 Debug/com.carlos.spracovanieReality.pdb
 [Bb]in
 [Dd]ebug*/
-*.lib
 *.sbr
 obj/
 [Rr]elease*/

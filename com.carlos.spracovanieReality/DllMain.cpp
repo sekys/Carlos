@@ -3,12 +3,24 @@
 #include "../com.carlos.architecture/modules/class.ModulSpracovania.hpp"
 #include "CV.h"
 #include <iostream>
+#include <ctime>
 #include <log4cpp/PropertyConfigurator.hh>
 
 #ifdef _DEBUG
 #pragma comment(lib, "../Debug/com.carlos.architecture.lib")
+#ifdef GPU_MODE
+#pragma comment(lib, "SiftGPU_d.lib")
+#endif
 #else
 #pragma comment(lib, "../Release/com.carlos.architecture.lib")
+#ifdef GPU_MODE
+#pragma comment(lib, "SiftGPU.lib")
+#endif
+#endif
+
+#ifdef GPU_MODE
+#pragma comment(lib, "glu32.lib")
+#pragma comment(lib, "glew32.lib")
 #endif
 
 int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
@@ -16,6 +28,7 @@ int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
 	return 1;
 }
 
+/** inicializuj premenne */
 void RealModulSpracovania::init() {
 	const int th = 500; // 400
 	detector.hessianThreshold = th;
@@ -23,19 +36,67 @@ void RealModulSpracovania::init() {
 	if(!prevHorizon.empty()) prevHorizon.release();
 	prevPos = NULL;
 #ifdef GPU_MODE
-	siftGpu = NULL;
+	//siftGpu = NULL;
+	char *argv[] = {"-v", "0",  "-p", "640x480"}; /// parametre pre SiftGPU
+	int argc = sizeof(argv) / sizeof(char *);
+	siftGpu = new SiftGPU();
+	siftGpu->ParseParam(argc, argv);
+
+	matcherGPU.SetMaxSift(4096);
 #endif
 }
 
+/** vytvor zoznam zdetegovanych objektov s ich polohami
+*	@param candidates mnozina kandidatov na objekt
+*   @param objectList mnozina vstupnych potencionalnych objektov na snimke
+*	@param objectList mnozina zdetegovanych objektov na snimke
+*/
+void RealModulSpracovania::getValidObjects(const vector<Candidate> &candidates, const vector<WorldObject> &objectList, vector<DetekovanyObjekt> &validObjects)
+{
+	int index;
+	double maxConfidence;
+
+	for( WorldObject object : objectList )
+	{
+		index = -1;
+		maxConfidence = 0;
+		for( int i = 0; i < candidates.size(); i++ ) /// najdi najlepsieho validneho kandidate pre dany objekt
+		{
+			if( candidates[i].valid && object.id == candidates[i].id /*&& candidates[i].avgDistance < maxAvgDistance*/ && candidates[i].confidence > maxConfidence )
+				index = i;
+		}
+
+		if( index >= 0 ) /// nasli sme aspon 1 kandidata
+		{
+			DetekovanyObjekt najdenyObjekt;
+			najdenyObjekt.objekt = objectList[ candidates[index].pos ]; /**< detegovany objekt */
+
+			najdenyObjekt.boundary = RotatedRect(
+				Point2f( candidates[index].position1.x + ( candidates[index].position2.x - candidates[index].position1.x ) /2, candidates[index].position1.y + ( candidates[index].position2.y - candidates[index].position1.y) / 2 ), 
+				Size( candidates[index].position2.x - candidates[index].position1.x ,  candidates[index].position2.y - candidates[index].position1.y ), 
+				0
+				); /**< pozicia objektu */
+
+			if(log != NULL) {
+				log->debugStream() << "Najdeny objekt ID #" << object.id << " na zaklade kandidata c. #" << index;
+				log->debugStream() << "Pravdepodobnost: " << candidates[index].confidence;
+				log->debugStream() << "Hamming: " << candidates[index].avgDistance;
+			}
+
+			validObjects.push_back(najdenyObjekt);
+		}
+	}
+}
+
 /** detekcia objektov z mnoziny moznych objektov
-*	@param in obsahuje mnozinu objektov spolu s ich cestami, ktore sa na vstupnom obrazku moozu nachadzat
+*	@param in obsahuje mnozinu objektov spolu s ich cestami, ktore sa na vstupnom obrazku mozu nachadzat
 *	@return najpravdepodobnejsi objekt na obrazku
 */
 
 ModulSpracovania::Out RealModulSpracovania::detekujObjekty(ModulSpracovania::In in) {
 	ModulSpracovania::Out out; /**< najdeny objekt */
 	Mat scene; /**< vstupny obrazok */
-	vector<Candidate> candidates; /**< kandidati na detekovany objekt */
+
 	vector<KeyPoint> sceneKeyPoints; /**< keypointy streamu */
 	Mat sceneDescriptors; /**< matica deskriptorov streamu */
 
@@ -48,46 +109,56 @@ ModulSpracovania::Out RealModulSpracovania::detekujObjekty(ModulSpracovania::In 
 	runSurf(scene, sceneKeyPoints, sceneDescriptors);  /// najdi keypoints a deskriptory
 #endif
 
-	int imported = importCandidates(candidates, in.recepts); /**< pocet kandidatov na objekty */
-	if( imported == 0 ) return out; /// neuspesny import
+	if( !in.recepts.empty() ){
+		int imported = importCandidates(candidates, in.recepts); /**< pocet kandidatov na objekty */
+		if(log != NULL){
+			log->debugStream() << "Candidates: " << candidates.size();
+		}
+	}
+	else
+		candidates.clear();
+
+	if( candidates.size() == 0 ) return out; /// neuspesny import
 
 	for(int i = 0; i < candidates.size(); i++ )
 	{
 		Mat H; /**< matica perspektivnej transformacie */
 		vector<DMatch> matches; /**< zhody */
 		robustMatching( candidates[i].descriptors, sceneDescriptors, matches, distanceRatioThreshold ); /// najdi dobre zhody
-
+		//cout << "Matches: " << matches.size() << endl;
 		candidates[i].valid = selectInliers( candidates[i].keyPoints, sceneKeyPoints, matches, H ); /// odstran outliers a ziskaj maticu perspektivnej transformacie
 		if( candidates[i].valid == false ) continue; /// neuspesna detekcia objektu na vstupnom obrazku
 		else
 		{
-			candidates[i].avgDistance = computeAvgDistance( matches ); /// priemerna L2 vzdialenost zhod
+			candidates[i].avgDistance = 0;//computeAvgDistance( matches ); /// priemerna L2 vzdialenost zhod
 			candidates[i].confidence = computeConfidence( candidates[i].keyPoints.size(), sceneKeyPoints.size(), matches.size() ); /// pomer medzi bodmi a dobrymi zhodami (urcuje spravnost detekcie)
 			candidates[i].valid = findObject( candidates[i].image, H, candidates[i].confidence, candidates[i].position1, candidates[i].position2 ); /// najdi poziciu objektu
 		}
 	}
 
-	int index = getBestCandidate( candidates ); /**< najlepsi kandidat za objekt */
+	//int index = getBestCandidate( candidates ); /**< najlepsi kandidat za objekt */
+	//
+	//if( index >= 0 ) /// najdenie pozicie najlepsieho kandidata
+	//{
+	//	DetekovanyObjekt najdenyObjekt;
+	//	
+	//	najdenyObjekt.objekt = in.recepts[ candidates[index].pos ]; /**< detegovany objekt */
+	//	
+	//	najdenyObjekt.boundary = RotatedRect(
+	//		Point2f( candidates[index].position1.x + ( candidates[index].position2.x - candidates[index].position1.x ) /2, candidates[index].position1.y + ( candidates[index].position2.y - candidates[index].position1.y) / 2 ), 
+	//		Size( candidates[index].position2.x - candidates[index].position1.x ,  candidates[index].position2.y - candidates[index].position1.y ), 
+	//		0
+	//		); /**< pozicia objektu */
+	//	
+	//	cout << "Najdeny objekt #" << index << endl;
+	//	cout << "Pravdepodobnost: " << candidates[index].confidence << endl;
+	//	cout << "Hamming. vzdialenost: " << candidates[index].avgDistance << endl;
+	//
+	//	// Poslem vysledok dalej
+	//	out.objects.push_back(najdenyObjekt); /**< vlozit vysledok */
+	//}
 
-	if( index >= 0 ) /// najdenie pozicie najlepsieho kandidata
-	{
-		DetekovanyObjekt najdenyObjekt;
-
-		najdenyObjekt.objekt = in.recepts[ candidates[index].pos ]; /**< detegovany objekt */
-
-		najdenyObjekt.boundary = RotatedRect(
-			Point2f( candidates[index].position1.x + ( candidates[index].position2.x - candidates[index].position1.x ) /2, candidates[index].position1.y + ( candidates[index].position2.y - candidates[index].position1.y) / 2 ), 
-			Size( candidates[index].position2.x - candidates[index].position1.x ,  candidates[index].position2.y - candidates[index].position1.y ), 
-			0
-			); /**< pozicia objektu */
-
-		if(log != NULL) {
-			log->debugStream() << "Najdeny objekt #" << index;
-		}
-
-		// Poslem vysledok dalej
-		out.objects.push_back(najdenyObjekt); /**< vlozit vysledok */
-	}
+	getValidObjects( candidates, in.recepts, out.objects ); 
 
 	return out;
 }
@@ -170,8 +241,8 @@ bool RealModulSpracovania::findObject(const Mat &image, const Mat &H, double con
 	obj_corners[3] = cvPoint( 0, image.rows );
 	vector<Point2f> scene_corners(4);
 	Rect roi;
-	const int minWidth = 10;
-	const int minHeight = 10;
+	const int minWidth = 220;
+	const int minHeight = 220;
 
 	if( confidence < minRecognitionConfidence ) return false;
 
@@ -200,7 +271,11 @@ bool RealModulSpracovania::findObject(const Mat &image, const Mat &H, double con
 */
 bool RealModulSpracovania::readDescriptors(const string path, const int id, vector<KeyPoint> &keyPoints, Mat &descriptors)
 {
-	char *fileFormat = "images\\%s\\image-%04d.yml"; /// cesta ku keypoint-om a deskriptorom
+#ifndef GPU_MODE
+	char *fileFormat = "../data/objects/%s/image-%04d.yml"; /// cesta ku keypoint-om a deskriptorom
+#else
+	char *fileFormat = "../data/objects/%s/image-%04dG.yml"; /// cesta ku keypoint-om a deskriptorom
+#endif
 
 	FileStorage fs(format(fileFormat, path.c_str(), id), FileStorage::READ);
 	if(!fs.isOpened()) return false;
@@ -226,7 +301,11 @@ bool RealModulSpracovania::readDescriptors(const string path, const int id, vect
 */
 bool RealModulSpracovania::writeDescriptors(const string path, const int id, vector<KeyPoint> keyPoints, Mat descriptors)
 {
-	char *fileFormat = "images\\%s\\image-%04d.yml"; /// cesta ku keypoint-om a deskriptorom
+#ifndef GPU_MODE
+	char *fileFormat = "../data/objects/%s/image-%04d.yml"; /// cesta ku keypoint-om a deskriptorom
+#else
+	char *fileFormat = "../data/objects/%s/image-%04dG.yml"; /// cesta ku keypoint-om a deskriptorom
+#endif
 
 	if(keyPoints.empty() || descriptors.empty()) return false;
 
@@ -249,13 +328,27 @@ bool RealModulSpracovania::writeDescriptors(const string path, const int id, vec
 int RealModulSpracovania::importCandidates(vector<Candidate> &candidates, vector<WorldObject> &objects) // nacitaj pre vsetky mozne objekty vsetky obrazky a najdi keypoints a maticu deskriptorov 
 {
 	int count = 0; /// pocet nacitanych kandidatov
-	char *fileFormat = "images\\%s\\image-%04d.jpg"; /// zatial bude cesta k suborom takato
+	char *fileFormat = "../data/objects/%s/image-%04d.jpg"; /// cesta k objektom
 	WorldObject object;
+	bool isIn;
+	vector<Candidate> tmp_candidates;
 
 	for (int pos = 0; pos < objects.size(); pos++)
 	{
 		object = objects.at(pos);
-		while(true)
+		isIn = false;
+		if( !candidates.empty() )
+		{
+			for( Candidate candidate: candidates )
+			{
+				if( candidate.id == object.id )
+				{
+					isIn = true;
+					tmp_candidates.push_back( candidate );
+				}
+			}
+		}
+		while(!isIn)
 		{
 			Candidate candidate;
 			candidate.id = object.id;
@@ -264,10 +357,15 @@ int RealModulSpracovania::importCandidates(vector<Candidate> &candidates, vector
 			candidate.image = imread(path, IMREAD_GRAYSCALE); /// nacitaj obrazky
 			if(candidate.image.empty()) break;
 #ifdef GPU_MODE
-			runSiftGpu(candidate.image, candidate.keyPoints, candidate.descriptors);
-			if(candidate.keyPoints.empty() || candidate.keyPoints.size() < minKeypointsPerObject || candidate.descriptors.empty()) continue;
-			candidates.push_back(candidate);
+			///runSiftGpu(candidate.image, candidate.keyPoints, candidate.descriptors)
+			if(!readDescriptors(object.cestyKSuborom[0], count+1, candidate.keyPoints, candidate.descriptors))
+			{	
+				runSiftGpu(candidate.image, candidate.keyPoints, candidate.descriptors); /// najdi keypoint-y a deskriptory
+				writeDescriptors(object.cestyKSuborom[0], count+1, candidate.keyPoints, candidate.descriptors);
+			}
 			count++;
+			if(candidate.keyPoints.empty() || candidate.keyPoints.size() < minKeypointsPerObject || candidate.descriptors.empty()) continue;
+			tmp_candidates.push_back(candidate);
 #else
 			// runSurf(candidate.image, candidate.keyPoints, candidate.descriptors); 
 			/// pokus sa nacitat keypoint-y a deskriptory zo suboru, inak ich prepocitaj nanovo a zapis do suboru
@@ -276,12 +374,14 @@ int RealModulSpracovania::importCandidates(vector<Candidate> &candidates, vector
 				runSurf(candidate.image, candidate.keyPoints, candidate.descriptors); /// najdi keypoint-y a deskriptory
 				writeDescriptors(object.cestyKSuborom[0], count+1, candidate.keyPoints, candidate.descriptors);
 			}
+			count++;
 			if(candidate.keyPoints.empty() || candidate.keyPoints.size() < minKeypointsPerObject || candidate.descriptors.empty()) continue;
 			candidates.push_back(candidate);
-			count++;
 #endif
 		}
 	}
+
+	candidates = tmp_candidates;
 
 	return count;
 }
@@ -434,10 +534,14 @@ void RealModulSpracovania::extractInlierMatches(vector<DMatch> &matches, vector<
 void RealModulSpracovania::setParameters(double distanceRatioThreshold, int minMatchesToFindHomography, bool ransacOutliersRemovalEnabled, int minKeypointsPerObject, double minRecognitionConfidence, double maxAvgDistance)
 {
 	this->distanceRatioThreshold = distanceRatioThreshold, 
-		this->minMatchesToFindHomography = minMatchesToFindHomography,
-		this->ransacOutliersRemovalEnabled = ransacOutliersRemovalEnabled,
-		this->minKeypointsPerObject = minKeypointsPerObject,
-		this->minRecognitionConfidence = minRecognitionConfidence;
+	this->minMatchesToFindHomography = minMatchesToFindHomography,
+	this->ransacOutliersRemovalEnabled = ransacOutliersRemovalEnabled,
+	this->minKeypointsPerObject = minKeypointsPerObject,
+#ifdef GPU_MODE
+	this->minRecognitionConfidence = 0.018;
+#else
+	this->minRecognitionConfidence = minRecognitionConfidence;
+#endif
 	this->maxAvgDistance = maxAvgDistance;
 }
 
@@ -481,6 +585,7 @@ void RealModulSpracovania::simpleMatching(const Mat &descriptors1, const Mat &de
 
 void RealModulSpracovania::robustMatching(const Mat &descriptors1, const Mat &descriptors2, vector<DMatch> &matches, double minRatioThreshold)
 {
+#ifndef GPU_MODE // TODO - upravit sposob matchovania
 	vector<vector<DMatch>> matches12, matches21;
 	matches.clear();
 
@@ -488,7 +593,44 @@ void RealModulSpracovania::robustMatching(const Mat &descriptors1, const Mat &de
 
 	distanceRatioFilter(matches12, minRatioThreshold);
 	distanceRatioFilter(matches21, minRatioThreshold);
+
 	crossCheckFilter(matches12, matches21, matches);
+#else
+	int (*match_buf)[2] = new int[descriptors1.rows][2];
+
+	//You can call SetMaxSift anytime to change this limit
+	//You can call SetLanguage to select shader language
+	//between GLSL/CUDA before initialization
+	//Verify current OpenGL Context and do initialization
+	if(matcherGPU.VerifyContextGL() == 0) { cerr << "Chyba"; return; }
+	//Set two sets of descriptor data to the matcher
+	matcherGPU.SetDescriptors(0, descriptors1.rows, (float *) descriptors1.data);
+	matcherGPU.SetDescriptors(1, descriptors2.rows, (float *) descriptors2.data);
+
+	//Match and read back result to input buffer
+	int nmatch = matcherGPU.GetSiftMatch( descriptors1.rows, match_buf, 0.82F, 0.82F, 1);
+
+	for( int i = 0; i < nmatch; i++ )
+	{
+		DMatch match;
+		match.queryIdx = match_buf[i][0];
+		match.trainIdx = match_buf[i][1];
+
+		match.distance = 0;
+		for (int j = 0; j < SIFT_SIZE; j++) 
+		{ 
+			float L2 = *((float *) descriptors1.data + match.queryIdx * SIFT_SIZE + j ) - *((float *) descriptors2.data + match.trainIdx * SIFT_SIZE + j);
+			L2 *= L2;
+			match.distance += L2;
+		}
+
+		match.distance = sqrt( match.distance );
+
+		matches.push_back( match );
+	}
+	//cout << "Matches: " << matches.size() << endl;
+	delete[] match_buf; 
+#endif
 }
 
 /** detegovat keypointy a opisat ich pomocou SURF deskriptorov
@@ -505,17 +647,19 @@ void RealModulSpracovania::runSurf(const Mat &image, vector<KeyPoint> &keypoints
 }
 
 #ifdef GPU_MODE
+/** detegovat keypointy a opisat ich pomocou SIFT deskriptorov (GPU)
+*	@param image obrazok
+*	@param keypoints keypointy
+*	@param descriptors matica deskriptorov
+*/
+
 void RealModulSpracovania::runSiftGpu(const Mat &image, vector<KeyPoint> &keypoints, Mat &descriptors)
 {
-	char *argv[] = {"-v", "1",  "-p", "640x480"};
-	int argc = sizeof(argv) / sizeof(char *);
-	siftGpu = new SiftGPU();
-	siftGpu->ParseParam(argc, argv);
-
 	//	if (siftGpu->VerifyContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED) {
 	if (siftGpu->CreateContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED)
 	{
 		siftGpu = NULL;
+		cerr << "Chyba" << endl;
 		return;
 	}
 
@@ -528,7 +672,7 @@ void RealModulSpracovania::runSiftGpu(const Mat &image, vector<KeyPoint> &keypoi
 
 	const int numFeatures = siftGpu->GetFeatureNum();
 	SiftGPU::SiftKeypoint *siftKeypoints = new SiftGPU::SiftKeypoint[numFeatures];
-	descriptors.create(numFeatures, 128, CV_32FC1);
+	descriptors.create(numFeatures, SIFT_SIZE, CV_32FC1);
 	siftGpu->GetFeatureVector(siftKeypoints, (float *) descriptors.data);
 
 	keypoints.resize(0);
@@ -541,13 +685,13 @@ void RealModulSpracovania::runSiftGpu(const Mat &image, vector<KeyPoint> &keypoi
 		point = (Point2f *) &siftKeypoints[i];
 
 		keypoint.pt = *point;
-		//keypoint.size = siftKeypoints[i].s;
-		//keypoint.angle = siftKeypoints[i].o;
+		keypoint.size = siftKeypoints[i].s;
+		keypoint.angle = siftKeypoints[i].o;
 		keypoints.push_back(keypoint);
 	}
 
 	delete [] siftKeypoints;
-	delete siftGpu;
+	//delete siftGpu;
 }
 #endif
 
@@ -569,7 +713,8 @@ Mat RealModulSpracovania::kalibruj(Mat image1, Mat image2) {
 	cvtColor( image2, image2, CV_BGR2GRAY );
 
 #ifdef GPU_MODE
-	runSiftGpu(scene, sceneKeyPoints, sceneDescriptors);
+	runSiftGpu(image1, keypoints1, descriptors1);  /// najdi keypoints a deskriptory
+	runSiftGpu(image2, keypoints2, descriptors2);  /// najdi keypoints a deskriptory
 #else
 	runSurf(image1, keypoints1, descriptors1);  /// najdi keypoints a deskriptory
 	runSurf(image2, keypoints2, descriptors2);  /// najdi keypoints a deskriptory
@@ -682,9 +827,6 @@ void RealModulSpracovania::cannyHorizonDetection(const Mat &image, Mat &horizon)
 		int nonZero;
 		bitwise_xor( prevHorizon, horizon, tmp );
 		nonZero = countNonZero( tmp );
-		if(log != NULL) {
-			log->debugStream() << "Total number: " << nonZero; 
-		}
 		if(nonZero > maxPxDiff)
 		{
 			for(int i = 0; i < image.cols; i++)
@@ -767,7 +909,7 @@ int main()
 {
 	std::string initFileName = "../data/log4cpp.properties";
 	log4cpp::PropertyConfigurator::configure(initFileName);
-
+	
 	char c;
 	String folder;
 	String imagePath1, imagePath2, tmp;
@@ -777,15 +919,20 @@ int main()
 	ModulSpracovania::In in;
 	ModulSpracovania::Out out;
 	WorldObject object;
-	string path = "kostol";
+	string path = "trencin_poistovna"; //"kostol";
 	object.cestyKSuborom.push_back(path);
 	object.id = 1;
-	Mat image = imread("images\\kostol\\example-0001.jpg");
+	Mat image; // = imread("images\\kostol\\example-0001.jpg");
+	VideoCapture video;
+	video.open("../data/video/2013-10-20-12-18-22.avi");
+	if(!video.isOpened()) return -1;
 
 	Mat output;
+	clock_t begin_time;
 
-	in.image.data = image;
+	//in.image.data = image;
 	in.recepts.push_back(object);
+	modul.init();
 
 	while((c=getchar()) != 'Q')
 	{
@@ -793,19 +940,28 @@ int main()
 		{
 		case 'R':
 		case 'r':
-			image.copyTo(output);
-			modul.init();
-
-			out = modul.detekujObjekty(in);
-
-			for( int i = 0; i< out.objects.size(); i++)
+			while(true)
 			{
-				RotatedRect rect = out.objects[i].boundary;
-				rectangle(output, rect.boundingRect(), Scalar(0, 255, 0), 4);
+				//for(int i= 0; i<15; i++)
+					video >> image;
+				if(image.empty()) break;
+
+				in.image.data = image;
+				image.copyTo(output);
+
+				begin_time = clock();
+				out = modul.detekujObjekty(in);
+
+				for( int i = 0; i< out.objects.size(); i++)
+				{
+					RotatedRect rect = out.objects[i].boundary;
+					rectangle(output, rect.boundingRect(), Scalar(0, 255, 0), 4);
+				}
+				cout << "Time: " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
+				//resize( output, output, Size(output.cols / 3, output.rows / 3) );
+				imshow("FINAL", output);
+				waitKey(30);
 			}
-			resize( output, output, Size(output.cols / 3, output.rows / 3) );
-			imshow("FINAL", output);
-			waitKey();
 			destroyAllWindows();
 			break;
 		case 'C':
@@ -813,9 +969,17 @@ int main()
 			break;
 		case 'H':
 		case 'h':
-			output = modul.najdiHorizont(image);
-			imshow("FINAL", output);
-			waitKey();
+			while(true)
+			{
+				video >> image;
+				if(image.empty()) break;
+				begin_time = clock();
+				output = modul.najdiHorizont(image);
+				cout << "Time: " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
+				imshow("ORIGIN", image);
+				imshow("FINAL", output);
+				waitKey(30);
+			}
 			destroyAllWindows();
 			break;
 		}
