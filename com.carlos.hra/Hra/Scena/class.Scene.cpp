@@ -59,6 +59,7 @@ void Scene::init() {
 
 	// Prepni na uvodny stav
 	mStates->switchTo(UVODNA_OBRAZOVKA);
+	//mStates->switchTo(CHOOSE_DIALOG);
 
 	if(log != NULL) {
 		log->debugStream() << "Koncim Scene::init()";
@@ -145,6 +146,11 @@ void Scene::nastavPozadieZoVstupu(cv::Mat& img) {
 
 	// 3. nastav texturu na pozadie kocky
 	setBackgroud(texture);
+}
+
+void Scene::setBlackBackground() {
+	cv::Mat black(480, 640, CV_8UC3, Scalar(0, 0, 0));
+	nastavPozadieZoVstupu(black);
 }
 
 uint Scene::getWindowWidth() {

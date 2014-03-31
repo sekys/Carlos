@@ -32,6 +32,7 @@ public:
 	GameStateController* mStates;
 
 	void setBackgroud(CTexture texture);
+	void setBlackBackground();
 	void nastavPozadieZoVstupu(cv::Mat& img);
 	void ziskajAktualnyVstup(FrameData* data);
 
