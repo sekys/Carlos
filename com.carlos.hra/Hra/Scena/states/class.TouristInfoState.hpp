@@ -8,7 +8,7 @@ using namespace DB;
 
 class TouristInfoState : public IGameState {
 private:
-	void showTouristInfo(ControllerCommands command, DB::Object *object, Point2f &pos) {
+	void showTouristInfo(ControllerCommands command, const DB::Object *object, Point2f &pos) {
 		const char *str;
 
 		if (command == ControllerCommands::WHAT_IS_OBJECT) {
@@ -46,8 +46,11 @@ public:
 
 	virtual void frame(FrameData* frame) {	
 		if (frame->hasVstup()) {
-			mScene->nastavPozadieZoVstupu(frame->getImage());
 			ModulVykreslovania::In *in = frame->getVstup();
+			cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
+			in->image.data = black;
+			mScene->nastavPozadieZoVstupu(frame->getImage());
+
 			vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = in->najdeneObjekty;
 
 			if (najdeneObjekty.size() > 0) {
@@ -55,7 +58,7 @@ public:
 				for (int i = 0; i < najdeneObjekty.size(); i++) {
 					if (najdeneObjekty.at(i).najdeny) {
 						uint id = najdeneObjekty.at(i).id; 
-						DB::Object *object = DB::DBService::getInstance().getObjectById(id);
+						const DB::Object *object = DB::DBService::getInstance().getObjectById(id);
 
 						if (object != NULL) {
 							showTouristInfo(frame->getCommand(), object, najdeneObjekty.at(i).polohaTextu);
@@ -73,6 +76,5 @@ public:
 		object->name = "Testovacie menoTestovacie meno";
 		showTouristInfo(object, Point2f(599, 449));
 		visualController->renderTexture(resManager->infoImage, 0, 0, getWindowWidth(), getWindowHeight());*/
-
 	}
 };

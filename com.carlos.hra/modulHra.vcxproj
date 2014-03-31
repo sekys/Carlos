@@ -22,7 +22,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120_CTP_Nov2012</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -107,17 +107,26 @@
     <ClInclude Include="architecture\modules\class.ModulSpracovania.hpp" />
     <ClInclude Include="architecture\modules\class.ModulVykreslovania.hpp" />
     <ClInclude Include="architecture\modules\class.ModulVypocitaniaPolohy.hpp" />
+    <ClInclude Include="Hra\Entity\class.Plane.hpp" />
     <ClInclude Include="Hra\Help\class.FrameData.hpp" />
     <ClInclude Include="Hra\Help\class.TextAndPositionFormatter.h" />
     <ClInclude Include="Hra\Help\class.ThreadSafeStack.hpp" />
     <ClInclude Include="Hra\Help\class.ResourceManager.hpp" />
     <ClInclude Include="Hra\Help\Math\AABB.h" />
-    <ClInclude Include="Hra\Entity\class.Plain.hpp" />
     <ClInclude Include="Hra\Entity\class.World.hpp" />
     <ClInclude Include="Hra\Help\Math\collisionStatus.h" />
     <ClInclude Include="Hra\Help\font.h" />
     <ClInclude Include="Hra\Help\baseStructures.h" />
     <ClInclude Include="Hra\Help\class.VisualController.hpp" />
+    <ClInclude Include="Hra\Scena\class.GameStateController.hpp" />
+    <ClInclude Include="Hra\Scena\states\class.ChooseDialogState.hpp" />
+    <ClInclude Include="Hra\Scena\states\class.GameOverState.hpp" />
+    <ClInclude Include="Hra\Scena\states\class.IGameState.hpp" />
+    <ClInclude Include="Hra\Scena\states\class.PlayingGameState.hpp" />
+    <ClInclude Include="Hra\Scena\states\class.SkoreObrazovkaState.hpp" />
+    <ClInclude Include="Hra\Scena\states\class.TouristInfoState.hpp" />
+    <ClInclude Include="Hra\Scena\states\class.UvodnaObrazovkaState.hpp" />
+    <ClInclude Include="Hra\Scena\states\enum.GameStates.hpp" />
     <ClInclude Include="prepojenie\class.DllModulVykreslovania.hpp" />
     <ClInclude Include="Hra\Scena\class.Scene.hpp" />
     <ClInclude Include="Hra\Model\common_header.h" />
@@ -128,13 +137,14 @@
     <ClInclude Include="Hra\Scena\StavyHry.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Hra\Entity\class.Plain.cpp" />
+    <ClCompile Include="Hra\Entity\class.Plane.cpp" />
     <ClCompile Include="Hra\Help\class.FrameData.cpp" />
     <ClCompile Include="Hra\Help\class.ResourceManager.cpp" />
     <ClCompile Include="Hra\Help\class.TextAndPositionFormatter.cpp" />
     <ClCompile Include="Hra\Help\class.VisualController.cpp" />
     <ClCompile Include="Hra\Help\font.cpp" />
-    <ClCompile Include="Hra\Scena\prepniStav.cpp" />
+    <ClCompile Include="Hra\Scena\class.GameStateController.cpp" />
+    <ClCompile Include="Hra\Scena\states\class.PlayingGameState.cpp" />
     <ClCompile Include="prepojenie\DllMain.cpp" />
     <ClCompile Include="prepojenie\class.DllModulVykreslovania.cpp" />
     <ClCompile Include="Hra\Help\Math\AABB.cpp" />
@@ -143,7 +153,6 @@
     <ClCompile Include="Hra\Model\shaders.cpp" />
     <ClCompile Include="Hra\Model\texture.cpp" />
     <ClCompile Include="Hra\Model\vertexBufferObject.cpp" />
-    <ClCompile Include="Hra\Scena\stavy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="licence.txt" />
