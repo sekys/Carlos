@@ -83,6 +83,10 @@ public:
 							uint id = najdeneObjekty.at(i).id; 
 							Point2f position = najdeneObjekty.at(i).polohaTextu;
 
+							// Prepocitame poziciu textu na obrazovke do pixelov
+							position.x = position.x * mScene->getWindowWidth();
+							position.y = position.y * mScene->getWindowHeight();
+
 							positions.push_back(ObjectPostion(id, position));
 						}
 					}

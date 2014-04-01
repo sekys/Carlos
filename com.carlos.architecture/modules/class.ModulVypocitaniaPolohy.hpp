@@ -57,6 +57,10 @@ namespace Architecture
 			return out;
 		}
 
+		virtual double getHeadPosition(Point3f headPosition) {
+			return 0.0;
+		}
+
 	};
 }
 

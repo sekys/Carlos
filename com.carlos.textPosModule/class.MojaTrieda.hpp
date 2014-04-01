@@ -10,6 +10,14 @@ using namespace Architecture;
 
 class MojaTrieda {
 protected:
+	double PROJECTION_AREA_DISTANCE_FROM_CAR_WINDOW_IN_M; /// Vzdialenost plochy na ktoru sa premieta video, od plochy virtualnej reality
+
+	int CAR_WINDOW_WIDTH_IN_PX;  /// Sirka grafickeho okna v pixloch, na ktorom sa premieta virtualna realita
+	int CAR_WINDOW_HEIGHT_IN_PX; /// Vyska grafickeho okna v pixloch, na ktorom sa premieta virtualna realita
+
+	double CAR_WINDOW_WIDTH_IN_M;  /// Sirka okna v aure v metroch
+	double CAR_WINDOW_HEIGHT_IN_M; /// Vyska okna v aute v metroch 
+
 	double CAMERA_DISTANCE_FROM_WINDOW_IN_M; /// Vdialenost kamery, ktora natacala scenu od okna v metroch
 	double CAMERA_X_POSITION_IN_WINDOW_IN_M; /// Pozicia kamery v ramci sirky okna v metroch
 	
@@ -78,7 +86,7 @@ protected:
 	double calculateCosBtwnCameraAndObj(double objPosInWindowInM) {
 		double objDstFromCam = objPosInWindowInM > CAMERA_X_POSITION_IN_WINDOW_IN_M ?
 			objPosInWindowInM - CAMERA_X_POSITION_IN_WINDOW_IN_M :
-		CAMERA_X_POSITION_IN_WINDOW_IN_M - objPosInWindowInM;
+			CAMERA_X_POSITION_IN_WINDOW_IN_M - objPosInWindowInM;
 
 		double hyp = sqrt(objDstFromCam*objDstFromCam + CAMERA_DISTANCE_FROM_WINDOW_IN_M*CAMERA_DISTANCE_FROM_WINDOW_IN_M);
 		double cos = CAMERA_DISTANCE_FROM_WINDOW_IN_M / hyp;
@@ -115,24 +123,30 @@ protected:
 		int height = headPos.y > detecObjPos.y ? headPos.y - detecObjPos.y : detecObjPos.y - headPos.y;
 		int width  = headPos.x > detecObjPos.x ? headPos.x - detecObjPos.x : detecObjPos.x - headPos.x;
 
-		if (height > 0.) {
+		if (height > 0.0) {
 			double hyp = sqrt(distance*distance + height*height);
 			double sin = height / hyp;
 			double cos = distance / hyp;
 			double res = (positive(detecObjPos.z) / cos) * sin;
 
-			if (headPos.y > detecObjPos.y) textPos.y = detecObjPos.y + res;
-			else textPos.y = detecObjPos.y - res;
+			if (headPos.y > detecObjPos.y) {
+				textPos.y = detecObjPos.y + res;
+			} else {
+				textPos.y = detecObjPos.y - res;
+			}
 		}
 
-		if (width > 0.) {
+		if (width > 0.0) {
 			double hyp = sqrt(distance*distance + width*width);
 			double sin = width / hyp;
 			double cos = distance / hyp;
 			double res = (positive(detecObjPos.z) / cos) * sin;
 
-			if (headPos.x > detecObjPos.x) textPos.x = detecObjPos.x + res;
-			else textPos.x = detecObjPos.x - res;
+			if (headPos.x > detecObjPos.x) {
+				textPos.x = detecObjPos.x + res;
+			} else {
+				textPos.x = detecObjPos.x - res;
+			}
 		}
 
 		return textPos;
@@ -140,6 +154,14 @@ protected:
 
 public:
 	MojaTrieda() {
+		PROJECTION_AREA_DISTANCE_FROM_CAR_WINDOW_IN_M = 2.0;
+
+		CAR_WINDOW_WIDTH_IN_PX = 640;
+		CAR_WINDOW_HEIGHT_IN_PX = 480;
+
+		CAR_WINDOW_WIDTH_IN_M = 0.54;
+		CAR_WINDOW_HEIGHT_IN_M = 0.33;
+
 		CAMERA_DISTANCE_FROM_WINDOW_IN_M = 0.4;
 		CAMERA_X_POSITION_IN_WINDOW_IN_M = 0.3;
 	}
