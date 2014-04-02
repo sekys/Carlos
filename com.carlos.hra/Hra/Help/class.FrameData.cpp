@@ -44,6 +44,7 @@ bool FrameData::hasVstup() {
 }
 
 int FrameData::getpozicia(){
+
 	if (vstup->position*100 < -100 || vstup->position*100 > 100){
 		//out << "Zla poslana pozicia: " << vstup->position*100;
 	return 0;

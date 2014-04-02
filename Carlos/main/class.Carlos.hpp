@@ -14,6 +14,7 @@ namespace Architecture {
 	private:
 		ModulesController* controller; /**< Carlos spaja rozne moduly */
 		log4cpp::Category* log;
+		
 
 		// Metoda na spracovanie snimku
 		void spracujJedenSnimok(Image image);
@@ -29,6 +30,7 @@ namespace Architecture {
 		virtual bool Run();
 
 	public:
+		float poz;
 		Carlos();
 		~Carlos();
 	};

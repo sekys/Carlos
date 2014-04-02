@@ -1,6 +1,6 @@
 #include "class.PlayingGameState.hpp"
 
-bool PlayingGameState::otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plane* plain) {
+bool PlayingGameState::otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plane* plain, int pozicia) {
 	cv::flip(horizont, horizont, 0);
 	glm::vec2 aktualnaPozicia = plain->getPosition();
 	glm::vec2 velkostLiedatla = plain->getsize();
@@ -15,7 +15,7 @@ bool PlayingGameState::otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plane
 	if (os_min_y < 0 || os_min_y > 480) return false; 
 	if (os_max_y > 480 || os_max_y < 0) return false; 
 
-	for (int j = 465; j < 475; j++ ){
+	for (int j = 465+pozicia; j < 475+pozicia; j++ ){
 		for (int i = os_min_y; i < os_max_y; i++ ){
 			if(horizont.at<uchar>(os_min_y,j) != 0) return true;
 
@@ -62,7 +62,7 @@ void PlayingGameState::frame(FrameData* frame) {
 		}
 	} else {
 		Architecture::ModulVykreslovania::In *in = frame->getVstup();
-		aktualnaPozicia = frame->getpozicia();
+		mScene->aktualnaPozicia = frame->getpozicia();
 		cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
 		in->image.data = black; 
 		in->horizont = in->horizont.clone();
@@ -80,7 +80,7 @@ void PlayingGameState::frame(FrameData* frame) {
 	// Otestuj ci sa dotyka horizontu
 	if(frame->hasVstup()) {
 		cv::Mat horizont = frame->getHorizont();
-		contain = otestujHorizontCiSaDotykaLietadla(horizont, mScene->mPlane);
+		contain = otestujHorizontCiSaDotykaLietadla(horizont, mScene->mPlane, mScene->aktualnaPozicia);
 		if(!contain) {
 			cout << "Narazil do horizontu\n";
 			this->eventHavaroval();
@@ -90,15 +90,9 @@ void PlayingGameState::frame(FrameData* frame) {
 	mScene->mPlane->logic(frame->getDeltaTime(), frame->getCommand() );
 	int miesto;
 
-	//tu je niekde chyba
-	if (aktualnaPozicia< 0){
-		miesto = 150 - aktualnaPozicia;
-	}
-	if (aktualnaPozicia> 0){
-		miesto = aktualnaPozicia +  150;
-	}
+	
 
-	mScene->mVisualController->renderObject(mScene->mResManager->plane, mScene->mPlane->getMatrix(150));
+	mScene->mVisualController->renderObject(mScene->mResManager->plane, mScene->mPlane->getMatrix(mScene->aktualnaPozicia+150));
 }
 
 

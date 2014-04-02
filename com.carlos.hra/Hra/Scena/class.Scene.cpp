@@ -43,7 +43,7 @@ void Scene::init() {
 	mVisualController  = new VisualController();
 	mResManager = new ResourceManager();
 	mStates = new GameStateController(this);
-
+	aktualnaPozicia = 0;
 	// Nacitaj objekty
 	int typ_lietadla = (rand() % 3) + 1 ;
 	mPlane = new Plane(glm::vec2(10.0, 10.0), typ_lietadla);
@@ -101,12 +101,12 @@ void Scene::frame(float fDelta) {
 	frame.setDeltaTime(fDelta);
 	ziskajAktualnyVstup(&frame);
 	mStates->frame(&frame);
+	
 	testGL();
 	mVisualController->setPerspektive();
 	testGL();
 
 	//Tu potrebujem poziciu vzdy
-	int aktualnaPozicia = 0; // Neviem, naco to je dobre ... ked Svet ma POZICIU dva krat ... 
 	mVisualController->renderObject(mResManager->square, mWorld->getMatrix(aktualnaPozicia));
 
 	testGL();

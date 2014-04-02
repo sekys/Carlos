@@ -6,7 +6,7 @@
 
 class PlayingGameState : public IGameState {
 private:
-	bool otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plane* plain);
+	bool otestujHorizontCiSaDotykaLietadla(cv::Mat horizont, Plane* plain, int pozicia);
 	void dokresliHorizont(cv::Mat& bg, cv::Mat& horizont);
 	void eventHavaroval();
 

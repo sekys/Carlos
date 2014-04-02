@@ -30,6 +30,7 @@ public:
 	log4cpp::Category* log;
 	TextAndPositionFormatter mFormatter;
 	GameStateController* mStates;
+	int aktualnaPozicia;
 
 	void setBackgroud(CTexture texture);
 	void nastavPozadieZoVstupu(cv::Mat& img);
