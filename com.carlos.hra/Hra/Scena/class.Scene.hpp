@@ -33,6 +33,7 @@ public:
 	int aktualnaPozicia;
 
 	void setBackgroud(CTexture texture);
+	void setBlackBackground();
 	void nastavPozadieZoVstupu(cv::Mat& img);
 	void ziskajAktualnyVstup(FrameData* data);
 

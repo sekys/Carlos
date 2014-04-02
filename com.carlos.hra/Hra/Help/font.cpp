@@ -74,6 +74,7 @@ void printLineOfText(const char *str, int x, int y) {
 	glLoadIdentity();
 
 	glColor3ub(255,255,255);
+	// x a y je poloha textu v pixeloch
 	glRasterPos2f(x, y);
 	glPrint(str);
 	glPopMatrix();

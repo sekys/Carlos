@@ -1,5 +1,10 @@
-#include "DllKinect.h"
-#include "MyFreenectDevice.h"
+#include "../com.carlos.kinect/DllKinect.h"
+
+uint16_t *depth;
+bool m_new_rgb_frame;
+bool m_new_depth_frame;
+pthread_mutex_t gl_backbuf_mutex;
+uint8_t *rgb_back, *rgb_mid;
 
 Point3f DllKinect::getAktualnaRotaciaHlavy() {
 	Point3f rot;
@@ -9,48 +14,111 @@ Point3f DllKinect::getAktualnaRotaciaHlavy() {
 	return rot;
 }
 
-void DllKinect::init() {
-	bool die(false);
+void depth_cb(freenect_device *dev, void *v_depth, uint32_t timestamp)
+{
+	pthread_mutex_lock(&gl_backbuf_mutex);
+	depth = (uint16_t*)v_depth;
+
+	m_new_depth_frame=true;
+	pthread_mutex_unlock(&gl_backbuf_mutex);
+}
+
+void rgb_cb(freenect_device *dev, void *rgb, uint32_t timestamp)
+{
+	pthread_mutex_lock(&gl_backbuf_mutex);
+
+	// swap buffers
+	assert (rgb_back == rgb);
+	rgb_back = rgb_mid;
+	freenect_set_video_buffer(dev, rgb_back);
+	rgb_mid = (uint8_t*)rgb;
+
+	//memcpy(rgbMat.ptr(), rgb_mid, 640*480*3);
+	m_new_rgb_frame = true;
+	pthread_mutex_unlock(&gl_backbuf_mutex);
+}
+
+void DllKinect::getRGB(){
+	pthread_mutex_lock(&gl_backbuf_mutex);
+	if(m_new_rgb_frame){
+		memcpy(rgbMat.ptr(), rgb_mid, 640*480*3);
+		cv::cvtColor(rgbMat, rgbMat, CV_BGR2RGB);
+		m_new_rgb_frame=false;
+	}
+	pthread_mutex_unlock(&gl_backbuf_mutex);
+}
+
+void DllKinect::getDepth(){
+	pthread_mutex_lock(&gl_backbuf_mutex);
+	if(m_new_depth_frame){
+		memcpy(depthMat.ptr(), depth, 640*480*2);
+		depthMat.convertTo(depthf, CV_8UC1, 255.0/2048.0);
+		m_new_depth_frame=false;
+	}
+	pthread_mutex_unlock(&gl_backbuf_mutex);
+}
+
+/**	Funkcia m· na vstupe s˙radnice x a y videa z RGB kamery a vr·ti re·lne s˙radnice x a y v re·lnom svete z pohæadu kinectu
+*	@param x x-ov· s˙radnica vo videu
+*	@param y y-ov· s˙radnica vo videu
+*	@return s˙radnice prepoËÌtanÈ na re·lny svet z pohæadu kinectu
+*/
+
+Vec3f DllKinect::DepthToWorld(int x, int y, int depthValue)
+{
+	static const double FovH = 1.0144686707507438;
+	static const double FovV = 0.78980943449644714;
+	static const double XtoZ = tan(FovH/2)*2 ;
+	static const double YtoZ = tan(FovV/2)*2 ;
+
+	Vec3f result;
+	result[0] = (x/640-.5) * depthValue * XtoZ;
+	result[1] = (0.5-y/480) * depthValue * YtoZ;
+	result[2] = depthValue;
+	return result;
+}
+
+/** 
+*	Hlavn· funkcia modulu. Na zaËiatku spustÌ inicializ·ciu a kinect, ktor˝ potom do ukonËenia programu zisùuje s˙radnice bodu pozerania
+*/
+
+void DllKinect::freenect_threadfunc()
+{
+	int accelCount = 0;
 	int iter(0);
 	Point pt1, pt2, pt3;
+	cv::vector<Rect> faces;
 
-	//this->spustiKalibraciu();
+	face_cascade.load("../data/haarcascade_frontalface_alt.xml");
 
-	CascadeClassifier face_cascade;
-	face_cascade.load("haarcascade_frontalface_alt.xml");
+	//freenect_set_tilt_degs(f_dev,freenect_angle);
+	freenect_set_led(f_dev,LED_RED);
+	freenect_set_depth_callback(f_dev, depth_cb);
+	freenect_set_video_callback(f_dev, rgb_cb);
+	freenect_set_video_mode(f_dev, freenect_find_video_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_VIDEO_RGB));
+	freenect_set_depth_mode(f_dev, freenect_find_depth_mode(FREENECT_RESOLUTION_MEDIUM, FREENECT_DEPTH_REGISTERED));
+	freenect_set_video_buffer(f_dev, rgb_back);
 
-	Mat depthMat(Size(640,480),CV_16UC1);
-	Mat depthf  (Size(640,480),CV_8UC1);
-	Mat rgbMat(Size(640,480),CV_8UC3,Scalar(0));
-	Mat ownMat(Size(640,480),CV_8UC3,Scalar(0));
-	Mat grayMat(Size(640,480), CV_8UC1);
+	freenect_start_depth(f_dev);
+	freenect_start_video(f_dev);
 
-	device.setLed(LED_BLINK_RED_YELLOW);
-	device.startVideo();
-	printf("video started\n");
-	device.startDepth();
-	printf("depth started\n");
-	device.setDepthFormat(FREENECT_DEPTH_REGISTERED);
-	printf("format changed\n");
+	//printf("'w'-tilt up, 's'-level, 'x'-tilt down, '0'-'6'-select LED mode, 'f'-video format\n");
+	//printf("'e' - auto exposure, 'b' - white balance, 'r' - raw color, 'm' - mirror\n");
 
-	if(!NacitajMaticu())
-		this->spustiKalibraciu();
+	while (!die && freenect_process_events(f_ctx) >= 0) {
 
-	namedWindow("rgb",CV_WINDOW_AUTOSIZE);
-	namedWindow("depth",CV_WINDOW_AUTOSIZE);
-	
-	device.setLed(LED_GREEN);
-	while (!die) {
-		device.getVideo(rgbMat);
-		device.getDepth(depthMat);
+
+		//get rgbMat 
+		getRGB();
+
+		//get depthMat
+		getDepth();
 
 		//face recognition start
 		cvtColor(rgbMat, grayMat, CV_BGR2GRAY);
 		equalizeHist(grayMat, grayMat);
 
-		std::vector<Rect> faces;
-
-		face_cascade.detectMultiScale(grayMat, faces, 1.1, 3, CV_HAAR_FIND_BIGGEST_OBJECT|CV_HAAR_SCALE_IMAGE, Size(30,30));
+		face_cascade.detectMultiScale(grayMat, faces, 1.1, 3, CV_HAAR_FIND_BIGGEST_OBJECT|CV_HAAR_SCALE_IMAGE, Size(30,30)); //heap corruption problem!!!!!!!
 		if(faces.size()>0){
 			pt1.x = faces[0].x + faces[0].width;
 			pt1.y = faces[0].y + faces[0].height;
@@ -59,6 +127,7 @@ void DllKinect::init() {
 
 			rectangle(rgbMat, pt1, pt2, cvScalar(0, 255, 0, 0), 1, 8, 0);
 		}
+		faces.clear();
 
 		//face recognition end
 		pt3.x=((pt1.x-pt2.x)/2)+pt2.x;
@@ -75,17 +144,16 @@ void DllKinect::init() {
 		}
 
 
-		cv::imshow("rgb", rgbMat);
-		depthMat.convertTo(depthf, CV_8UC1, 255.0/2048.0);
-		cv::imshow("depth",depthf);
 
+		cv::imshow("rgb", rgbMat);
+		cv::imshow("depth",depthf);
 		char k = cvWaitKey(5);
 		if( k == 27 ){
 			cvDestroyWindow("rgb");
 			cvDestroyWindow("depth");
 			break;
 		}
-		if(iter >= 500){
+		if(iter >= 100){
 			iter=0;
 			if(pt3.x!=0)
 			{
@@ -102,95 +170,88 @@ void DllKinect::init() {
 
 				Mat j = M*i;
 
-				//printf("%.0f %.0f %.0f\n", wx, wy, wz);
-				//cout <<i << endl;
-				//cout << M <<endl;
-				cout << j << endl;
+				cout << i << endl << j << endl;
+
+				//printf("%.0f %.0f %.0f\n", j.at<double>(0,0), j.at<double>(1,0), j.at<double>(2,0));
 			}
 		}
 		iter++;
+
 	}
 
-	device.stopVideo();
-	device.stopDepth();
-	device.setLed(LED_OFF);
+	printf("\nshutting down streams...\n");
+
+	freenect_stop_depth(f_dev);
+	freenect_stop_video(f_dev);
+
+	freenect_close_device(f_dev);
+	freenect_shutdown(f_ctx);
+
+
+	printf("-- done!\n");
 }
 
 
-void DllKinect::spustiKalibraciu() {
-	bool die(false);
-	int iter = 0, j = 0, token = 0;
-	vector<Vec3f> circles[4];
-	Vec3d result;
+void DllKinect::NacitajMaticu(){
+	ifstream file;
+	int i, j, k;
 
-	double mx[4][4] = {{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}};
-	//mx treba zistovat z kinectu
-	double my[4][4] = {{0, 0, 200, 100}, {0, 0, 0, 100}, {495, 621, 375, 490}, {1, 1, 1, 1}};
-
-	//nacitavanie bodov pre mx
-	Mat depthMat(Size(640,480),CV_16UC1);
-	Mat depthf  (Size(640,480),CV_8UC1);
-	Mat rgbMat(Size(640,480),CV_8UC3,Scalar(0));
-	Mat ownMat(Size(640,480),CV_8UC3,Scalar(0));
-	Mat grayMat(Size(640,480), CV_8UC1);
-/*
-	Freenect::Freenect freenect;
-	MyFreenectDevice& device = freenect.createDevice<MyFreenectDevice>(0);
-	//nastav LED na zapnute
-	device.setLed(LED_BLINK_RED_YELLOW);
-
-	device.startVideo();
-	printf("video started\n");
-	device.startDepth();
-	printf("depth started\n");
-	device.setDepthFormat(FREENECT_DEPTH_REGISTERED);
-	printf("format changed\n");*/
-	device.setLed(LED_RED);
-	while (j<4) {
-		device.getVideo(rgbMat);
-		device.getDepth(depthMat);
-		cvtColor(rgbMat, grayMat, CV_BGR2GRAY);
-		if(iter >= 100){
-			token=0;
-			device.setLed(LED_YELLOW);
-			//circle recognition
-
-			GaussianBlur( grayMat, grayMat, Size(9, 9), 2, 2);
-
-			HoughCircles( grayMat, circles[j], CV_HOUGH_GRADIENT, 1, grayMat.rows/8, 200, 100, 0, 0);
-			for(size_t i =0; i<circles[j].size(); i++){
-				if(token == 0){
-					token=1;
-					result = DepthToWorld(cvRound(circles[j][i][0]), cvRound(circles[j][i][1]), depthMat.at<ushort>(cvRound(circles[j][i][1]), cvRound(circles[j][i][0])));
-					if(result[0] < 1){
-						cout << "bad read, try again" << endl;
-					} else {
-					mx[0][j] = result[0];
-					mx[1][j] = result[1];
-					mx[2][j] = result[2];
-					j++;
-					}
-					device.setLed(LED_RED);
-					iter=0;
-				}
-			}
+	file.open("../data/matica.txt");
+	M = Mat(4, 4, CV_64F);
+	for(j = 0; j<4; j++){
+		for(k = 0; k<4; k++){
+			file >> M.at<double>(j, k);
 		}
-		iter++;
+	}
+	file.close();
+}
+
+void DllKinect::init()
+{
+	rgb_back = (uint8_t*)malloc(640*480*3);
+	rgb_mid = (uint8_t*)malloc(640*480*3);
+
+	die = 0;
+	gl_backbuf_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+	depthMat = Mat(Size(640,480),CV_16UC1);
+	depthf = Mat (Size(640,480),CV_8UC1);
+	rgbMat= Mat(Size(640,480),CV_8UC3,Scalar(0));
+	grayMat= Mat(Size(640,480), CV_8UC1);
+
+	freenect_angle = 0;
+
+	printf("Kinect camera test\n");
+
+	int i;
+	for (i=0; i<2048; i++) {
+		float v = i/2048.0;
+		v = powf(v, 3)* 6;
 	}
 
-	//device.stopVideo();
-	//device.stopDepth();
-	//device.setLed(LED_OFF);
+	if (freenect_init(&f_ctx, NULL) < 0) {
+		printf("freenect_init() failed\n");
+	}
 
-	//vypocet
-	Mat x = Mat(4, 4, CV_64F, mx);
-	Mat y = Mat(4, 4, CV_64F, my);
+	freenect_set_log_level(f_ctx, FREENECT_LOG_DEBUG);
+	freenect_select_subdevices(f_ctx, (freenect_device_flags)(FREENECT_DEVICE_MOTOR | FREENECT_DEVICE_CAMERA));
 
-	M = y*(x.inv());
-	UlozMaticu();
-	//cout << "M = "<< endl << " "  << M << endl << endl;
-	//double mi[4] = {{51}, {36}, {87}, {1}};
-	//Mat i = Mat(4, 1, CV_64F, mi);
-	//Mat j = M*i;
-	//cout << "M = "<< endl << " "  << j << endl << endl;
+	int nr_devices = freenect_num_devices (f_ctx);
+	printf ("Number of devices found: %d\n", nr_devices);
+
+	int user_device_number = 0;
+
+	if (nr_devices < 1) {
+		freenect_shutdown(f_ctx);
+	}
+
+	if (freenect_open_device(f_ctx, &f_dev, user_device_number) < 0) {
+		printf("Could not open device\n");
+		freenect_shutdown(f_ctx);
+	}
+
+	NacitajMaticu();
+
+	freenect_threadfunc();
+
 }

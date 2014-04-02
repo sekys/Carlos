@@ -8,6 +8,28 @@ using namespace DB;
 
 class TouristInfoState : public IGameState {
 private:
+	class ObjectPostion {
+	public:
+		uint id;
+		Point2f position;
+
+		ObjectPostion(uint id, Point2f position) {
+			this->id = id;
+			this->position = position;
+		}
+	};
+
+	vector<ObjectPostion> positions;
+
+	bool isTouristInfoCommand(ControllerCommands command) {
+		return (
+			command == ControllerCommands::MORE_ABOUT_OBJECT ||
+			command == ControllerCommands::WHAT_IS_OBJECT
+		);
+	}
+
+	ControllerCommands lastCommand;
+
 	void showTouristInfo(ControllerCommands command, const DB::Object *object, Point2f &pos) {
 		const char *str;
 
@@ -36,38 +58,55 @@ private:
 	}
 
 public:
-	TouristInfoState() : IGameState(GameStates::TOURIST_INFO) { 
-
+	TouristInfoState() : IGameState(GameStates::TOURIST_INFO) {
+		lastCommand = ControllerCommands::NO_ACTION;
 	}
 
 	virtual void switchOn(IGameState* predchodca) {
 		mScene->zasobnikVstupov.clear();
 	}
 
-	virtual void frame(FrameData* frame) {	
+	virtual void frame(FrameData* frame) {
+		ModulVykreslovania::In *in = frame->getVstup();
+
 		if (frame->hasVstup()) {
-			ModulVykreslovania::In *in = frame->getVstup();
-			cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
-			in->image.data = black;
-			mScene->nastavPozadieZoVstupu(frame->getImage());
+			positions.clear();
 
 			vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = in->najdeneObjekty;
 
-			if (najdeneObjekty.size() > 0) {
-				// Vykreslime informacie o objektoch  databazy
-				for (int i = 0; i < najdeneObjekty.size(); i++) {
-					if (najdeneObjekty.at(i).najdeny) {
-						uint id = najdeneObjekty.at(i).id; 
-						const DB::Object *object = DB::DBService::getInstance().getObjectById(id);
+			if (!najdeneObjekty.empty()) {
+				if (isTouristInfoCommand(frame->getCommand()) ||
+					isTouristInfoCommand(lastCommand)) {
 
-						if (object != NULL) {
-							showTouristInfo(frame->getCommand(), object, najdeneObjekty.at(i).polohaTextu);
+					for (int i = 0; i < najdeneObjekty.size(); i++) {
+						if (najdeneObjekty.at(i).najdeny) {
+							uint id = najdeneObjekty.at(i).id; 
+							Point2f position = najdeneObjekty.at(i).polohaTextu;
+
+							// Prepocitame poziciu textu na obrazovke do pixelov
+							position.x = position.x * mScene->getWindowWidth();
+							position.y = position.y * mScene->getWindowHeight();
+
+							positions.push_back(ObjectPostion(id, position));
 						}
 					}
+
+					lastCommand = frame->getCommand();
 				}
-			} /*else {
-			  plain->setLastCommand(ControllerCommands::NO_ACTION);
-			  }*/
+			} else {
+				lastCommand = ControllerCommands::NO_ACTION;
+			}
+		}
+
+		mScene->setBlackBackground();
+
+		for (int i = 0; i < positions.size(); i++) {
+			uint id = positions[i].id;
+			const DB::Object *object = DB::DBService::getInstance().getObjectById(id);
+
+			if (object != NULL) {
+				showTouristInfo(lastCommand, object, positions[i].position);
+			}
 		}
 
 		/*plain->setLastCommand(ControllerCommands::WHAT_IS_OBJECT);

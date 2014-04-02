@@ -46,30 +46,29 @@ void Carlos::spracujJedenSnimok(Image image) {
 	imshow("Horizont", vysledokSpracovania.horizont);
 
 	// Modul vypoctu polohy
-	/*vector<ModulVypocitaniaPolohy::Out> najdeneObjekty; // synchronizovane
-	for(uint i=0; i < vysledokSpracovania.objects.size(); i++) {
-	ModulVypocitaniaPolohy::In vypocetPolohy;
-	vypocetPolohy.id = vysledokSpracovania.objects.at(i).objekt.id;
-	vypocetPolohy.gps = gps;
-	vypocetPolohy.polohaObjektu = vysledokSpracovania.objects.at(i).boundary;
-	vypocetPolohy.rotaciaHlavy = rotaciaHlavy;
+	vector<ModulVypocitaniaPolohy::Out> najdeneObjekty; // synchronizovane
+	for (uint i=0; i < vysledokSpracovania.objects.size(); i++) {
+		ModulVypocitaniaPolohy::In vypocetPolohy;
+		vypocetPolohy.id = vysledokSpracovania.objects.at(i).objekt.id;
+		vypocetPolohy.gps = gps;
+		vypocetPolohy.polohaObjektu = vysledokSpracovania.objects.at(i).boundary;
+		vypocetPolohy.rotaciaHlavy = rotaciaHlavy;
 
-	ModulVypocitaniaPolohy::Out polohaTextu;
-	polohaTextu = controller->vyppolohy->vypocitajPolohuTextu(vypocetPolohy);
-	if(polohaTextu.najdeny) {
-	najdeneObjekty.push_back(polohaTextu);
+		ModulVypocitaniaPolohy::Out polohaTextu;
+		polohaTextu = controller->vyppolohy->vypocitajPolohuTextu(vypocetPolohy);
+
+		if(polohaTextu.najdeny) {
+			najdeneObjekty.push_back(polohaTextu);
+		}
 	}
-	}*/
 
 	// Modul vykreslovania
 	ModulVykreslovania::In* vykreslovanie;
 	vykreslovanie = new ModulVykreslovania::In();
 	vykreslovanie->image = image;
 	vykreslovanie->command = command;
-	//vykreslovanie->position = 0.0; // tu by mi mala prist pozicia - cislo z intervalu -1,1
-	
-	vykreslovanie->position = 0.0;
-	//testovanie posuvania
+	vykreslovanie->position = controller->vyppolohy->getHeadPosition(rotaciaHlavy); // tu by mi mala prist pozicia - cislo z intervalu -1,1
+	//testovanie posuvania - tak toto je logicka bomba :D
 	/*if( poz <= 1.0){
 		poz += 0.01;
 	}
@@ -86,12 +85,11 @@ void Carlos::spracujJedenSnimok(Image image) {
 
 void Carlos::Init() {
 	// Inicializacia Carlosu spociva napriklad v nacitani konfiguracie ...
-	poz = -1.0;
 	DB::DBService::getInstance();
 	if(log != NULL) {
 		log->debugStream() << "Configuration title '" << Configuration::getInstance().getTitle();
 	}
-	
+
 	// Spociva aj v nacitani modulov
 	controller->start();
 	namedWindow("Vstup", WND_PROP_FULLSCREEN);
