@@ -1,5 +1,18 @@
-#include "DllKinect.h"
+#include "../com.carlos.kinect/DllKinect.h"
 
+uint16_t *depth;
+bool m_new_rgb_frame;
+bool m_new_depth_frame;
+pthread_mutex_t gl_backbuf_mutex;
+uint8_t *rgb_back, *rgb_mid;
+
+Point3f DllKinect::getAktualnaRotaciaHlavy() {
+	Point3f rot;
+	rot.x = 60.0f;
+	rot.y= 20.0f;
+	rot.z = 52.0f;
+	return rot;
+}
 
 void depth_cb(freenect_device *dev, void *v_depth, uint32_t timestamp)
 {
@@ -25,58 +38,58 @@ void rgb_cb(freenect_device *dev, void *rgb, uint32_t timestamp)
 	pthread_mutex_unlock(&gl_backbuf_mutex);
 }
 
-void getRGB(){
+void DllKinect::getRGB(){
 	pthread_mutex_lock(&gl_backbuf_mutex);
 	if(m_new_rgb_frame){
-	memcpy(rgbMat.ptr(), rgb_mid, 640*480*3);
-	cv::cvtColor(rgbMat, rgbMat, CV_BGR2RGB);
-	m_new_rgb_frame=false;
+		memcpy(rgbMat.ptr(), rgb_mid, 640*480*3);
+		cv::cvtColor(rgbMat, rgbMat, CV_BGR2RGB);
+		m_new_rgb_frame=false;
 	}
 	pthread_mutex_unlock(&gl_backbuf_mutex);
 }
 
-void getDepth(){
+void DllKinect::getDepth(){
 	pthread_mutex_lock(&gl_backbuf_mutex);
 	if(m_new_depth_frame){
-	memcpy(depthMat.ptr(), depth, 640*480*2);
-	depthMat.convertTo(depthf, CV_8UC1, 255.0/2048.0);
-	m_new_depth_frame=false;
+		memcpy(depthMat.ptr(), depth, 640*480*2);
+		depthMat.convertTo(depthf, CV_8UC1, 255.0/2048.0);
+		m_new_depth_frame=false;
 	}
 	pthread_mutex_unlock(&gl_backbuf_mutex);
 }
 
 /**	Funkcia m· na vstupe s˙radnice x a y videa z RGB kamery a vr·ti re·lne s˙radnice x a y v re·lnom svete z pohæadu kinectu
- *	@param x x-ov· s˙radnica vo videu
- *	@param y y-ov· s˙radnica vo videu
- *	@return s˙radnice prepoËÌtanÈ na re·lny svet z pohæadu kinectu
- */
+*	@param x x-ov· s˙radnica vo videu
+*	@param y y-ov· s˙radnica vo videu
+*	@return s˙radnice prepoËÌtanÈ na re·lny svet z pohæadu kinectu
+*/
 
-Vec3f DepthToWorld(int x, int y, int depthValue)
+Vec3f DllKinect::DepthToWorld(int x, int y, int depthValue)
 {
 	static const double FovH = 1.0144686707507438;
-    static const double FovV = 0.78980943449644714;
-    static const double XtoZ = tan(FovH/2)*2 ;
-    static const double YtoZ = tan(FovV/2)*2 ;
+	static const double FovV = 0.78980943449644714;
+	static const double XtoZ = tan(FovH/2)*2 ;
+	static const double YtoZ = tan(FovV/2)*2 ;
 
-    Vec3f result;
-    result[0] = (x/640-.5) * depthValue * XtoZ;
-    result[1] = (0.5-y/480) * depthValue * YtoZ;
-    result[2] = depthValue;
-    return result;
+	Vec3f result;
+	result[0] = (x/640-.5) * depthValue * XtoZ;
+	result[1] = (0.5-y/480) * depthValue * YtoZ;
+	result[2] = depthValue;
+	return result;
 }
 
 /** 
- *	Hlavn· funkcia modulu. Na zaËiatku spustÌ inicializ·ciu a kinect, ktor˝ potom do ukonËenia programu zisùuje s˙radnice bodu pozerania
- */
+*	Hlavn· funkcia modulu. Na zaËiatku spustÌ inicializ·ciu a kinect, ktor˝ potom do ukonËenia programu zisùuje s˙radnice bodu pozerania
+*/
 
-void freenect_threadfunc()
+void DllKinect::freenect_threadfunc()
 {
 	int accelCount = 0;
 	int iter(0);
 	Point pt1, pt2, pt3;
 	cv::vector<Rect> faces;
 
-	face_cascade.load("haarcascade_frontalface_alt.xml");
+	face_cascade.load("../data/haarcascade_frontalface_alt.xml");
 
 	//freenect_set_tilt_degs(f_dev,freenect_angle);
 	freenect_set_led(f_dev,LED_RED);
@@ -93,15 +106,15 @@ void freenect_threadfunc()
 	//printf("'e' - auto exposure, 'b' - white balance, 'r' - raw color, 'm' - mirror\n");
 
 	while (!die && freenect_process_events(f_ctx) >= 0) {
-	
 
-	//get rgbMat 
+
+		//get rgbMat 
 		getRGB();
-	
-	//get depthMat
+
+		//get depthMat
 		getDepth();
 
-//face recognition start
+		//face recognition start
 		cvtColor(rgbMat, grayMat, CV_BGR2GRAY);
 		equalizeHist(grayMat, grayMat);
 
@@ -112,54 +125,54 @@ void freenect_threadfunc()
 			pt2.x = faces[0].x;
 			pt2.y = faces[0].y;
 
-		rectangle(rgbMat, pt1, pt2, cvScalar(0, 255, 0, 0), 1, 8, 0);
+			rectangle(rgbMat, pt1, pt2, cvScalar(0, 255, 0, 0), 1, 8, 0);
 		}
 		faces.clear();
-	
+
 		//face recognition end
 		pt3.x=((pt1.x-pt2.x)/2)+pt2.x;
 		pt3.y=((pt1.y-pt2.y)/3)+pt2.y;
 
 		//pt3.x=320;
 		//pt3.y=240;
-	
+
 		if(pt3.x!=0)
 		{
-		rgbMat.at<Vec3b>(pt3.y, pt3.x)[0]=0;
-		rgbMat.at<Vec3b>(pt3.y, pt3.x)[1]=255;
-		rgbMat.at<Vec3b>(pt3.y, pt3.x)[2]=0;
+			rgbMat.at<Vec3b>(pt3.y, pt3.x)[0]=0;
+			rgbMat.at<Vec3b>(pt3.y, pt3.x)[1]=255;
+			rgbMat.at<Vec3b>(pt3.y, pt3.x)[2]=0;
 		}
-		
-		
-    
-	cv::imshow("rgb", rgbMat);
-	cv::imshow("depth",depthf);
-	char k = cvWaitKey(5);
-	if( k == 27 ){
-		    cvDestroyWindow("rgb");
-		    cvDestroyWindow("depth");
+
+
+
+		cv::imshow("rgb", rgbMat);
+		cv::imshow("depth",depthf);
+		char k = cvWaitKey(5);
+		if( k == 27 ){
+			cvDestroyWindow("rgb");
+			cvDestroyWindow("depth");
 			break;
 		}
-	if(iter >= 100){
+		if(iter >= 100){
 			iter=0;
 			if(pt3.x!=0)
-		{
-			double wx, wy, wz = depthMat.at<ushort>(pt3.y, pt3.x);
-			Vec3d result = DepthToWorld(pt3.x, pt3.y, wz);
-			wx = result[0];
-			wy = result[1];
-			double mi[4];
-			mi[0] = wx;
-			mi[1] = wy;
-			mi[2] = wz;
-			mi[3] = 1;
-			Mat i = Mat(4, 1, CV_64F, mi);
+			{
+				double wx, wy, wz = depthMat.at<ushort>(pt3.y, pt3.x);
+				Vec3d result = DepthToWorld(pt3.x, pt3.y, wz);
+				wx = result[0];
+				wy = result[1];
+				double mi[4];
+				mi[0] = wx;
+				mi[1] = wy;
+				mi[2] = wz;
+				mi[3] = 1;
+				Mat i = Mat(4, 1, CV_64F, mi);
 
-			Mat j = M*i;
+				Mat j = M*i;
 
-			cout << i << endl << j << endl;
+				cout << i << endl << j << endl;
 
-			//printf("%.0f %.0f %.0f\n", j.at<double>(0,0), j.at<double>(1,0), j.at<double>(2,0));
+				//printf("%.0f %.0f %.0f\n", j.at<double>(0,0), j.at<double>(1,0), j.at<double>(2,0));
 			}
 		}
 		iter++;
@@ -179,21 +192,21 @@ void freenect_threadfunc()
 }
 
 
-void NacitajMaticu(){
+void DllKinect::NacitajMaticu(){
 	ifstream file;
 	int i, j, k;
 
-	file.open("matica.txt");
-		M = Mat(4, 4, CV_64F);
-		for(j = 0; j<4; j++){
-			for(k = 0; k<4; k++){
-				file >> M.at<double>(j, k);
-			}
+	file.open("../data/matica.txt");
+	M = Mat(4, 4, CV_64F);
+	for(j = 0; j<4; j++){
+		for(k = 0; k<4; k++){
+			file >> M.at<double>(j, k);
 		}
-		file.close();
+	}
+	file.close();
 }
 
-void init()
+void DllKinect::init()
 {
 	rgb_back = (uint8_t*)malloc(640*480*3);
 	rgb_mid = (uint8_t*)malloc(640*480*3);
@@ -201,10 +214,10 @@ void init()
 	die = 0;
 	gl_backbuf_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-	depthMat(Size(640,480),CV_16UC1);
-	depthf  (Size(640,480),CV_8UC1);
-	rgbMat(Size(640,480),CV_8UC3,Scalar(0));
-	grayMat(Size(640,480), CV_8UC1);
+	depthMat = Mat(Size(640,480),CV_16UC1);
+	depthf = Mat (Size(640,480),CV_8UC1);
+	rgbMat= Mat(Size(640,480),CV_8UC3,Scalar(0));
+	grayMat= Mat(Size(640,480), CV_8UC1);
 
 	freenect_angle = 0;
 
@@ -227,8 +240,6 @@ void init()
 	printf ("Number of devices found: %d\n", nr_devices);
 
 	int user_device_number = 0;
-	if (argc > 1)
-		user_device_number = atoi(argv[1]);
 
 	if (nr_devices < 1) {
 		freenect_shutdown(f_ctx);
