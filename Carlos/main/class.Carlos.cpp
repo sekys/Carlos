@@ -23,13 +23,21 @@ Carlos::~Carlos() {
 
 
 void Carlos::spracujJedenSnimok(Image image) {
+
 	// Z gps suradnic sa musi synchronizovane pockat, potom sa moze ist dalej
 	// Lebo ked snimka meska, tak gps moze byt uz o par metrov dalej
 	ControllerCommands command = controller->android->getActualCommand();
 	controller->android->setActualCommand(ControllerCommands::NO_ACTION);
 	GPS gps = controller->android->getGPS();
 	Point3f rotaciaHlavy = controller->kinect->getAktualnaRotaciaHlavy();
+	
+	
+
 	imshow("Vstup", image.data);
+	
+	//treba nastavit podla velkosti rozlisenia monitora
+	//resizeWindow("Vstup", 1680,1050);
+	cv::moveWindow("Vstup", 0, 0);
 
 	// Modul preprocessingu
 	/*vector<WorldObject> recepts;
@@ -43,7 +51,7 @@ void Carlos::spracujJedenSnimok(Image image) {
 	ModulSpracovania::Out vysledokSpracovania;
 	// vysledokSpracovania = controller->spracovanie->detekujObjekty(spracovanie);
 	vysledokSpracovania.horizont = controller->spracovanie->najdiHorizont(image.data);
-	imshow("Horizont", vysledokSpracovania.horizont);
+	//imshow("Horizont", vysledokSpracovania.horizont);
 
 	// Modul vypoctu polohy
 	vector<ModulVypocitaniaPolohy::Out> najdeneObjekty; // synchronizovane
@@ -68,15 +76,8 @@ void Carlos::spracujJedenSnimok(Image image) {
 	vykreslovanie->image = image;
 	vykreslovanie->command = command;
 	vykreslovanie->position = controller->vyppolohy->getHeadPosition(rotaciaHlavy); // tu by mi mala prist pozicia - cislo z intervalu -1,1
-	//testovanie posuvania - tak toto je logicka bomba :D
-	/*if( poz <= 1.0){
-		poz += 0.01;
-	}
-
-	if (poz >= 1.0) {
-		poz = -1.0;
-	}*/
-
+	
+	
 	//vykreslovanie->najdeneObjekty = najdeneObjekty;
 	vykreslovanie->horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
@@ -84,6 +85,7 @@ void Carlos::spracujJedenSnimok(Image image) {
 
 
 void Carlos::Init() {
+	
 	// Inicializacia Carlosu spociva napriklad v nacitani konfiguracie ...
 	DB::DBService::getInstance();
 	if(log != NULL) {
@@ -93,7 +95,7 @@ void Carlos::Init() {
 	// Spociva aj v nacitani modulov
 	controller->start();
 	namedWindow("Vstup", WND_PROP_FULLSCREEN);
-	namedWindow("Horizont", WND_PROP_FULLSCREEN);
+	//namedWindow("Horizont", WND_PROP_FULLSCREEN);
 }
 bool Carlos::Run() {
 	// Tato metoda sa spusta v kazdom cykle apliakcie

@@ -30,7 +30,7 @@ namespace Architecture {
 		virtual bool Run();
 
 	public:
-		float poz;
+		
 		Carlos();
 		~Carlos();
 	};
