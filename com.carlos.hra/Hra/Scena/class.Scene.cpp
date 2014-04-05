@@ -44,6 +44,8 @@ void Scene::init() {
 	mResManager = new ResourceManager();
 	mStates = new GameStateController(this);
 	aktualnaPozicia = 0;
+	blackBackground = cv::Mat(480, 640, CV_8UC3, Scalar(0, 0, 0));
+
 	// Nacitaj objekty
 	int typ_lietadla = (rand() % 3) + 1 ;
 	mPlane = new Plane(glm::vec2(10.0, 10.0), typ_lietadla);
@@ -129,10 +131,7 @@ void Scene::setBackgroud(CTexture texture) {
 	mResManager->square.setTexture(texture);
 }
 
-void Scene::nastavPozadieZoVstupu(cv::Mat& img) {
-	if(log != NULL) {
-		log->debugStream() << "Nastavujem texturu z videa.";
-	}
+void Scene::setBackgroud(cv::Mat& img) {
 	GLenum inputColourFormat = GL_BGR;
 	if (img.channels() == 1) {
 		inputColourFormat = GL_LUMINANCE;
@@ -149,8 +148,7 @@ void Scene::nastavPozadieZoVstupu(cv::Mat& img) {
 }
 
 void Scene::setBlackBackground() {
-	cv::Mat black(480, 640, CV_8UC3, Scalar(0, 0, 0));
-	nastavPozadieZoVstupu(black);
+	setBackgroud(blackBackground);
 }
 
 uint Scene::getWindowWidth() {

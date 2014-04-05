@@ -12,8 +12,8 @@
 #include <opencv2/nonfree/gpu.hpp>
 #include <opencv2\legacy\legacy.hpp>
 #include <windows.h>
-#define GPU_MODE
-//#undef GPU_MODE
+//#define GPU_MODE
+#undef GPU_MODE
 
 #ifdef GPU_MODE
 #define SIFT_SIZE 128

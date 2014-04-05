@@ -24,6 +24,7 @@ public:
 	// Pomocne premenne
 	Plane* mPlane; /**<  model lietadla */
 	World* mWorld; /**< svet */
+	cv::Mat blackBackground;
 
 	VisualController* mVisualController; 
 	ResourceManager* mResManager;
@@ -34,7 +35,7 @@ public:
 
 	void setBackgroud(CTexture texture);
 	void setBlackBackground();
-	void nastavPozadieZoVstupu(cv::Mat& img);
+	void setBackgroud(cv::Mat& img);
 	void ziskajAktualnyVstup(FrameData* data);
 
 	uint getWindowWidth();

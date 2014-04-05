@@ -25,7 +25,11 @@ namespace Architecture
 		* Mala by obsahovat jednoducho logiku, ziadne zlozite vypocty
 		* Napriklad to mozes pouzit na restartovanie premennych
 		*/
-		virtual void preFrame() {} 
+		// virtual void preFrame() {} 
+
+
+		// Stream sa restartuje
+		virtual void doReset() {} 
 
 		/**
 		* Metoda je prikazom na uskutocnenie vypnutia

@@ -26,19 +26,25 @@ void Carlos::spracujJedenSnimok(Image image) {
 
 	// Z gps suradnic sa musi synchronizovane pockat, potom sa moze ist dalej
 	// Lebo ked snimka meska, tak gps moze byt uz o par metrov dalej
+	controller->android->prepareFakeGPS(image.pos_msec);
+	
+	// toto bude musiet ist do hry
 	ControllerCommands command = controller->android->getActualCommand();
 	controller->android->setActualCommand(ControllerCommands::NO_ACTION);
 	GPS gps = controller->android->getGPS();
 	Point3f rotaciaHlavy = controller->kinect->getAktualnaRotaciaHlavy();
-	
-	
+	// + horizont
+	//\ toto bude musiet ist do hry
 
-	imshow("Vstup", image.data);
-	
 	//treba nastavit podla velkosti rozlisenia monitora
+	imshow("Vstup", image.data);
 	//resizeWindow("Vstup", 1680,1050);
-	cv::moveWindow("Vstup", 0, 0);
+	//cv::moveWindow("Vstup", 0, 0);
+	spracujVstupy(image, command, gps, rotaciaHlavy);
+	image.data.release();
+}
 
+void Carlos::spracujVstupy(Image image, ControllerCommands command, GPS gps, Point3f rotaciaHlavy) {
 	// Modul preprocessingu
 	/*vector<WorldObject> recepts;
 	recepts = DB::DBService::getInstance().najdiVsetkySvetoveObjektyBlizkoGPS(gps);
@@ -73,19 +79,14 @@ void Carlos::spracujJedenSnimok(Image image) {
 	// Modul vykreslovania
 	ModulVykreslovania::In* vykreslovanie;
 	vykreslovanie = new ModulVykreslovania::In();
-	vykreslovanie->image = image;
 	vykreslovanie->command = command;
 	vykreslovanie->position = controller->vyppolohy->getHeadPosition(rotaciaHlavy); // tu by mi mala prist pozicia - cislo z intervalu -1,1
-	
-	
-	//vykreslovanie->najdeneObjekty = najdeneObjekty;
+	vykreslovanie->najdeneObjekty = najdeneObjekty;
 	vykreslovanie->horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
 }
 
-
 void Carlos::Init() {
-	
 	// Inicializacia Carlosu spociva napriklad v nacitani konfiguracie ...
 	DB::DBService::getInstance();
 	if(log != NULL) {
@@ -97,20 +98,30 @@ void Carlos::Init() {
 	namedWindow("Vstup", WND_PROP_FULLSCREEN);
 	//namedWindow("Horizont", WND_PROP_FULLSCREEN);
 }
+
 bool Carlos::Run() {
 	// Tato metoda sa spusta v kazdom cykle apliakcie
-	controller->callPreFrames();
+	// controller->callPreFrames();
 	nacitajDalsiuSnimku();
 	return true; // okno obnovujeme stale
 }
 
 void Carlos::nacitajDalsiuSnimku() {
 	// Ziskaj snimok ..
+	Image image;
 	try {
-		Image image;
-		image = controller->kamera->readNext();
+		try {
+			image = controller->kamera->readNext();
+		} catch(ModulKamera::EndOfStream stream) {
+			// Tu nastane 5sec delay ked je koniec streamu, dovod neznamy
+			if(log != NULL) {
+				log->debugStream() << "Restartujem stream.";
+			}
+			controller->callReset();
+			image = controller->kamera->readNext();
+		}
 		if(log != NULL) {
-			log->debugStream() << "Snimok: " << image.frame;
+			log->debugStream() << "Snimok: " << image.pos_msec;
 		}
 		spracujJedenSnimok(image);
 	} catch(ModulKamera::EndOfStream stream) {

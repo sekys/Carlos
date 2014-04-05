@@ -17,6 +17,29 @@ namespace Architecture
 		// http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#videocapture
 		VideoCapture* cap;
 		Image frame; /**< Aktualna snimak z maery, tato snimka sa moze preskocit, nemusi sa spracovat */
+		string filename;
+
+		void load() {
+			if(filename.empty()) {
+				cap = new VideoCapture(0);
+			} else {
+				cap = new VideoCapture(filename);
+			}
+			if(!cap->isOpened()) {
+				throw runtime_error("[ModulKamera] I cannot open device / file.");
+			}
+			frame.pos_msec = 0;
+		}
+
+		void unload() {
+			if(cap != NULL) {
+				if(cap->isOpened()) {
+					cap->release();
+				}
+				delete cap;
+				cap = NULL;
+			}
+		}
 
 	public:
 
@@ -25,36 +48,34 @@ namespace Architecture
 			EndOfStream() : std::exception("EndOfStream") {}
 		};
 
-		ModulKamera(const string& filename) {
-			cap = new VideoCapture(filename);
-		}
-
-		ModulKamera(int device) {
-			cap = new VideoCapture(device);
+		ModulKamera(const string filename) {
+			this->filename = filename;
 		}
 
 		// Zapni kameru
 		virtual void init() {
-			if(!cap->isOpened()) {
-				throw runtime_error("[ModulKamera] I cannot open device / file.");
-			}
-			frame.frame = -1;
+			load();
 		}
 
 		~ModulKamera() {
-			if(cap->isOpened()) {
-				cap->release();
-			}
-			SAFE_DELETE(cap);
+			unload();
 		}
+
+
 
 		// Ziskaj aktualnu snimku z kamery
 		virtual Image readNext() {
 			if(!cap->read(frame.data)) {
 				throw EndOfStream();
 			}
-			frame.frame = cap->get(CV_CAP_PROP_POS_FRAMES);
+			frame.pos_msec = cap->get(CV_CAP_PROP_POS_MSEC);
 			return frame;
+		}
+
+		virtual void doReset() {
+			unload();
+			load();
+			// cap->set(CV_CAP_PROP_POS_MSEC, 0); toto sposobuje delay a je to tak neefektivne
 		}
 
 		/*Image getImage() {

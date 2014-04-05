@@ -1,6 +1,6 @@
 #pragma once
 #include <carlos_global.h>
-#include "../../entities/entities.h"
+#include "entities.h"
 #include <iostream>
 #include <fstream>
 
@@ -45,5 +45,9 @@ public:
 		file.get();
 		file >> row.date;
 		return row;
+	}
+
+	void reset() {
+		file.seekg(0);
 	}
 };

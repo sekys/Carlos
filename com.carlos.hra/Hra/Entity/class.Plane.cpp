@@ -7,9 +7,8 @@ glm::vec2 Plane::getsize(){
 }
 
 Plane::Plane(glm::vec2 size, int typ) : AABB(size) {
-	log = CREATE_LOG4CPP();
-	//this->lastCommand = ControllerCommands::NO_ACTION;
-	this->size = size;
+	log = CREATE_LOG4CPP();A
+		this->size = size;
 	mTyp = typ;
 
 	setStartPosition();
@@ -17,8 +16,7 @@ Plane::Plane(glm::vec2 size, int typ) : AABB(size) {
 
 void  Plane::setStartPosition() {
 	/// Hranice  sveta su -100, 100
-	setPosition( glm::vec2(150, 150) ); /// Starovacia pozicia lietadla
-	//rotation = glm::vec3(-270, 180, 270);
+	setPosition( glm::vec2(150, 150) ); /// Starovacia pozicia lietadlaA
 	if (mTyp == 1)rotation = glm::vec3(-270, 180, 270);
 	if (mTyp == 2)rotation = glm::vec3(-270, 180, 270);
 	if (mTyp == 3)rotation = glm::vec3(0, -90, 0);
@@ -30,41 +28,40 @@ void  Plane::setStartPosition() {
 
 
 
-void  Plane::setRotiation(glm::vec3 rotation) {
+void Plane::setRotiation(glm::vec3 rotation) {
 	this->rotation = rotation;
 }
 glm::vec3  Plane::getRotation() {
 	return rotation;
 }
 
-void  Plane::logic(float fDelta, ControllerCommands pressedKey) 
+void Plane::logic(float fDelta, ControllerCommands pressedKey) 
 {
 	//float radians = 1.0 * 0.0174532925f;
 	glm::vec2 position = getPosition();
-
-	//this->lastCommand = pressedKey;
 
 	/// Sila posobi na lietadlo
 	glm::vec2 F = glm::vec2(0.0);
 	glm::vec2 Fg = glm::vec2(0.0f, -20.0f);
 	F += Fg;
 
-	if (pressedKey == ControllerCommands::UP) {
+	if(pressedKey == ControllerCommands::UP) {
 		F.y += silaPohybu.x * 1.2;
 	}
 	/*if (pressedKey == ControllerCommands::DOWN) {
-		F.y += silaPohybu.y * -1.0f;
+	F.y += silaPohybu.y * -1.0f;
 	}
 	if (pressedKey == ControllerCommands::RIGHT) {
-		F.x += silaPohybu.x;
+	F.x += silaPohybu.x;
 	}
 	if (pressedKey == ControllerCommands::LEFT) {
-		F.x += silaPohybu.x * -1.0f;
-	}*/
+	F.x += silaPohybu.x * -1.0f;
+	}
 
 	if(log != NULL) {
-		log->debugStream() << pressedKey;
+	log->debugStream() << pressedKey;
 	}
+	*/
 
 	/// Vzorce na fyziku f = m* a		a = f / m		m = 1kg
 	akceleracia = F;
@@ -89,15 +86,6 @@ glm::mat4  Plane::getMatrix(int pozicia) {
 	mModelMatrix = glm::scale(mModelMatrix, glm::vec3(7,7,7));
 	return mModelMatrix;
 }
-/*
-ControllerCommands Plane::getLastCommand() {
-	return lastCommand;
-}
-
-void Plane::setLastCommand(ControllerCommands command) {
-	this->lastCommand = command;
-}
-*/
 int Plane::getTyp() {
 	return mTyp;
 }

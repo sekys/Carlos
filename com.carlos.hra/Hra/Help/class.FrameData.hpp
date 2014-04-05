@@ -17,7 +17,7 @@ public:
 	int getpozicia();
 	float getDeltaTime();
 	void setDeltaTime(float f);
-	cv::Mat getImage();
+	//cv::Mat getImage();
 	cv::Mat getHorizont();
 	bool hasVstup();
 	ModulVykreslovania::In* getVstup();

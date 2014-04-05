@@ -8,7 +8,6 @@
 #include "..\..\com.carlos.architecture\modules\class.ModulSpracovania.hpp"
 #include "..\..\com.carlos.architecture\modules\class.ModulVykreslovania.hpp"
 #include "..\..\com.carlos.architecture\modules\class.ModulVypocitaniaPolohy.hpp"
-#include "..\..\com.carlos.architecture\modules\fake\class.FakeModulAndroid.hpp"
 #include "class.ModulWrapper.hpp"
 #include <map>
 
@@ -50,7 +49,6 @@ namespace Architecture {
 	public:
 		// Zoznam modulov
 		ModulAndroid* android;
-		//ModulDatabaza* databaza;
 		ModulKamera* kamera;
 		ModulKinect* kinect;
 		ModulVykreslovania* vykreslovanie;
@@ -61,7 +59,8 @@ namespace Architecture {
 		virtual void installModules();
 		virtual void start();
 		virtual void stop();
-		void callPreFrames();
+		//void callPreFrames();
+		void callReset();
 	};
 
 }

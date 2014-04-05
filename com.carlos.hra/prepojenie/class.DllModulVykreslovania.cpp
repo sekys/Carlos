@@ -14,8 +14,6 @@
 
 using namespace Architecture;
 
-
-
 DllModulVykreslovania::DllModulVykreslovania() {
 	log = CREATE_LOG4CPP();
 	window = NULL;
@@ -35,7 +33,7 @@ void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In* in)
 	//in->image.data =black; 
 	in->horizont = in->horizont.clone();
 	//dokresliHorizont(in->image.data, in->horizont);
-	cv::flip(in->image.data, in->image.data, 0);
+	//cv::flip(in->image.data, in->image.data, 0);
 
 	// Posli obrazok dalej
 	scene.zasobnikVstupov.push(in);	

@@ -98,11 +98,19 @@ void ModulesController::start() {
 void ModulesController::stop() {
 	destroyModules();
 }
-
+/*
 void ModulesController::callPreFrames() {
 	// V ramci tejto metody musime zavolat preFrame() metody vsetkych modulov
 	moduls_type::iterator it;
 	for (it = moduls.begin(); it!= moduls.end(); ++it) {
 		(*it)->modul->preFrame();
+	}
+}
+*/
+void ModulesController::callReset() {
+	// V ramci tejto metody musime zavolat reset() metody vsetkych modulov
+	moduls_type::iterator it;
+	for (it = moduls.begin(); it!= moduls.end(); ++it) {
+		(*it)->modul->doReset();
 	}
 }

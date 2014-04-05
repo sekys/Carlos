@@ -56,9 +56,4 @@ public:
 	* @return void
 	*/
 	glm::mat4 getMatrix(int pozicia);
-
-	/*
-	ControllerCommands getLastCommand();
-	void setLastCommand(ControllerCommands command);
-	*/
 };

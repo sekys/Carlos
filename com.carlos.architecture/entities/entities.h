@@ -17,11 +17,11 @@ namespace Architecture
 	*/
 	class Image {
 	public:
-		double frame;
+		double pos_msec; // urcuje poziciu snimky vo video v ms
 		Mat data;
 
 		friend ostream& operator<< (ostream& out, Image& object) {
-			out << "Image(frame:" << object.frame << ")";
+			out << "Image(pos_msec:" << object.pos_msec << ")";
 			return out;
 		}
 	};

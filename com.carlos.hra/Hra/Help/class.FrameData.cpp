@@ -33,9 +33,10 @@ ostringstream& operator<< (ostringstream& out, FrameData* object) {
 	out << "));";
 	return out;
 }
+/*
 cv::Mat FrameData::getImage() {
 	return vstup->image.data;
-}
+}*/
 cv::Mat FrameData::getHorizont() {
 	return vstup->horizont;
 }

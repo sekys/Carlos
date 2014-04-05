@@ -2,7 +2,7 @@
 #include "../com.carlos.architecture/DllExports.h"
 #include "class.MyServerSocket.hpp"
 #include "../com.carlos.architecture/utilities.hpp"
-#include "../com.carlos.architecture/modules/fake/class.FakeModulAndroid.hpp"
+#include "../com.carlos.architecture/modules/class.ModulAndroid.hpp"
 #include <windows.h>
 #include <iostream>
 #include <process.h> 
@@ -24,21 +24,21 @@ using namespace std;
 * Modul ktory riadi TCP server a napoji tento server.
 * Tento modul je potom napojeny na halvnu apliakciu cez DLL subor.
 */
-class TCPServer : public FakeModulAndroid, MessageHandler {
+class TCPServer : public ModulAndroid, MessageHandler {
 private:
 	ServerSocket* server;
 	log4cpp::Category* log;
 
 public:
 	// Nas modul ma zatial nacitavat fake GPS suranice zo suboru 
-	TCPServer() : FakeModulAndroid("../data/video/2013-10-20-12-25-52.txt") {
+	TCPServer() : ModulAndroid("../data/video/2013-10-20-12-25-52.txt") {
 		server = NULL;
 		log = CREATE_LOG4CPP();
 	}
 
 	// Nas modul sa spusta
 	virtual void init() {
-		FakeModulAndroid::init();
+		ModulAndroid::init();
 		if(log != NULL) {
 			log->debugStream() << "Native TCP server starting";
 		}
@@ -96,9 +96,7 @@ public:
 
 	// Nas modul ma byt vypusteny zo systemu
 	~TCPServer() {
-		if(server != NULL) {
-			delete server;
-		}
+		SAFE_DELETE(server)
 	}
 
 	// Ma byt moodu lspusteny v samostatnom vlakne ?

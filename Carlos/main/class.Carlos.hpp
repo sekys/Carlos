@@ -18,6 +18,7 @@ namespace Architecture {
 
 		// Metoda na spracovanie snimku
 		void spracujJedenSnimok(Image image);
+		void spracujVstupy(Image, ControllerCommands, GPS, Point3f);
 
 		// Metoda pre ziskanie snimku
 		void nacitajDalsiuSnimku();
