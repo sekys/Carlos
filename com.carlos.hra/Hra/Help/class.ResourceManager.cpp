@@ -21,7 +21,7 @@ ResourceManager::~ResourceManager() {
 	bgUvod.releaseTexture();
 	bgGameOver.releaseTexture();
 	infoImage.releaseTexture();
-	bgChooseDialog.releaseTexture();
+	bgTouristInfoIntro.releaseTexture();
 
 	plane.releaseModel();
 	square.releaseModel();
@@ -54,6 +54,6 @@ void ResourceManager::load(int typ) {
 	bgUvod = loadTexture("../data/screens/Carlos_uvod.png");
 	bgGameOver = loadTexture("../data/screens/Carlos_game_over.png");
 	infoImage = loadTexture("../data/textures/info_image.png");
-	bgChooseDialog = loadTexture("../data/screens/Carlos_choose_dialog.png");
+	bgTouristInfoIntro = loadTexture("../data/screens/Carlos_tourist_info_intro.png");
 }
 

@@ -59,9 +59,8 @@ void Scene::init() {
 	glEnable(GL_TEXTURE_2D);
 	buildFont();
 
-	// Prepni na uvodny stav
+	// Prepni na uvodny stav (defaultny stav)
 	mStates->switchTo(UVODNA_OBRAZOVKA);
-	//mStates->switchTo(CHOOSE_DIALOG);
 
 	if(log != NULL) {
 		log->debugStream() << "Koncim Scene::init()";

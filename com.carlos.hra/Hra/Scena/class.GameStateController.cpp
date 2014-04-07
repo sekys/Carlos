@@ -3,7 +3,6 @@
 #include "states\enum.GameStates.hpp"
 #include "states\class.GameOverState.hpp"
 #include "states\class.UvodnaObrazovkaState.hpp"
-#include "states\class.ChooseDialogState.hpp"
 #include "states\class.PlayingGameState.hpp"
 #include "states\class.SkoreObrazovkaState.hpp"
 #include "states\class.TouristInfoState.hpp"
@@ -27,7 +26,6 @@ void GameStateController::install(IGameState* state) {
 void GameStateController::installStates() {
 	install( new GameOverState() );
 	install( new UvodnaObrazovkaState() );
-	install( new ChooseDialogState() );
 	install( new PlayingGameState() );
 	install( new SkoreObrazovkaState() );
 	install( new TouristInfoState() );

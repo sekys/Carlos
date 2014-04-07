@@ -30,7 +30,7 @@ public:
 	CTexture bgUvod; /**< Textura s uvodnom obrazovkou*/
 	CTexture bgGameOver; /**< Textura s hlasko Game over*/
 	CTexture infoImage;
-	CTexture bgChooseDialog;
+	CTexture bgTouristInfoIntro;
 
 	ResourceManager();
 	~ResourceManager();

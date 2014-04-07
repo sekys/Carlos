@@ -99,9 +99,6 @@
     <ClInclude Include="Hra\Help\class.TextAndPositionFormatter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hra\Scena\states\class.ChooseDialogState.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Hra\Scena\states\class.GameOverState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

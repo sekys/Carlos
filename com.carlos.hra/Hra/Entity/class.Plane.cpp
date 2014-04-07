@@ -7,7 +7,7 @@ glm::vec2 Plane::getsize(){
 }
 
 Plane::Plane(glm::vec2 size, int typ) : AABB(size) {
-	log = CREATE_LOG4CPP();A
+	log = CREATE_LOG4CPP();
 		this->size = size;
 	mTyp = typ;
 

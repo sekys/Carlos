@@ -39,9 +39,6 @@ public:
 		glUseProgram(0);
 		glDisable(GL_LIGHTING);
 		glLoadIdentity();
-	
-		
-
 		
 		glTranslatef(pozicia_skore, -0.4f ,0.0f);
 		glColor3f(0.0f, 0.f, 0.f);
@@ -53,7 +50,6 @@ public:
 		if(this->getCasBehu() > 5.0) {
 			/// presiel cas a zmeni sa stav
 			mScene->mStates->switchTo(GameStates::OBRAZOVKA_SKORE);
-
 		}
 	}
 };

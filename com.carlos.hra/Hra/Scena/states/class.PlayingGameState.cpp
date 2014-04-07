@@ -52,7 +52,12 @@ void PlayingGameState::switchOn(IGameState* predchodca) {
 	mScene->zasobnikVstupov.clear();
 }
 
-void PlayingGameState::frame(FrameData* frame) {	
+void PlayingGameState::frame(FrameData* frame) {
+	if (frame->getCommand() == ControllerCommands::TOURIST_INFO) {
+		mScene->mStates->switchTo(GameStates::TOURIST_INFO);
+		return;
+	}
+
 	if(!frame->hasVstup()) {
 		if(log != NULL) {
 			log->debugStream() << "Neprisiel mi snimok z videa, preskakujem nastavenie textury.";

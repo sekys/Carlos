@@ -20,6 +20,9 @@ public:
 		///Ak sa dotkne obrazovky zacina sa hra
 		if(frame->getCommand() == ControllerCommands::UP) {
 			mScene->mStates->switchTo(HRAJE_HRU);
+		} else if (frame->getCommand() == ControllerCommands::TOURIST_INFO) {
+			mScene->mStates->switchTo(GameStates::TOURIST_INFO);
+			return;
 		}
 	}
 };

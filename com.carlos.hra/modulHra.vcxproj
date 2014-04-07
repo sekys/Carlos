@@ -119,7 +119,6 @@
     <ClInclude Include="Hra\Help\baseStructures.h" />
     <ClInclude Include="Hra\Help\class.VisualController.hpp" />
     <ClInclude Include="Hra\Scena\class.GameStateController.hpp" />
-    <ClInclude Include="Hra\Scena\states\class.ChooseDialogState.hpp" />
     <ClInclude Include="Hra\Scena\states\class.GameOverState.hpp" />
     <ClInclude Include="Hra\Scena\states\class.IGameState.hpp" />
     <ClInclude Include="Hra\Scena\states\class.PlayingGameState.hpp" />

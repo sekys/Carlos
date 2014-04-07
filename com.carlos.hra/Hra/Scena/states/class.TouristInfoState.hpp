@@ -8,6 +8,7 @@ using namespace DB;
 
 class TouristInfoState : public IGameState {
 private:
+
 	class ObjectPostion {
 	public:
 		uint id;
@@ -63,10 +64,22 @@ public:
 	}
 
 	virtual void switchOn(IGameState* predchodca) {
+		mScene->setBackgroud(mScene->mResManager->bgTouristInfoIntro);
 		mScene->zasobnikVstupov.clear();
 	}
 
 	virtual void frame(FrameData* frame) {
+		// Prepneme sa do hry z turistickeho infa
+		if (frame->getCommand() == ControllerCommands::GAME) {
+			mScene->mStates->switchTo(GameStates::UVODNA_OBRAZOVKA);
+			return;
+		}
+
+		// Pockame 5 sekund do zacatia ukazovania turistickeho infa
+		if (this->getCasBehu() < 5.0) {
+			return;
+		}
+
 		ModulVykreslovania::In *in = frame->getVstup();
 
 		if (frame->hasVstup()) {
