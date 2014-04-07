@@ -17,12 +17,16 @@ public:
 	virtual void frame(FrameData* frame) {	
 		mScene->zasobnikVstupov.clear();
 
+		double runningTime = this->getCasBehu();
+
 		///Ak sa dotkne obrazovky zacina sa hra
-		if(frame->getCommand() == ControllerCommands::UP) {
+		if(frame->getCommand() == ControllerCommands::UP && runningTime > 2.0) {
 			mScene->mStates->switchTo(HRAJE_HRU);
-		} else if (frame->getCommand() == ControllerCommands::TOURIST_INFO) {
+		} else if (frame->getCommand() == ControllerCommands::TOURIST_INFO && runningTime > 2.0) {
 			mScene->mStates->switchTo(GameStates::TOURIST_INFO);
 			return;
+		} else if (runningTime > 30.0) { // Cas vacsi ako 30s
+			mScene->mStates->switchTo(GameStates::TOURIST_INFO);
 		}
 	}
 };

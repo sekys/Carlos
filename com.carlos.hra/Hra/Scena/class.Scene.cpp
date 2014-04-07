@@ -59,8 +59,8 @@ void Scene::init() {
 	glEnable(GL_TEXTURE_2D);
 	buildFont();
 
-	// Prepni na uvodny stav (defaultny stav)
-	mStates->switchTo(UVODNA_OBRAZOVKA);
+	// Prepni na turisticke info (defaultny stav)
+	mStates->switchTo(GameStates::TOURIST_INFO);
 
 	if(log != NULL) {
 		log->debugStream() << "Koncim Scene::init()";
