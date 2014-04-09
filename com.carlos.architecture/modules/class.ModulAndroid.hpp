@@ -68,7 +68,7 @@ namespace Architecture
 		}
 
 		virtual ControllerCommands getActualCommand() {
-			checkInput();
+			//checkInput();
 			return BaseModulAndroid::getActualCommand();
 		}
 

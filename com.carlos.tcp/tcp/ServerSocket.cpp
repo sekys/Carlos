@@ -35,6 +35,10 @@ SocketListener* ServerSocket::getListener() {
 
 DWORD ServerSocket::start() {
 	// Initialize Winsock
+	// TODO: WSAStartup sposobuje nacitavanie vlastnej DLL kniynice
+	// to znamena ze nemoze bzt volany v DllMain() a jej podobnym metodam, teda v nasom konstruktore
+	// rovnako vlastnu kniznicu nacitava aj cv::VideoCapture
+	// riesenie je nacitavat taky kod raz a synchronizovane
 	iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
 	if (iResult != 0) {
 		if(log != NULL) {

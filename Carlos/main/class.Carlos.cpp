@@ -37,9 +37,11 @@ void Carlos::spracujJedenSnimok(Image image) {
 	//\ toto bude musiet ist do hry
 
 	//treba nastavit podla velkosti rozlisenia monitora
+	
 	imshow("Vstup", image.data);
-	//resizeWindow("Vstup", 1680,1050);
-	//cv::moveWindow("Vstup", 0, 0);
+	//resizeWindow("Vstup", 1280,768);
+	cvSetWindowProperty("Vstup", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
+	cv::moveWindow("Vstup", 0, 0);
 	spracujVstupy(image, command, gps, rotaciaHlavy);
 	image.data.release();
 }

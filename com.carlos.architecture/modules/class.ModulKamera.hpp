@@ -21,6 +21,7 @@ namespace Architecture
 
 		void load() {
 			if(filename.empty()) {
+				// TODO: VideoCapture nacitava vlastny DLL subor a moze sposobit loader dead lock
 				cap = new VideoCapture(0);
 			} else {
 				cap = new VideoCapture(filename);
@@ -50,11 +51,12 @@ namespace Architecture
 
 		ModulKamera(const string filename) {
 			this->filename = filename;
+			load();
 		}
 
 		// Zapni kameru
 		virtual void init() {
-			load();
+			// load();
 		}
 
 		~ModulKamera() {

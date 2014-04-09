@@ -85,10 +85,10 @@ void DllModulVykreslovania::init() {
 	*/
      
     
-    window = SDL_CreateWindow("Carlos game", 100, 100, 1024, 480, SDL_WINDOW_OPENGL);
+    //window = SDL_CreateWindow("Carlos game", 100, 100, 1024, 480, SDL_WINDOW_OPENGL);
 	
 	//toto spravi full screen, okno sa zobrazi na 1 monitore vo fullscreene 
-	//window = SDL_CreateWindow("Carlos game", SDL_WINDOWPOS_UNDEFINED_DISPLAY(1), SDL_WINDOWPOS_UNDEFINED_DISPLAY( 1 ), 1024, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN|SDL_WINDOW_FULLSCREEN);
+	window = SDL_CreateWindow("Carlos game", SDL_WINDOWPOS_UNDEFINED_DISPLAY(1), SDL_WINDOWPOS_UNDEFINED_DISPLAY( 1 ), 1024, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN|SDL_WINDOW_FULLSCREEN);
 	
 	 if (window == NULL) {
 		throw std::exception("Failed to initialize SDL_CreateWindow");
