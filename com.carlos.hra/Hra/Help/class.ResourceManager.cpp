@@ -22,6 +22,7 @@ ResourceManager::~ResourceManager() {
 	bgGameOver.releaseTexture();
 	infoImage.releaseTexture();
 	bgTouristInfoIntro.releaseTexture();
+	touristInfoLogo.releaseTexture();
 
 	plane.releaseModel();
 	square.releaseModel();
@@ -55,5 +56,6 @@ void ResourceManager::load(int typ) {
 	bgGameOver = loadTexture("../data/screens/Carlos_game_over.png");
 	infoImage = loadTexture("../data/textures/info_image.png");
 	bgTouristInfoIntro = loadTexture("../data/screens/Carlos_tourist_info_intro.png");
+	touristInfoLogo = loadTexture("../data/textures/tourist_info_logo.png"); 
 }
 

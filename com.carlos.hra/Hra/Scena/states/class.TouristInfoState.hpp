@@ -80,6 +80,10 @@ public:
 			return;
 		}
 
+		mScene->mVisualController->renderTexture(
+			mScene->mResManager->touristInfoLogo, 0, 0, mScene->getWindowWidth(), mScene->getWindowHeight()
+		);
+
 		ModulVykreslovania::In *in = frame->getVstup();
 
 		if (frame->hasVstup()) {

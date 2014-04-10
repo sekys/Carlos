@@ -60,8 +60,9 @@ void Scene::init() {
 	buildFont();
 
 	// Prepni na turisticke info (defaultny stav)
-	//mStates->switchTo(GameStates::TOURIST_INFO);
-	mStates->switchTo(GameStates::UVODNA_OBRAZOVKA);
+	mStates->switchTo(GameStates::TOURIST_INFO);
+	//mStates->switchTo(GameStates::UVODNA_OBRAZOVKA);
+
 	if(log != NULL) {
 		log->debugStream() << "Koncim Scene::init()";
 	}
