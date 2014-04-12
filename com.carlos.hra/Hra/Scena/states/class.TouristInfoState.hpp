@@ -9,18 +9,39 @@ using namespace DB;
 class TouristInfoState : public IGameState {
 private:
 
-	class ObjectPostion {
+	class RenderedObject {
 	public:
 		uint id;
-		Point2f position;
 
-		ObjectPostion(uint id, Point2f position) {
+		/* Pozicia objektu na obrazovke v pixeloch */
+		Point2f position;	
+
+		/* Cas, kedy bol objekt zdetegovany na obrazovke od zaciatku behu modulu */
+		double detectionTime;
+
+		/* Cas od zaciatku behu mobulu, kedy sa objekt zacal renderovat inak, ako 
+		 * len informacnou ikonkou (pouzivatel stlacil prikaz) */
+		double renderingStartTime;
+
+		/* Prikaz, ktory pouzivatel stlacil, respektive nestlacil a povie nam 
+		 * ako mame objekt renderovat na obrazovke */
+		ControllerCommands command;
+
+		RenderedObject(uint id, Point2f position, double detectionTime) {
 			this->id = id;
 			this->position = position;
+			this->detectionTime = detectionTime;
+			this->renderingStartTime = -1.0;
+			this->command = ControllerCommands::NO_ACTION;
+		}
+
+		// Ak bol objekt renderevonay inak ako len informacnou ikonkou (pouzivatel stlacil prikaz)
+		bool isRendered() {
+			return this->renderingStartTime >= 0.0;
 		}
 	};
 
-	vector<ObjectPostion> positions;
+	vector<RenderedObject> renderedObjects;
 
 	bool isTouristInfoCommand(ControllerCommands command) {
 		return (
@@ -28,8 +49,6 @@ private:
 			command == ControllerCommands::WHAT_IS_OBJECT
 		);
 	}
-
-	ControllerCommands lastCommand;
 
 	void showTouristInfo(ControllerCommands command, const DB::Object *object, Point2f &pos) {
 		const char *str;
@@ -58,10 +77,37 @@ private:
 		}
 	}
 
-public:
-	TouristInfoState() : IGameState(GameStates::TOURIST_INFO) {
-		lastCommand = ControllerCommands::NO_ACTION;
+	void eraseRenderedObjectsOutOfTime() {
+		for (int i=0; i<renderedObjects.size(); i++) {
+			RenderedObject &renderedObject = renderedObjects[i];
+
+			if (renderedObject.isRendered()) {
+				if (this->getCasBehu()-renderedObject.renderingStartTime > 5.0) {
+					renderedObjects.erase(renderedObjects.begin() + i);
+					i--;
+				}
+			} else {
+				if (this->getCasBehu()-renderedObject.detectionTime > 5.0) {
+					renderedObjects.erase(renderedObjects.begin() + i);
+					i--;
+				}
+			}
+		}
 	}
+
+	void renderObjects() {
+		for (int i = 0; i < renderedObjects.size(); i++) {
+			uint id = renderedObjects[i].id;
+			const DB::Object *object = DB::DBService::getInstance().getObjectById(id);
+
+			if (object != NULL) {
+				showTouristInfo(renderedObjects[i].command, object, renderedObjects[i].position);
+			}
+		}
+	}
+
+public:
+	TouristInfoState() : IGameState(GameStates::TOURIST_INFO) {}
 
 	virtual void switchOn(IGameState* predchodca) {
 		mScene->setBackgroud(mScene->mResManager->bgTouristInfoIntro);
@@ -80,51 +126,60 @@ public:
 			return;
 		}
 
+		// Vyrenderujeme obrazok loga turistickeho infa
 		mScene->mVisualController->renderTexture(
 			mScene->mResManager->touristInfoLogo, 0, 0, mScene->getWindowWidth(), mScene->getWindowHeight()
 		);
 
-		ModulVykreslovania::In *in = frame->getVstup();
-
 		if (frame->hasVstup()) {
-			positions.clear();
-
+			ModulVykreslovania::In *in = frame->getVstup();
 			vector<ModulVypocitaniaPolohy::Out> najdeneObjekty = in->najdeneObjekty;
 
-			if (!najdeneObjekty.empty()) {
-				if (isTouristInfoCommand(frame->getCommand()) ||
-					isTouristInfoCommand(lastCommand)) {
+			for (int i = 0; i < najdeneObjekty.size(); i++) {
+				if (najdeneObjekty[i].najdeny) {
+					uint id = najdeneObjekty[i].id;
+					int j = 0;
 
-					for (int i = 0; i < najdeneObjekty.size(); i++) {
-						if (najdeneObjekty.at(i).najdeny) {
-							uint id = najdeneObjekty.at(i).id; 
-							Point2f position = najdeneObjekty.at(i).polohaTextu;
+					for (; j<renderedObjects.size() && id!=renderedObjects[j].id; j++);
 
-							// Prepocitame poziciu textu na obrazovke do pixelov
-							position.x = position.x * mScene->getWindowWidth();
-							position.y = position.y * mScene->getWindowHeight();
+					Point2f position = najdeneObjekty[i].polohaTextu;
 
-							positions.push_back(ObjectPostion(id, position));
+					// Prepocitame poziciu textu na obrazovke do pixelov
+					position.x = position.x * mScene->getWindowWidth();
+					position.y = position.y * mScene->getWindowHeight();
+
+					if (j == renderedObjects.size()) { // Objekt je zdetegovany
+						renderedObjects.push_back(RenderedObject(id, position, this->getCasBehu()));
+					} else { // Objekt uz bol zdetegovany
+						RenderedObject &renderedObject = renderedObjects[j];
+
+						// Aktualizujeme poziciu
+						renderedObject.position = position;
+
+						// Aktualizujeme bud cas detekcie alebo cas renderovania, aby sa objekt neprestaval ukazovat na obrazovke
+						if (renderedObject.isRendered()) {
+							renderedObject.renderingStartTime = this->getCasBehu();
+						} else {
+							renderedObject.detectionTime = this->getCasBehu();
+						}
+
+						// Ak sme dostali prikaz z mobilu
+						if (renderedObject.command == ControllerCommands::NO_ACTION &&
+								isTouristInfoCommand(frame->getCommand())) {
+
+							renderedObject.command = frame->getCommand();
+							renderedObject.renderingStartTime = this->getCasBehu();
 						}
 					}
-
-					lastCommand = frame->getCommand();
 				}
-			} else {
-				lastCommand = ControllerCommands::NO_ACTION;
 			}
-		}
+		} 
 
 		mScene->setBlackBackground();
 
-		for (int i = 0; i < positions.size(); i++) {
-			uint id = positions[i].id;
-			const DB::Object *object = DB::DBService::getInstance().getObjectById(id);
+		eraseRenderedObjectsOutOfTime();
 
-			if (object != NULL) {
-				showTouristInfo(lastCommand, object, positions[i].position);
-			}
-		}
+		renderObjects();
 
 		/*plain->setLastCommand(ControllerCommands::WHAT_IS_OBJECT);
 		//Object *object = DB::DBService::getInstance().getObjectById(4);
