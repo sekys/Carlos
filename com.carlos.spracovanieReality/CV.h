@@ -12,10 +12,15 @@
 #include <opencv2/nonfree/gpu.hpp>
 #include <opencv2\legacy\legacy.hpp>
 #include <windows.h>
-//#define GPU_MODE
-#undef GPU_MODE
+#define CUDA_MODE 
+/** PRI AKTIVOVANI CUDA_MODE SA POUZIJE NA DETEKCIU OBJEKTOV KNIZNICA SIFTGPU
+* - pozit len v pripade ak je na pocitaci pritomna GPU od NVidia s podporou CUDA
+* - kniznica SiftGpu sa v tomto mode musi nanovo prekompilovat a vsetky SiftGpu subory v projekte Carlos nahradit novovygenerovanymi
+* - v opacnom pripade sa na detekciu objektov pouziju standardne Surf deskriptory z kniznice OpenCV
+*/
+#undef CUDA_MODE
 
-#ifdef GPU_MODE
+#ifdef CUDA_MODE
 #define SIFT_SIZE 128
 #include <SiftGPU\SiftGPU.h>
 #include <GL\glew.h>
@@ -47,7 +52,6 @@ public:
 	Mat image; /**< obrazok objektu */
 	bool valid; /**< uspesna detekcia? */
 	double confidence; /**< pravdepodobnost ze sa jedna o hladany objekt */
-	double avgDistance; /**< priemerna L2 vsetkych matchov */
 	Point2f position1; /**< lavy horny roh najdeneho objektu */ 
 	Point2f position2; /**< pravy dolny roh najdeneho objektu */ 
 
@@ -63,7 +67,7 @@ public:
 	virtual Mat najdiHorizont(Mat image);
 
 private:
-#ifdef GPU_MODE
+#ifdef CUDA_MODE
 	SiftGPU *siftGpu;
 	SiftMatchGPU matcherGPU;
 #endif
@@ -85,7 +89,7 @@ private:
 	
 private:
 	void setParameters(double distanceRatioThreshold = 0.85, int minMatchesToFindHomography = 5, bool ransacOutliersRemovalEnabled = true, 
-		int minKeypointsPerObject = 10, double minRecognitionConfidence = 0.004, double maxAvgDistance = 0.25 /*0.35*/ );
+		int minKeypointsPerObject = 10, double minRecognitionConfidence = 0.0049);
 	int importCandidates(vector<Candidate> &candidates, vector<WorldObject> &objects);
 	double computeAvgDistance(const vector<DMatch> &matches);
 	double computeConfidence(int keypoints1_size, int keypoints2_size, int matches_size);
@@ -95,7 +99,7 @@ private:
 	void extractInlierMatches(vector<DMatch> &matches, vector<uchar> inliers);
 	void robustMatching(const Mat &descriptors1, const Mat &descriptors2, vector<DMatch> &matches, double minRatioThreshold);
 	bool selectInliers(const vector<KeyPoint> &objectKeypoints, const vector<KeyPoint> &sceneKeypoints, vector<DMatch> &matches, Mat &H);
-	bool findObject(const Mat &image, const Mat &H, double confidence, Point2f &position1, Point2f &position2);
+	bool findObject(const Mat &image, const Size &size, const Mat &H, const double confidence, Point2f &position1, Point2f &position2);
 	void distanceMatching(const Mat &descriptors1, const Mat &descriptors2, vector<DMatch> &matches, double minRatioThreshold);
 	void simpleMatching(const Mat &descriptors1, const Mat &descriptors2, vector<DMatch> &matches);
 	int getBestCandidate(const vector<Candidate> &candidates);
@@ -105,7 +109,7 @@ private:
 	void cannyHorizonDetection(const Mat &image, Mat &horizon);
 	bool readDescriptors(const string path, const int id, vector<KeyPoint> &keyPoints, Mat &descriptors);
 	bool writeDescriptors(const string path, const int id, vector<KeyPoint> keyPoints, Mat descriptors);
-#ifdef GPU_MODE
+#ifdef CUDA_MODE
 	void runSiftGpu(const Mat &image, vector<KeyPoint> &keypoints, Mat &descriptors);
 #endif
 };
