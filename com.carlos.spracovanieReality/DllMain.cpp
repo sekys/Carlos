@@ -52,7 +52,7 @@ void RealModulSpracovania::init() {
 
 	matcherGPU.SetMaxSift(4096);
 	//Verify current OpenGL Context and do initialization
-	if(matcherGPU.CreateContextGL() == 0) { cerr << "Chyba Matcher"; return; }
+	if(matcherGPU.VerifyContextGL() == 0) { cerr << "Chyba Matcher"; return; }
 #endif
 }
 
