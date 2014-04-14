@@ -19,32 +19,15 @@ DllModulVykreslovania::DllModulVykreslovania() {
 	window = NULL;
 }
 
-/** 
-* Funkcia ma na vstupe 1 parameter a to je prijaty obrazok, stara sa o ulozenie do buffera
-* Spusta sa v 2. vlakne !
-* @param in - prijaty obrazok
-* @return void 
-*/
 void DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In* in) 
 {
 	// Spracuj obrazok
-	//cv::Mat black(480, 640, CV_8UC3, Scalar(0,0,0));
-	//in->image.data = in->image.data.clone();
-	//in->image.data =black; 
 	in->horizont = in->horizont.clone();
-	//dokresliHorizont(in->image.data, in->horizont);
-	//cv::flip(in->image.data, in->image.data, 0);
 
 	// Posli obrazok dalej
 	scene.zasobnikVstupov.push(in);	
 }
 
-/** 
-* Funkcia nema na vstupe ziadne parametre, sluzi na pocitanie casu a vytvorenie framu
-* Vola sa uz v druhom vlakne !!!
-* @see void openGLInit()
-* @return nil
-*/
 void DllModulVykreslovania::render() {
 	uint32_t timeSinceStart = (float)SDL_GetTicks(); ;
 	int deltaTime;
@@ -65,25 +48,12 @@ void DllModulVykreslovania::render() {
 	} 
 }
 
-/** 
-* Funkcia ktora sa stara o inicializovanie kniznice openGl, nastavuje sa tu
-* vsetko potrebne od nazvu okna az po rozmery okna
-* @see void DllModulVykreslovania::init()
-* @return void
-*/
-
 
 void DllModulVykreslovania::init() {
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		throw std::exception(SDL_GetError());
 	}
-	/*
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-	*/
-     
     
     //window = SDL_CreateWindow("Carlos game", 100, 100, 1024, 480, SDL_WINDOW_OPENGL);
 	
@@ -112,7 +82,7 @@ void DllModulVykreslovania::init() {
 
 	should_stop = false;
 	oldTimeSinceStart = 0;
-	//scene = new Scene();
+
 	scene.init();
 
 	SDL_Event windowEvent;

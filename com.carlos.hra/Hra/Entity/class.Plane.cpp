@@ -1,7 +1,7 @@
+/** @file class.Plane.cpp
+* Trieda obsahuje funkcie na urcovanie pozicie a spravania lietadla v ramci sveta.
+*/
 #include "class.Plane.hpp"
-
-
-
 glm::vec2 Plane::getsize(){
 	return size;
 }
@@ -71,7 +71,6 @@ void Plane::logic(float fDelta, ControllerCommands pressedKey)
 	setPosition(position);
 }
 
-
 glm::mat4  Plane::getMatrix(int pozicia) {
 	glm::vec2 position = getPosition();
 	glm::mat4 mModelMatrix = glm::mat4(1.0f);
@@ -86,6 +85,7 @@ glm::mat4  Plane::getMatrix(int pozicia) {
 	mModelMatrix = glm::scale(mModelMatrix, glm::vec3(7,7,7));
 	return mModelMatrix;
 }
+
 int Plane::getTyp() {
 	return mTyp;
 }

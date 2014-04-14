@@ -19,9 +19,13 @@ public:
 		skore = 0;
 	}
 
-	float pozicia_skore;
+	float pozicia_skore; /**< Pozicia kde sa ma vypisat skore */
 	
-
+	/** 
+	* Funkcia ma na vstupe jeden parameter, stara sa o nastavenie pozadia na gameover
+	* @param predchodca
+	* @return void
+	*/
 	virtual void switchOn(IGameState* predchodca) {
 		if(predchodca != NULL && predchodca->getType() == GameStates::HRAJE_HRU) {
 			skore = predchodca->getCasBehu();
@@ -32,6 +36,11 @@ public:
 		mScene->zasobnikVstupov.clear();
 	}
 
+	/** 
+	* Funkcia ma na vstupe jeden parameter, stara sa o prepinanie do dalsich stavov ak je v stave gameover - po 5s sa prepne na skore
+	* @param predchodca
+	* @return void
+	*/
 	virtual void frame(FrameData* frame) {	
 		mScene->zasobnikVstupov.clear();
 

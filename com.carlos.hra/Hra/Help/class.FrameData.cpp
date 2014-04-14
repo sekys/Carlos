@@ -1,3 +1,6 @@
+/** @file class.FrameData.cpp
+* Trieda obsahuje funkcie na pracu s jednym framom
+*/
 #include "class.FrameData.hpp"
 
 FrameData::FrameData() {
@@ -6,6 +9,7 @@ FrameData::FrameData() {
 FrameData::~FrameData() {
 	SAFE_DELETE(vstup);
 }
+
 void FrameData::setVstup(ModulVykreslovania::In* vstup) {
 	this->vstup = vstup;
 }
@@ -37,6 +41,7 @@ ostringstream& operator<< (ostringstream& out, FrameData* object) {
 cv::Mat FrameData::getImage() {
 	return vstup->image.data;
 }*/
+
 cv::Mat FrameData::getHorizont() {
 	return vstup->horizont;
 }

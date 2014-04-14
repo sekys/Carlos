@@ -18,6 +18,12 @@ public:
 
 	}
 
+	/** 
+	* Funkcia ma na vstupe jeden parameter, stara sa o nastavenie pozicie a natocenia sveta
+	* @param position - pozicia kde ma byt zobrazeny svet
+	* @see void Scene::frame(float fDelta)
+	* @return void
+	*/
 	glm::mat4 getMatrix(int position) {
 		glm::mat4 mModelMatrix = glm::mat4(1.0f);
 		mModelMatrix = glm::translate(glm::mat4(1.0), glm::vec3(position, 0, 0 ));

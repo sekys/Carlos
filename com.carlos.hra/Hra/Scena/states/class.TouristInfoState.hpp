@@ -116,7 +116,7 @@ public:
 
 	virtual void frame(FrameData* frame) {
 		// Prepneme sa do hry z turistickeho infa
-		if (frame->getCommand() == ControllerCommands::GAME) {
+		if (frame->getCommand() == ControllerCommands::UP || frame->getCommand() == ControllerCommands::GAME) {
 			mScene->mStates->switchTo(GameStates::UVODNA_OBRAZOVKA);
 			return;
 		}

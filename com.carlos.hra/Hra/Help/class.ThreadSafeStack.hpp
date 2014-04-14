@@ -13,7 +13,7 @@ public:
 	/** 
 	* Funkcia ma na vstupe jeden parameter item - to co ideme do zasobnika vlozit
 	* @param item - obrazok co vkladame do zasobnika
-	* @see Scene::sendBackground(cv::Mat img)
+	* @see DllModulVykreslovania::vykresliObrazokSRozsirenouRealitou(In* in) 
 	* @return void
 	*/
 	void push(const T& item) {
@@ -27,11 +27,7 @@ public:
 
 	/** 
 	* Funkcia nema ziadne parametre - stara sa o vycistenia zasobnika
-	* @param 
-	* @see Scene::prepniStavNaObrazovku()
-	* @see Scene::prepniStavNaGameOver()
-	* @see Scene::prepniStavNaScore()
-	* @see Scene::prepniStavNaHrania()
+	* see virtual void frame(FrameData* frame)
 	* @return void
 	*/
 	void clear() {

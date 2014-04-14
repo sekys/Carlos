@@ -1,6 +1,4 @@
-/** @file class.Scene.cpp
-* Trieda ktora sa stara o zobrazenie samotnej sceny, po jednotlivych framoch
-*/
+
 #include <carlos_global.h>
 #include "class.Scene.hpp"
 #include "..\Help\font.h"
@@ -26,13 +24,8 @@ Scene::Scene()  {
 Scene::~Scene() {
 
 }
-/** 
-* Funkcia nema na vstupe ziadne parametre, iba nastavi scenu na inicializacne hodnoty
-* @param 
-* @return void
-*/
+
 void Scene::init() {
-	// Komentar
 	testGL();
 	if(log != NULL) {
 		log->debugStream() << "Spustam Scene::init()";
@@ -86,12 +79,6 @@ void Scene::release() {
 	}
 }
 
-/** 
-* Funkcia ma na vstupe 1 parameter a to zmenu casu, stara sa vykreslenie 1 framu
-* @param fDelta - zmena casu
-* @see renderScene()
-* @return void
-*/
 void Scene::frame(float fDelta) {
 	testGL();
 	glClearColor(0,0,0,1);
@@ -117,12 +104,6 @@ void Scene::frame(float fDelta) {
 	testGL();
 }
 
-/** 
-* Funkcia na nastavenie textury
-* @param nil 
-* @see load()
-* @return void
-*/
 void Scene::setBackgroud(CTexture texture) {
 	CTexture actualTex = mResManager->square.getTexture();
 	if(actualTex.flagDelete) {

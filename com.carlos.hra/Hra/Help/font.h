@@ -18,6 +18,10 @@ extern GLuint	base; /**< Vytvoreny font */
 * @return GLvoid
 */
 GLvoid buildFont();
+/** 
+* Funkcia ma na vstupe jeden paramater a to vytvoreny font
+* @return GLvoid
+*/
 GLvoid killFont(GLvoid);
 
 /** 
@@ -27,4 +31,9 @@ GLvoid killFont(GLvoid);
 */
 GLvoid glPrint(const char *fmt, ...);
 
+/** 
+* Funkcia sa stara o vypisovanie textu po riadku
+* @see void showTouristInfo(ControllerCommands command, const DB::Object *object, Point2f &pos)
+* @return void
+*/
 void printLineOfText(const char * str, int x, int y);

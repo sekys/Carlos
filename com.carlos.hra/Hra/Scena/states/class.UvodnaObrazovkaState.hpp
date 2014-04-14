@@ -6,14 +6,23 @@
 class UvodnaObrazovkaState : public IGameState {
 public:
 	UvodnaObrazovkaState() : IGameState(GameStates::UVODNA_OBRAZOVKA) { 
- 
 	}
 
+	/** 
+	* Funkcia ma na vstupe jeden parameter, stara sa o nastavenie textury na uvodnu obrazovku 
+	* @param predchodca
+	* @return void
+	*/
 	virtual void switchOn(IGameState* predchodca) {
 		mScene->setBackgroud(mScene->mResManager->bgUvod);
 		mScene->zasobnikVstupov.clear();
 	}
 
+	/** 
+	* Funkcia ma na vstupe aktualny prichadzajuci frame, stara sa o prepinanie do dalsich stavov ak je v stave uvodna obrazovka
+	* @param frame
+	* @return void
+	*/
 	virtual void frame(FrameData* frame) {	
 		mScene->zasobnikVstupov.clear();
 

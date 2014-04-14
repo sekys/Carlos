@@ -13,8 +13,8 @@ class VisualController {
 private:
 	CShaderProgram control; 
 
-	glm::mat4 projekcnaMatica;
-	glm::mat4 mView;
+	glm::mat4 projekcnaMatica; 
+	glm::mat4 mView; 
 	glm::mat4 mModelMatrix;
 	glm::mat4 normalMatrix;
 

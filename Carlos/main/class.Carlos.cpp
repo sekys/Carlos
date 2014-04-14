@@ -82,7 +82,7 @@ void Carlos::spracujVstupy(Image image, ControllerCommands command, GPS gps, Poi
 	ModulVykreslovania::In* vykreslovanie;
 	vykreslovanie = new ModulVykreslovania::In();
 	vykreslovanie->command = command;
-	vykreslovanie->position = controller->vyppolohy->getHeadPosition(rotaciaHlavy); // tu by mi mala prist pozicia - cislo z intervalu -1,1
+	//vykreslovanie->position = controller->vyppolohy->getHeadPosition(rotaciaHlavy); // tu by mi mala prist pozicia - cislo z intervalu -1,1
 	vykreslovanie->najdeneObjekty = najdeneObjekty;
 	vykreslovanie->horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);

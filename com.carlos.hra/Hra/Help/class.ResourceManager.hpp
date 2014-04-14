@@ -28,10 +28,10 @@ public:
 	CTexture bgBratislavsky; /**< Pozadie ktora sa zobrazovalo namiesto videa*/
 	CTexture bgScore; /**< Textura na ktorej sa zobrazuje skore*/
 	CTexture bgUvod; /**< Textura s uvodnom obrazovkou*/
-	CTexture bgGameOver; /**< Textura s hlasko Game over*/
-	CTexture infoImage;
-	CTexture touristInfoLogo;
-	CTexture bgTouristInfoIntro;
+	CTexture bgGameOver; /**< Textura s hlaskou Game over*/
+	CTexture infoImage; /**< Uvodná textura k turistickemu infu*/
+	CTexture touristInfoLogo; /**< Logo turisticke info*/
+	CTexture bgTouristInfoIntro; /**< Textura intro*/
 
 	ResourceManager();
 	~ResourceManager();

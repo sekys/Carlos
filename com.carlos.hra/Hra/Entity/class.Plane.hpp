@@ -1,5 +1,5 @@
-/** @file class.Plain.hpp
-* Trieda obsahuje : funkciu na nastavenie starovacej pozicie lietadla, logika pohybu lietadla pri ovladani - fyziku.
+/** @file class.Plane.cpp
+* Trieda obsahuje funkcie na urcovanie pozicie a spravania lietadla v ramci sveta.
 */
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,7 +15,7 @@ class Plane : public AABB {
 private:
 	//ControllerCommands lastCommand;
 	log4cpp::Category* log;
-	int mTyp;
+	int mTyp; /**< Typ lietadla */
 
 protected:
 	glm::vec3 rotation; /**< Premenna ktora urcuje otacanie lietadla */
@@ -25,12 +25,13 @@ protected:
 	glm::vec2 size; /**< Velkost lietadla */
 
 public:
-	glm::vec2 getsize();
+	glm::vec2 getsize(); 
 	Plane(glm::vec2 size, int typ);
 
+
 	/** 
-	* Funkcia nema na vstupe ziadne parametre, sluzi na nastavenie startovacej pozicie lietadla.
-	* @see SPlain(glm::vec2 size) : AABB(size)
+	* Funkcia nema na vstupe ziadne parametre, sluzi na nastavenie startovaecj pozicie lietadla.
+	* @see void PlayingGameState::switchOn(IGameState* predchodca) 
 	* @return void
 	*/
 	void setStartPosition();
@@ -50,9 +51,9 @@ public:
 	void logic(float fDelta, ControllerCommands pressedKey);
 
 	/** 
-	* Funkcia nema na vstupe ziadne parametre, sluzi na nastavenie startovacej pozicie lietadla vo svete.
-	* @see Scene::frame(float fDelta)
-	* @see Scene::stavHrania(float fDelta)
+	* Funkcia ma na vstupe jeden parameter, stara sa o nastavenie pozicie a natocenia liedala
+	* @param pozicia - pozicia kde ma byt zobrazene lietadlo
+	* @see void PlayingGameState::frame(FrameData* frame)
 	* @return void
 	*/
 	glm::mat4 getMatrix(int pozicia);
