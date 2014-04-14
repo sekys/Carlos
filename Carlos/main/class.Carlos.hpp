@@ -14,7 +14,8 @@ namespace Architecture {
 	private:
 		ModulesController* controller; /**< Carlos spaja rozne moduly */
 		log4cpp::Category* log;
-		
+		bool m_fullscreen;
+		int m_lockFPS;
 
 		// Metoda na spracovanie snimku
 		void spracujJedenSnimok(Image image);
@@ -29,9 +30,10 @@ namespace Architecture {
 
 		// Run() metoda je vola v cykle dokedy bezi apliakcia
 		virtual bool Run();
+		virtual int getLockFPS();
 
 	public:
-		
+
 		Carlos();
 		~Carlos();
 	};

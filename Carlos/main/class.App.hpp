@@ -1,5 +1,6 @@
 #include <carlos_global.h>
 #include <windows.h>
+#include <log4cpp.h>
 
 /**
 * Trieda reprezentuju aplikaciu v najvyssej podobe.
@@ -8,12 +9,14 @@
 */
 class App {
 protected:
+	log4cpp::Category* blog;
 	bool m_runnig; 
 
+	virtual int getLockFPS() = 0;
 	virtual void Init() = 0;
 	virtual bool Run()  = 0;
+	virtual void LimitFPS(double delta);
 	virtual void Refresh()  {}
-
 	virtual void MainCycle();
 public:
 	// Prvotna inicializacia

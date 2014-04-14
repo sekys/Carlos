@@ -4,6 +4,10 @@
 */
 #include <carlos_global.h>
 #include "class.App.hpp"
+#include "../../com.carlos.architecture/entities/class.Time.hpp"
+#include <iostream>
+
+using namespace Architecture;
 
 void App::MainCycle() {
 	// Toto je hlavny cyklus aplikacie.
@@ -16,16 +20,36 @@ void App::MainCycle() {
 			TranslateMessage( &msg );  // prekladame spravy
 			DispatchMessage( &msg ); // uvolnujeme
 		} else {
-			if(Run()) {
-				Refresh();	// nemozme priamo volat UpdateWindow ale toto mozme ..je take iste
+			double time = Time::getInstance().GetAbsolute();
+			bool refreshApp = Run();
+			double deltaTime = time - Time::getInstance().GetAbsolute();;
+			if(refreshApp) {
+				// nemozme priamo volat UpdateWindow ale toto mozme ..je take iste
+				Refresh();
 			}
-			Sleep(0); // pomahame windowsu sa vyrovnat s hrou
+			LimitFPS(deltaTime);
 		}
 	}
 }
 
-App::App() {
+void App::LimitFPS(double delta) {
+	double sleepTime = ( (1.0 / getLockFPS()) - delta) * 1000.0f;
+	/*if(blog != NULL) {
+	blog->debugStream() << "delta " << delta << "\n";
+	}*/
+	if(sleepTime < 0) {
+		// Ak vypocet snimku klesol pod nase FPS
+		Sleep(0); // pomahame windowsu sa vyrovnat s hrou
+	} else {
+		/*if(blog != NULL) {
+		blog->debugStream() << "sleep " << sleepTime << "\n";
+		}*/
+		Sleep((DWORD) sleepTime);
+	}
+}
 
+App::App() {
+	blog = CREATE_LOG4CPP();
 }
 
 void App::start() {

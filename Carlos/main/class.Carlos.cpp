@@ -13,7 +13,6 @@ Carlos::Carlos()  {
 	controller = new ModulesController();
 }
 
-
 Carlos::~Carlos() {
 	// Program konci, je potrebne uvolnit jeho casti
 	if(log != NULL) log->debug("Ending carlos");
@@ -21,13 +20,16 @@ Carlos::~Carlos() {
 	SAFE_DELETE(controller);
 }
 
+int Carlos::getLockFPS() {
+	return m_lockFPS;
+}
 
 void Carlos::spracujJedenSnimok(Image image) {
 
 	// Z gps suradnic sa musi synchronizovane pockat, potom sa moze ist dalej
 	// Lebo ked snimka meska, tak gps moze byt uz o par metrov dalej
 	controller->android->prepareFakeGPS(image.pos_msec);
-	
+
 	// toto bude musiet ist do hry
 	ControllerCommands command = controller->android->getActualCommand();
 	controller->android->setActualCommand(ControllerCommands::NO_ACTION);
@@ -37,11 +39,13 @@ void Carlos::spracujJedenSnimok(Image image) {
 	//\ toto bude musiet ist do hry
 
 	//treba nastavit podla velkosti rozlisenia monitora
-	
+
 	imshow("Vstup", image.data);
 	//resizeWindow("Vstup", 1280,768);
-	cvSetWindowProperty("Vstup", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
-	cv::moveWindow("Vstup", 0, 0);
+	if(m_fullscreen) {
+		cvSetWindowProperty("Vstup", CV_WND_PROP_FULLSCREEN, CV_WINDOW_FULLSCREEN);
+		cv::moveWindow("Vstup", 0, 0);
+	}
 	spracujVstupy(image, command, gps, rotaciaHlavy);
 	image.data.release();
 }
@@ -95,10 +99,18 @@ void Carlos::Init() {
 		log->debugStream() << "Configuration title '" << Configuration::getInstance().getTitle();
 	}
 
+	m_fullscreen = Configuration::getInstance().getConfigi("fullscreen") == 1;
+	m_lockFPS = Configuration::getInstance().getConfigi("lock_fps");
+
 	// Spociva aj v nacitani modulov
 	controller->start();
-	namedWindow("Vstup", WND_PROP_FULLSCREEN);
-	//namedWindow("Horizont", WND_PROP_FULLSCREEN);
+
+	if(m_fullscreen) {
+		namedWindow("Vstup");
+	} else {
+		namedWindow("Vstup", WND_PROP_FULLSCREEN);
+	}
+	// namedWindow("Horizont", WND_PROP_FULLSCREEN);
 }
 
 bool Carlos::Run() {

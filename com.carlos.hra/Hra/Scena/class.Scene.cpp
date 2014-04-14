@@ -91,7 +91,7 @@ void Scene::frame(float fDelta) {
 	frame.setDeltaTime(fDelta);
 	ziskajAktualnyVstup(&frame);
 	mStates->frame(&frame);
-	
+
 	testGL();
 	mVisualController->setPerspektive();
 	testGL();

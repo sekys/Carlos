@@ -4,8 +4,15 @@
   <!-- Vseobecne nastavenia -->
   <title>Carlos</title>
   <version>1.0</version>
+  
   <!-- 0 - vypnute, 1 konzola, 2 subor -->
   <!-- <logs_type>2</logs_type>  -->
+  
+  <!-- Aplikacia sa spusti vo full screene  -->
+  <fullscreen>0</fullscreen>
+
+  <!-- Aplikacia uzamkne nacitavanie videa na FPS  -->
+  <lock_fps>66</lock_fps>
   
   <!-- Modul vypoctu polohy -->
   <CAMERA_DISTANCE_FROM_WINDOW_IN_M>0.4</CAMERA_DISTANCE_FROM_WINDOW_IN_M>

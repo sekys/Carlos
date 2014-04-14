@@ -5,6 +5,7 @@
 #include <gl/wglew.h>
 #include "..\Hra\Help\class.FrameData.hpp"
 #include <log4cpp/PropertyConfigurator.hh>
+#include "../../com.carlos.architecture/configuration/class.Configuration.hpp"
 
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
@@ -54,13 +55,17 @@ void DllModulVykreslovania::init() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		throw std::exception(SDL_GetError());
 	}
-    
-    //window = SDL_CreateWindow("Carlos game", 100, 100, 1024, 480, SDL_WINDOW_OPENGL);
-	
+
 	//toto spravi full screen, okno sa zobrazi na 1 monitore vo fullscreene 
-	window = SDL_CreateWindow("Carlos game", SDL_WINDOWPOS_UNDEFINED_DISPLAY(1), SDL_WINDOWPOS_UNDEFINED_DISPLAY( 1 ), 1024, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN|SDL_WINDOW_FULLSCREEN);
-	
-	 if (window == NULL) {
+	Uint32 flags;
+	if(Configuration::getInstance().getConfigi("fullscreen") == 1) {
+		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN|SDL_WINDOW_FULLSCREEN;
+	} else {
+		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+	}
+	window = SDL_CreateWindow("Carlos game", SDL_WINDOWPOS_UNDEFINED_DISPLAY(1), SDL_WINDOWPOS_UNDEFINED_DISPLAY( 1 ), 1024, 480, flags);
+
+	if (window == NULL) {
 		throw std::exception("Failed to initialize SDL_CreateWindow");
 	}
 
