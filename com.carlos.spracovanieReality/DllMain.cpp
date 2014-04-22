@@ -144,29 +144,28 @@ ModulSpracovania::Out RealModulSpracovania::detekujObjekty(ModulSpracovania::In 
 		}
 	}
 
-	//int index = getBestCandidate( candidates ); /**< najlepsi kandidat za objekt */
-	//
-	//if( index >= 0 ) /// najdenie pozicie najlepsieho kandidata
-	//{
-	//	DetekovanyObjekt najdenyObjekt;
-	//	
-	//	najdenyObjekt.objekt = in.recepts[ candidates[index].pos ]; /**< detegovany objekt */
-	//	
-	//	najdenyObjekt.boundary = RotatedRect(
-	//		Point2f( candidates[index].position1.x + ( candidates[index].position2.x - candidates[index].position1.x ) /2, candidates[index].position1.y + ( candidates[index].position2.y - candidates[index].position1.y) / 2 ), 
-	//		Size( candidates[index].position2.x - candidates[index].position1.x ,  candidates[index].position2.y - candidates[index].position1.y ), 
-	//		0
-	//		); /**< pozicia objektu */
-	//	
-	//	cout << "Najdeny objekt #" << index << endl;
-	//	cout << "Pravdepodobnost: " << candidates[index].confidence << endl;
-	//	cout << "Hamming. vzdialenost: " << candidates[index].avgDistance << endl;
-	//
-	//	// Poslem vysledok dalej
-	//	out.objects.push_back(najdenyObjekt); /**< vlozit vysledok */
-	//}
+	int index = getBestCandidate( candidates ); /**< najlepsi kandidat za objekt */
+	
+	if( index >= 0 ) /// najdenie pozicie najlepsieho kandidata
+	{
+		DetekovanyObjekt najdenyObjekt;
+		
+		najdenyObjekt.objekt = in.recepts[ candidates[index].pos ]; /**< detegovany objekt */
+		
+		najdenyObjekt.boundary = RotatedRect(
+			Point2f( candidates[index].position1.x + ( candidates[index].position2.x - candidates[index].position1.x ) /2, candidates[index].position1.y + ( candidates[index].position2.y - candidates[index].position1.y) / 2 ), 
+			Size( candidates[index].position2.x - candidates[index].position1.x ,  candidates[index].position2.y - candidates[index].position1.y ), 
+			0
+			); /**< pozicia objektu */
+		
+		cout << "Najdeny objekt #" << index << endl;
+		cout << "Pravdepodobnost: " << candidates[index].confidence << endl;
+	
+		// Poslem vysledok dalej
+		out.objects.push_back(najdenyObjekt); /**< vlozit vysledok */
+	}
 
-	getValidObjects( candidates, in.recepts, out.objects ); 
+	//getValidObjects( candidates, in.recepts, out.objects ); 
 
 	return out;
 }
@@ -188,8 +187,8 @@ int RealModulSpracovania::getBestCandidate(const vector<Candidate> &candidates)
 
 	for(int i = 0; i < candidates.size(); i++)
 	{
-		if( candidates[i].valid && candidates[i].confidence >= 0
-			&&  ( index < 0 || candidates[index].confidence < candidates[i].confidence ) )
+		if( candidates[i].valid &&
+			( index < 0 || candidates[index].confidence < candidates[i].confidence ) )
 			index = i;
 	}
 
@@ -600,8 +599,8 @@ void RealModulSpracovania::robustMatching(const Mat &descriptors1, const Mat &de
 	matcherGPU.SetDescriptors(1, descriptors2.rows, (float *) descriptors2.data);
 
 	//Match and read back result to input buffer
-	int nmatch = matcherGPU.GetSiftMatch( descriptors1.rows, match_buf, 0.75F, 0.82F, 1); 
-	//int nmatch = matcherGPU.GetSiftMatch( descriptors1.rows, match_buf, 0.82F, 0.82F, 1);
+	//int nmatch = matcherGPU.GetSiftMatch( descriptors1.rows, match_buf, 0.75F, 0.82F, 1); 
+	int nmatch = matcherGPU.GetSiftMatch( descriptors1.rows, match_buf, 0.82F, 0.82F, 1);
 
 	for( int i = 0; i < nmatch; i++ )
 	{
@@ -904,13 +903,13 @@ int main()
 	ModulSpracovania::In in;
 	ModulSpracovania::Out out;
 	WorldObject object;
-	string path = "trencin_KM";
+	string path = "bratislavsky_hrad";
 	object.cestyKSuborom.push_back(path);
 	object.id = 4;
-	Mat image; // = imread("images\\kostol\\example-0001.jpg");
+	Mat image;
 	VideoCapture video;
-	//video.open("../data/video/blava2.wmv");
-	video.open("../data/video/2013-10-20-12-18-22.avi");
+	video.open("../data/video/blava2.wmv");
+	//video.open("../data/video/2013-10-20-12-18-22.avi");
 	if(!video.isOpened()) return -1;
 
 	Mat output;
@@ -924,7 +923,7 @@ int main()
 *****POSUN VO VIDEU*******
 */
 // KM
-	for(int i= 0; i<500; i++) video >> image;
+//	for(int i= 0; i<500; i++) video >> image;
 
 // FTVS UK
 //	for(int i= 0; i<3500; i++) video >> image;
