@@ -79,8 +79,8 @@ void ModulesController::installModules() {
 	kinect = add(new ModulKinect() );
 	//kinect = addDll<ModulKinect>("com.carlos.kinect.dll");
 	vykreslovanie = addDll<ModulVykreslovania>("com.carlos.hra.dll");
-	vyppolohy = add(new ModulVypocitaniaPolohy());
-	//vyppolohy = addDll<ModulVypocitaniaPolohy>("com.carlos.textPosModule.dll");
+	//vyppolohy = add(new ModulVypocitaniaPolohy());
+	vyppolohy = addDll<ModulVypocitaniaPolohy>("com.carlos.textPosModule.dll");
 	//spracovanie = add(new ModulSpracovania());
 	spracovanie = addDll<ModulSpracovania>("com.carlos.spracovanieReality.dll");
 }

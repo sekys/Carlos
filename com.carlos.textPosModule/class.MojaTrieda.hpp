@@ -123,30 +123,26 @@ protected:
 		int height = headPos.y > detecObjPos.y ? headPos.y - detecObjPos.y : detecObjPos.y - headPos.y;
 		int width  = headPos.x > detecObjPos.x ? headPos.x - detecObjPos.x : detecObjPos.x - headPos.x;
 
-		if (height > 0.0) {
-			double hyp = sqrt(distance*distance + height*height);
-			double sin = height / hyp;
-			double cos = distance / hyp;
-			double res = (positive(detecObjPos.z) / cos) * sin;
+		double hyp = sqrt(distance*distance + height*height);
+		double sin = height / hyp;
+		double cos = distance / hyp;
+		double res = (positive(detecObjPos.z) / cos) * sin;
 
-			if (headPos.y > detecObjPos.y) {
-				textPos.y = detecObjPos.y + res;
-			} else {
-				textPos.y = detecObjPos.y - res;
-			}
+		if (headPos.y > detecObjPos.y) {
+			textPos.y = detecObjPos.y + res;
+		} else {
+			textPos.y = detecObjPos.y - res;
 		}
 
-		if (width > 0.0) {
-			double hyp = sqrt(distance*distance + width*width);
-			double sin = width / hyp;
-			double cos = distance / hyp;
-			double res = (positive(detecObjPos.z) / cos) * sin;
+		hyp = sqrt(distance*distance + width*width);
+		sin = width / hyp;
+		cos = distance / hyp;
+		res = (positive(detecObjPos.z) / cos) * sin;
 
-			if (headPos.x > detecObjPos.x) {
-				textPos.x = detecObjPos.x + res;
-			} else {
-				textPos.x = detecObjPos.x - res;
-			}
+		if (headPos.x > detecObjPos.x) {
+			textPos.x = detecObjPos.x + res;
+		} else {
+			textPos.x = detecObjPos.x - res;
 		}
 
 		return textPos;

@@ -7,12 +7,12 @@ namespace Architecture
 {
 	class ModulKinect : public IModul  {
 	public:
-		// Ziskaj aktualny uhol hlavy
+		// Ziskaj aktualny uhol hlavy (defaultna pozicia) v milimetroch
 		virtual Point3f getAktualnaRotaciaHlavy() {
 			Point3f rot;
-			rot.x = 10.f;
-			rot.y = 10.f;
-			rot.z = 14.f;
+			rot.x = 270.0f; // 27cm
+			rot.y = 160.0f; // 16cm
+			rot.z = 400.0f; // 40cm
 			return rot;
 		}
 

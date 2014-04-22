@@ -52,16 +52,15 @@ void Carlos::spracujJedenSnimok(Image image) {
 
 void Carlos::spracujVstupy(Image image, ControllerCommands command, GPS gps, Point3f rotaciaHlavy) {
 	// Modul preprocessingu
-	/*vector<WorldObject> recepts;
+	vector<WorldObject> recepts;
 	recepts = DB::DBService::getInstance().najdiVsetkySvetoveObjektyBlizkoGPS(gps);
-	*/
 
 	// Modul spracovania
-	/*ModulSpracovania::In spracovanie;
+	ModulSpracovania::In spracovanie;
 	spracovanie.image = image;
-	spracovanie.recepts = recepts;*/
+	spracovanie.recepts = recepts;
 	ModulSpracovania::Out vysledokSpracovania;
-	// vysledokSpracovania = controller->spracovanie->detekujObjekty(spracovanie);
+	vysledokSpracovania = controller->spracovanie->detekujObjekty(spracovanie);
 	vysledokSpracovania.horizont = controller->spracovanie->najdiHorizont(image.data);
 	//imshow("Horizont", vysledokSpracovania.horizont);
 
@@ -71,6 +70,14 @@ void Carlos::spracujVstupy(Image image, ControllerCommands command, GPS gps, Poi
 		ModulVypocitaniaPolohy::In vypocetPolohy;
 		vypocetPolohy.id = vysledokSpracovania.objects.at(i).objekt.id;
 		vypocetPolohy.gps = gps;
+
+		GPS objectGPS;
+		const DB::Object *object = DB::DBService::getInstance().getObjectById(vypocetPolohy.id);
+
+		objectGPS.latitude = object->latitude;
+		objectGPS.longitude = object->longitude;
+
+		vypocetPolohy.gpsPolohaObjektu = objectGPS;
 		vypocetPolohy.polohaObjektu = vysledokSpracovania.objects.at(i).boundary;
 		vypocetPolohy.rotaciaHlavy = rotaciaHlavy;
 
@@ -86,7 +93,7 @@ void Carlos::spracujVstupy(Image image, ControllerCommands command, GPS gps, Poi
 	ModulVykreslovania::In* vykreslovanie;
 	vykreslovanie = new ModulVykreslovania::In();
 	vykreslovanie->command = command;
-	//vykreslovanie->position = controller->vyppolohy->getHeadPosition(rotaciaHlavy); // tu by mi mala prist pozicia - cislo z intervalu -1,1
+	vykreslovanie->position = controller->vyppolohy->getHeadPosition(rotaciaHlavy); // tu by mi mala prist pozicia - cislo z intervalu -1,1
 	vykreslovanie->najdeneObjekty = najdeneObjekty;
 	vykreslovanie->horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);

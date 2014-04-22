@@ -16,7 +16,7 @@ int WINAPI DllEntryPoint(HINSTANCE hinst, unsigned long reason, void*) {
 
 using namespace Architecture;
 
-class DllModulVypocitaniaPolohy : public MojaTrieda, public ModulVypocitaniaPolohy {
+class DllModulVypocitaniaPolohy :  public ModulVypocitaniaPolohy, public MojaTrieda {
 public:
 	virtual Out vypocitajPolohuTextu(In in) {
 		// Vzpocitanie priamej vydialenosti detegovaneho objektu od auta
@@ -41,7 +41,7 @@ public:
 		Point3f detecObjPosition;
 		detecObjPosition.x = objPosInWindowInMX;
 		detecObjPosition.y = objPosInWindowInMY;
-		detecObjPosition.z = distanceInM * cos;
+		detecObjPosition.z = - distanceInM * cos;
 
 		// Pozicia hlavy pride v milimetroch, premenime ju na metre
 		Point3f headPosition;
@@ -70,7 +70,7 @@ public:
 		Point3f projectionAreaPosition;
 		projectionAreaPosition.x = CAR_WINDOW_WIDTH_IN_M/2;
 		projectionAreaPosition.y = CAR_WINDOW_HEIGHT_IN_M/2;
-		projectionAreaPosition.z = PROJECTION_AREA_DISTANCE_FROM_CAR_WINDOW_IN_M;
+		projectionAreaPosition.z = - PROJECTION_AREA_DISTANCE_FROM_CAR_WINDOW_IN_M;
 
 		Point2f intersection = calculateTextPos(headPosition, projectionAreaPosition);
 
@@ -87,7 +87,7 @@ public:
 		 *  - CAMERA_X_POSITION_IN_WINDOW_IN_M
 		 */
 		PROJECTION_AREA_DISTANCE_FROM_CAR_WINDOW_IN_M = 
-			Configuration::getInstance().getConfigf("PROJECTION_AREA_DISTANCE_FROM_CAR_WINDOW_IN_M");
+			Configuration::getInstance().getConfigf("projection_area_distance_from_car_window_in_m");
 
 		CAR_WINDOW_WIDTH_IN_M = Configuration::getInstance().getConfigf("CAR_WINDOW_WIDTH_IN_M");
 		CAR_WINDOW_HEIGHT_IN_M = Configuration::getInstance().getConfigf("CAR_WINDOW_HEIGHT_IN_M");
