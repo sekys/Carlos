@@ -6,12 +6,13 @@ bool m_new_depth_frame;
 pthread_mutex_t gl_backbuf_mutex;
 uint8_t *rgb_back, *rgb_mid;
 
-Point3f DllKinect::getAktualnaRotaciaHlavy() {
-	Point3f rot;
-	rot.x = 60.0f;
-	rot.y= 20.0f;
-	rot.z = 52.0f;
+
+Point3f DllKinect::getAktualnaRotaciaHlavy() { 
 	return rot;
+}
+
+float vzdialenost(Point3f c, Point3f d){
+	return sqrt((c.x-d.x)*(c.x-d.x)+(c.y-d.y)*(c.y-d.y)+(c.z-d.z)*(c.z-d.z));
 }
 
 void depth_cb(freenect_device *dev, void *v_depth, uint32_t timestamp)
@@ -88,6 +89,8 @@ void DllKinect::freenect_threadfunc()
 	int iter(0);
 	Point pt1, pt2, pt3;
 	cv::vector<Rect> faces;
+	float d1, d2, koef;
+	Point3f p;
 
 	face_cascade.load("../data/haarcascade_frontalface_alt.xml");
 
@@ -153,29 +156,21 @@ void DllKinect::freenect_threadfunc()
 			cvDestroyWindow("depth");
 			break;
 		}
-		if(iter >= 100){
-			iter=0;
 			if(pt3.x!=0)
 			{
 				double wx, wy, wz = depthMat.at<ushort>(pt3.y, pt3.x);
 				Vec3d result = DepthToWorld(pt3.x, pt3.y, wz);
-				wx = result[0];
-				wy = result[1];
-				double mi[4];
-				mi[0] = wx;
-				mi[1] = wy;
-				mi[2] = wz;
-				mi[3] = 1;
-				Mat i = Mat(4, 1, CV_64F, mi);
 
-				Mat j = M*i;
+				p.x	= result[0];
+				p.y = result[1];
+				p.z = wz;
 
-				cout << i << endl << j << endl;
+				d1 = vzdialenost(a, p);
+				d2 = vzdialenost(b, p);
 
-				//printf("%.0f %.0f %.0f\n", j.at<double>(0,0), j.at<double>(1,0), j.at<double>(2,0));
+				koef = d2/(d1+d2);
+				rot.x = ((a.x-b.x)-((a.x-b.x)-540)/2)*koef;
 			}
-		}
-		iter++;
 
 	}
 
@@ -192,17 +187,18 @@ void DllKinect::freenect_threadfunc()
 }
 
 
-void DllKinect::NacitajMaticu(){
+void DllKinect::NacitajBody(){
 	ifstream file;
 	int i, j, k;
 
-	file.open("../data/matica.txt");
-	M = Mat(4, 4, CV_64F);
-	for(j = 0; j<4; j++){
-		for(k = 0; k<4; k++){
-			file >> M.at<double>(j, k);
-		}
-	}
+	file.open("../data/kinect_points.txt");
+	file >> a.x;
+	file >> a.y;
+	file >> a.z;
+	file >> b.x;
+	file >> b.y;
+	file >> b.z;
+
 	file.close();
 }
 
@@ -213,6 +209,10 @@ void DllKinect::init()
 
 	die = 0;
 	gl_backbuf_mutex = PTHREAD_MUTEX_INITIALIZER;
+
+	rot.x=0;
+	rot.y= 320.0f; //vyska obrazovky/2
+	rot.z = 250.0f;
 
 	depthMat = Mat(Size(640,480),CV_16UC1);
 	depthf = Mat (Size(640,480),CV_8UC1);
@@ -250,7 +250,7 @@ void DllKinect::init()
 		freenect_shutdown(f_ctx);
 	}
 
-	NacitajMaticu();
+	NacitajBody();
 
 	freenect_threadfunc();
 

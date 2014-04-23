@@ -32,7 +32,7 @@ public:
 	int die;
 
 
-	Mat M;
+	Point3f rot, a, b;
 
 
 
@@ -52,7 +52,7 @@ public:
 	virtual Point3f getAktualnaRotaciaHlavy();
 	virtual void init();
 
-	virtual void NacitajMaticu();
+	virtual void NacitajBody();
 	virtual void freenect_threadfunc();
 	virtual Vec3f DepthToWorld(int x, int y, int depthValue);
 	virtual void getDepth();
