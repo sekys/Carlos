@@ -39,7 +39,7 @@ void RealModulSpracovania::init() {
 	if(!prevHorizon.empty()) prevHorizon.release();
 	prevPos = NULL;
 #ifdef CUDA_MODE
-	char *argv[] = {"-v", "1",  "-p", "640x480", "-cuda", "-di"}; 
+	char *argv[] = {"-v", "1", "-fo", "1",  "-p", "1920x1080", "-cuda", "-di", "-nogl"}; 
 	/** parametre pre SiftGPU: 
 	*	-v - zobrazit info do konzoly, 
 	*	-p - inicialna velkost pre pyramidu,
@@ -49,10 +49,11 @@ void RealModulSpracovania::init() {
 	int argc = sizeof(argv) / sizeof(char *);
 	siftGpu = new SiftGPU();
 	siftGpu->ParseParam(argc, argv);
-
-	matcherGPU.SetMaxSift(4096);
+	//if(siftGpu->VerifyContextGL() == 0) { cerr << "Chyba Matcher"; return; }
+	matcherGPU = new SiftMatchGPU();
+	matcherGPU->SetLanguage(SiftMatchGPU::SIFTMATCH_CUDA);
 	//Verify current OpenGL Context and do initialization
-	if(matcherGPU.VerifyContextGL() == 0) { cerr << "Chyba Matcher"; return; }
+	if(matcherGPU->VerifyContextGL() == 0) { cerr << "Chyba Matcher"; return; }
 #endif
 }
 
@@ -594,13 +595,12 @@ void RealModulSpracovania::robustMatching(const Mat &descriptors1, const Mat &de
 	crossCheckFilter(matches12, matches21, matches);
 #else
 	int (*match_buf)[2] = new int[descriptors1.rows][2];
-
-	matcherGPU.SetDescriptors(0, descriptors1.rows, (float *) descriptors1.data);
-	matcherGPU.SetDescriptors(1, descriptors2.rows, (float *) descriptors2.data);
+	matcherGPU->SetDescriptors(0, descriptors1.rows, (float *) descriptors1.data);
+	matcherGPU->SetDescriptors(1, descriptors2.rows, (float *) descriptors2.data);
 
 	//Match and read back result to input buffer
 	//int nmatch = matcherGPU.GetSiftMatch( descriptors1.rows, match_buf, 0.75F, 0.82F, 1); 
-	int nmatch = matcherGPU.GetSiftMatch( descriptors1.rows, match_buf, 0.82F, 0.82F, 1);
+	int nmatch = matcherGPU->GetSiftMatch( descriptors1.rows, match_buf, 0.82F, 0.82F, 1);
 
 	for( int i = 0; i < nmatch; i++ )
 	{
@@ -609,14 +609,14 @@ void RealModulSpracovania::robustMatching(const Mat &descriptors1, const Mat &de
 		match.trainIdx = match_buf[i][1];
 
 		match.distance = 0;
-		for (int j = 0; j < SIFT_SIZE; j++) 
+		/*for (int j = 0; j < SIFT_SIZE; j++) 
 		{ 
 			float L2 = *((float *) descriptors1.data + match.queryIdx * SIFT_SIZE + j ) - *((float *) descriptors2.data + match.trainIdx * SIFT_SIZE + j);
 			L2 *= L2;
 			match.distance += L2;
 		}
 
-		match.distance = sqrt( match.distance );
+		match.distance = sqrt( match.distance );*/
 
 		matches.push_back( match );
 	}
@@ -903,13 +903,13 @@ int main()
 	ModulSpracovania::In in;
 	ModulSpracovania::Out out;
 	WorldObject object;
-	string path = "bratislavsky_hrad";
+	string path = "trencin_KM";
 	object.cestyKSuborom.push_back(path);
 	object.id = 4;
 	Mat image;
 	VideoCapture video;
-	video.open("../data/video/blava2.wmv");
-	//video.open("../data/video/2013-10-20-12-18-22.avi");
+	//video.open("../data/video/blava2.wmv");
+	video.open("../data/video/2013-10-20-12-18-22.avi");
 	if(!video.isOpened()) return -1;
 
 	Mat output;
@@ -923,7 +923,7 @@ int main()
 *****POSUN VO VIDEU*******
 */
 // KM
-//	for(int i= 0; i<500; i++) video >> image;
+	for(int i= 0; i<500; i++) video >> image;
 
 // FTVS UK
 //	for(int i= 0; i<3500; i++) video >> image;
