@@ -47,6 +47,7 @@ public:
 		// Hud
 		glUseProgram(0);
 		glDisable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
 		glLoadIdentity();
 		
 		glTranslatef(pozicia_skore, -0.4f ,0.0f);
@@ -55,6 +56,7 @@ public:
 		string str = "Aktualny cas letu: \n" + convertToStr<double>(&skore);
 		glPrint( str.c_str());
 		glEnable(GL_LIGHTING);
+		glEnable(GL_TEXTURE_2D);
 
 		if(this->getCasBehu() > 5.0) {
 			/// presiel cas a zmeni sa stav

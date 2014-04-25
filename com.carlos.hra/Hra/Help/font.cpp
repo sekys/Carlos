@@ -69,7 +69,8 @@ void printLineOfText(const char *str, int x, int y) {
 	VisualController::pushScreenCoordinateMatrix();
 	glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT | GL_TRANSFORM_BIT);	
 	glDisable(GL_LIGHTING);
-
+	glDisable(GL_TEXTURE_2D);
+	
 	glPushMatrix();
 	glLoadIdentity();
 
@@ -80,6 +81,7 @@ void printLineOfText(const char *str, int x, int y) {
 	glPopMatrix();
 
 	glEnable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
 	glPopAttrib();
 	VisualController::popProjectionMatrix();
 }
