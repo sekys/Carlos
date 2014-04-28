@@ -1,5 +1,6 @@
 #pragma once
 #define NOMINMAX
+#include <carlos_global.h>
 #include "../com.carlos.architecture/modules/class.ModulKinect.hpp"
 #include "../libs/include/freenect/libfreenect.hpp"
 #include <stdio.h>

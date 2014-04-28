@@ -1,3 +1,4 @@
+#include <carlos_global.h>
 #include "../com.carlos.kinect/DllKinect.h"
 
 uint16_t *depth;

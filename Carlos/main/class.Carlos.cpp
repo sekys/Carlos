@@ -60,7 +60,7 @@ void Carlos::spracujVstupy(Image image, ControllerCommands command, GPS gps, Poi
 	spracovanie.image = image;
 	spracovanie.recepts = recepts;
 	ModulSpracovania::Out vysledokSpracovania;
-	vysledokSpracovania = controller->spracovanie->detekujObjekty(spracovanie);
+	//vysledokSpracovania = controller->spracovanie->detekujObjekty(spracovanie);
 	vysledokSpracovania.horizont = controller->spracovanie->najdiHorizont(image.data);
 	//imshow("Horizont", vysledokSpracovania.horizont);
 

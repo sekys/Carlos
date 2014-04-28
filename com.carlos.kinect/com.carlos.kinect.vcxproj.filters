@@ -21,16 +21,10 @@
     <ClCompile Include="DllKinect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyFreenectDevice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DllKinect.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyFreenectDevice.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

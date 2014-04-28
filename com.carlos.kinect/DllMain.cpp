@@ -1,3 +1,4 @@
+#include <carlos_global.h>
 #include <windows.h>
 #include "../com.carlos.architecture/DllExports.h"
 #include <iostream>
