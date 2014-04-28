@@ -18,7 +18,7 @@
 * - kniznica SiftGpu sa v tomto mode musi nanovo prekompilovat a vsetky SiftGpu subory v projekte Carlos nahradit novovygenerovanymi
 * - v opacnom pripade sa na detekciu objektov pouziju standardne Surf deskriptory z kniznice OpenCV
 */
-#undef CUDA_MODE
+//#undef CUDA_MODE
 
 #ifdef CUDA_MODE
 #define SIFT_SIZE 128
@@ -69,7 +69,7 @@ public:
 private:
 #ifdef CUDA_MODE
 	SiftGPU *siftGpu;
-	SiftMatchGPU matcherGPU;
+	SiftMatchGPU *matcherGPU;
 #endif
 	BruteForceMatcher<L2<float>> matcher; /**< matcher deskriptorov */
 	SurfFeatureDetector detector; /**< detektor keypointov */
