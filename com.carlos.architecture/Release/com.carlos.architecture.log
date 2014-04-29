@@ -1,0 +1,11 @@
+﻿  'Microsoft Visual C++ Compiler Nov 2012 CTP' is for testing purposes only.
+  class.Configuration.cpp
+configuration\class.Configuration.cpp(31): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+configuration\class.Configuration.cpp(47): warning C4244: 'return' : conversion from 'float' to 'const int', possible loss of data
+  tinyxml2.cpp
+  class.DBService.cpp
+db\class.DBService.cpp(67): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+db\class.DBService.cpp(68): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+  utilities.cpp
+  sqlite3.c
+  com.carlos.architecture.vcxproj -> D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.architecture.lib

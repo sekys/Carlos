@@ -149,8 +149,8 @@ void DllKinect::freenect_threadfunc()
 
 
 
-		cv::imshow("rgb", rgbMat);
-		cv::imshow("depth",depthf);
+		//cv::imshow("rgb", rgbMat);
+		//cv::imshow("depth",depthf);
 		char k = cvWaitKey(5);
 		if( k == 27 ){
 			cvDestroyWindow("rgb");
@@ -170,7 +170,9 @@ void DllKinect::freenect_threadfunc()
 				d2 = vzdialenost(b, p);
 
 				koef = d2/(d1+d2);
+
 				rot.x = ((a.x-b.x)-((a.x-b.x)-540)/2)*koef;
+				//rot.x = (koef*2)-1; //kinect spustenie
 			}
 
 	}

@@ -1,0 +1,60 @@
+﻿  DllMain.cpp
+DllMain.cpp(72): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(85): warning C4244: 'argument' : conversion from 'const float' to 'int', possible loss of data
+DllMain.cpp(133): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(158): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+DllMain.cpp(189): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(210): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(261): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+DllMain.cpp(265): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+DllMain.cpp(266): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+DllMain.cpp(267): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+DllMain.cpp(271): warning C4101: 'e' : unreferenced local variable
+DllMain.cpp(350): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(382): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(419): warning C4018: '>' : signed/unsigned mismatch
+DllMain.cpp(421): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(441): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(434): warning C4101: 'e' : unreferenced local variable
+DllMain.cpp(460): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(499): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(515): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(560): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(731): warning C4018: '>' : signed/unsigned mismatch
+DllMain.cpp(733): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(747): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(741): warning C4101: 'e' : unreferenced local variable
+DllMain.cpp(976): warning C4018: '<' : signed/unsigned mismatch
+DllMain.cpp(900): warning C4101: 'mode' : unreferenced local variable
+     Creating library D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.spracovanieReality.lib and object D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.spracovanieReality.exp
+  Generating code
+  Finished generating code
+log4cppLIB.lib(AbortAppender.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(AbortAppender.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(Appender.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(Appender.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(AppenderSkeleton.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(AppenderSkeleton.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(BasicLayout.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(BasicLayout.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(Category.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(Category.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(CategoryStream.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(CategoryStream.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(Configurator.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(Configurator.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(FactoryParams.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(FactoryParams.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(FileAppender.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(FileAppender.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(HierarchyMaintainer.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(HierarchyMaintainer.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(LayoutAppender.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(LayoutAppender.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(Localtime.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(Localtime.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(LoggingEvent.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(LoggingEvent.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(MSThreads.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(MSThreads.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(NDC.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(NDC.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(NTEventLogAppender.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(NTEventLogAppender.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(OstreamAppender.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(OstreamAppender.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(PatternLayout.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(PatternLayout.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(Priority.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(Priority.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(Properties.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(Properties.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(PropertyConfigurator.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(PropertyConfigurator.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(PropertyConfiguratorImpl.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(PropertyConfiguratorImpl.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(RemoteSyslogAppender.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(RemoteSyslogAppender.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(RollingFileAppender.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(RollingFileAppender.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(SimpleLayout.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(SimpleLayout.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(StringUtil.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(StringUtil.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(TimeStamp.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(TimeStamp.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+log4cppLIB.lib(Win32DebugAppender.obj) : warning LNK4099: PDB 'vc110.pdb' was not found with 'log4cppLIB.lib(Win32DebugAppender.obj)' or at 'D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\vc110.pdb'; linking object as if no debug info
+  com.carlos.spracovanieReality.vcxproj -> D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.spracovanieReality.dll

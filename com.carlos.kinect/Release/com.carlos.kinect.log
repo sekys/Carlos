@@ -1,0 +1,19 @@
+﻿  DllKinect.cpp
+DllKinect.cpp(77): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllKinect.cpp(78): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllKinect.cpp(79): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+DllKinect.cpp(163): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+DllKinect.cpp(165): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllKinect.cpp(166): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllKinect.cpp(167): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllKinect.cpp(162): warning C4101: 'wy' : unreferenced local variable
+DllKinect.cpp(162): warning C4101: 'wx' : unreferenced local variable
+DllKinect.cpp(195): warning C4101: 'i' : unreferenced local variable
+DllKinect.cpp(195): warning C4101: 'k' : unreferenced local variable
+DllKinect.cpp(195): warning C4101: 'j' : unreferenced local variable
+DllKinect.cpp(231): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+  DllMain.cpp
+     Creating library D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.kinect.lib and object D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.kinect.exp
+  Generating code
+  Finished generating code
+  com.carlos.kinect.vcxproj -> D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.kinect.dll

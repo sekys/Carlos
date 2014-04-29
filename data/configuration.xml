@@ -9,7 +9,7 @@
   <!-- <logs_type>2</logs_type>  -->
   
   <!-- Aplikacia sa spusti vo full screene  -->
-  <fullscreen>0</fullscreen>
+  <fullscreen>1</fullscreen>
 
   <!-- Aplikacia uzamkne nacitavanie videa na FPS  -->
   <lock_fps>66</lock_fps>

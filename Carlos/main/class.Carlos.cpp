@@ -94,6 +94,7 @@ void Carlos::spracujVstupy(Image image, ControllerCommands command, GPS gps, Poi
 	vykreslovanie = new ModulVykreslovania::In();
 	vykreslovanie->command = command;
 	vykreslovanie->position = controller->vyppolohy->getHeadPosition(rotaciaHlavy); // tu by mi mala prist pozicia - cislo z intervalu -1,1
+	//vykreslovanie->position = rotaciaHlavy.x; //kinect spustenie
 	vykreslovanie->najdeneObjekty = najdeneObjekty;
 	vykreslovanie->horizont = vysledokSpracovania.horizont;
 	controller->vykreslovanie->vykresliObrazokSRozsirenouRealitou(vykreslovanie);
@@ -113,9 +114,9 @@ void Carlos::Init() {
 	controller->start();
 
 	if(m_fullscreen) {
-		namedWindow("Vstup");
-	} else {
 		namedWindow("Vstup", WND_PROP_FULLSCREEN);
+	} else {
+		namedWindow("Vstup");
 	}
 	// namedWindow("Horizont", WND_PROP_FULLSCREEN);
 }

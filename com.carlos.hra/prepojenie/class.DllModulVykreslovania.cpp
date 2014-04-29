@@ -63,7 +63,7 @@ void DllModulVykreslovania::init() {
 	} else {
 		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 	}
-	window = SDL_CreateWindow("Carlos game", SDL_WINDOWPOS_UNDEFINED_DISPLAY(1), SDL_WINDOWPOS_UNDEFINED_DISPLAY( 1 ), 1024, 480, flags);
+	window = SDL_CreateWindow("Carlos game", SDL_WINDOWPOS_UNDEFINED_DISPLAY(2), SDL_WINDOWPOS_UNDEFINED_DISPLAY( 2 ), 1024, 480, flags);
 
 	if (window == NULL) {
 		throw std::exception("Failed to initialize SDL_CreateWindow");

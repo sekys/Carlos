@@ -1,0 +1,27 @@
+﻿  DllMain.cpp
+d:\timaky\carlos2013-14\carlosar_vw\com.carlos.textposmodule\class.MojaTrieda.hpp(123): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+d:\timaky\carlos2013-14\carlosar_vw\com.carlos.textposmodule\class.MojaTrieda.hpp(124): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+d:\timaky\carlos2013-14\carlosar_vw\com.carlos.textposmodule\class.MojaTrieda.hpp(132): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+d:\timaky\carlos2013-14\carlosar_vw\com.carlos.textposmodule\class.MojaTrieda.hpp(134): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+d:\timaky\carlos2013-14\carlosar_vw\com.carlos.textposmodule\class.MojaTrieda.hpp(143): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+d:\timaky\carlos2013-14\carlosar_vw\com.carlos.textposmodule\class.MojaTrieda.hpp(145): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(42): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(43): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(44): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(48): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(49): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(50): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(63): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(64): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(65): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(71): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(72): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(73): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(107): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(115): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(118): warning C4244: '/=' : conversion from 'double' to 'float', possible loss of data
+DllMain.cpp(119): warning C4244: '/=' : conversion from 'double' to 'float', possible loss of data
+     Creating library D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.textPosModule.lib and object D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.textPosModule.exp
+  Generating code
+  Finished generating code
+  CalculateTextPosModule.vcxproj -> D:\Timaky\Carlos2013-14\CarlosAR_VW\Release\com.carlos.textPosModule.dll

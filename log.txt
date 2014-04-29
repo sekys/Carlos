@@ -1,0 +1,1157 @@
+Configuration title 'Carlos'
+class TCPServer spustam v samostatnom vlakne.
+class Architecture::ModulKamera spustam v hlavnom vlakne.
+class Architecture::ModulKinect spustam v hlavnom vlakne.
+class DllModulVykreslovania spustam v samostatnom vlakne.
+Native TCP server starting
+class Architecture::ModulVypocitaniaPolohy spustam v hlavnom vlakne.
+class RealModulSpracovania spustam v hlavnom vlakne.
+bind failed - zla ip adresa? 192.168.1.1021234
+Snimok: 1
+Snimok: 2
+Total number: 90998
+Snimok: 3
+Vendor: NVIDIA Corporation
+Renderer: GeForce GTX 770/PCIe/SSE2
+Version: 4.4.0
+Shading ver: 4.40 NVIDIA via Cg compiler
+Spustam Scene::init()
+Total number: 91008
+Snimok: 4
+Total number: 91101
+Snimok: 5
+Total number: 91239
+Snimok: 6
+Total number: 91450
+Snimok: 7
+Total number: 91428
+Snimok: 8
+Total number: 91604
+Snimok: 9
+Total number: 91591
+Snimok: 10
+Total number: 91621
+Snimok: 11
+Total number: 91627
+Snimok: 12
+Total number: 91883
+Snimok: 13
+Total number: 91946
+Snimok: 14
+Total number: 91835
+Snimok: 15
+Total number: 91952
+Snimok: 16
+Total number: 91745
+Prepinam stan na uvodnu obrazovku.
+Koncim Scene::init()
+Snimok: 17
+Total number: 91725
+Snimok: 18
+Total number: 91648
+Snimok: 19
+Total number: 91712
+Snimok: 20
+Total number: 91683
+Snimok: 21
+Total number: 91766
+Snimok: 22
+Total number: 91745
+Snimok: 23
+Total number: 91867
+Snimok: 24
+Total number: 91460
+Snimok: 25
+Total number: 91477
+Snimok: 26
+Total number: 91404
+Snimok: 27
+Total number: 91540
+Snimok: 28
+Total number: 91684
+Snimok: 29
+Total number: 91713
+Snimok: 30
+Total number: 91674
+Snimok: 31
+Total number: 91515
+Snimok: 32
+Total number: 91764
+Snimok: 33
+Total number: 91499
+Snimok: 34
+Total number: 91608
+Snimok: 35
+Total number: 91580
+Snimok: 36
+Total number: 91355
+Snimok: 37
+Total number: 91365
+Snimok: 38
+Total number: 91527
+Snimok: 39
+Total number: 91534
+Snimok: 40
+Total number: 91492
+Snimok: 41
+Total number: 91566
+Snimok: 42
+Total number: 91576
+Snimok: 43
+Total number: 91518
+Snimok: 44
+Total number: 91574
+Snimok: 45
+Total number: 91700
+Snimok: 46
+Total number: 91312
+Snimok: 47
+Total number: 91239
+Snimok: 48
+Total number: 91422
+Snimok: 49
+Total number: 91494
+Snimok: 50
+Total number: 91516
+Snimok: 51
+Total number: 91447
+Snimok: 52
+Total number: 91379
+Snimok: 53
+Total number: 91523
+Snimok: 54
+Total number: 91476
+Snimok: 55
+Total number: 91447
+Snimok: 56
+Total number: 91237
+Snimok: 57
+Total number: 91327
+Snimok: 58
+Total number: 91372
+Snimok: 59
+Total number: 91399
+Snimok: 60
+Total number: 91435
+Snimok: 61
+Total number: 91844
+Snimok: 62
+Total number: 91665
+Snimok: 63
+Total number: 91629
+Snimok: 64
+Total number: 91403
+Snimok: 65
+Total number: 91474
+Snimok: 66
+Total number: 91618
+Snimok: 67
+Total number: 91620
+Snimok: 68
+Total number: 91962
+Snimok: 69
+Total number: 91988
+Snimok: 70
+Total number: 91896
+Snimok: 71
+Total number: 91733
+Snimok: 72
+Total number: 91846
+Snimok: 73
+Total number: 91976
+Snimok: 74
+Total number: 91846
+Snimok: 75
+Total number: 91965
+Snimok: 76
+Total number: 91854
+Snimok: 77
+Total number: 91709
+Snimok: 78
+Total number: 92030
+Snimok: 79
+Total number: 91944
+Snimok: 80
+Total number: 91787
+Snimok: 81
+Total number: 91798
+Snimok: 82
+Total number: 91697
+Snimok: 83
+[Hra] Prijmam  vstupy FrameData(vstup: ( ModulVykreslovaniaIn(image: Image(frame:82), command: NO_ACTION, )); ), deltaTime: 0.591, ));
+Total number: 91678
+Snimok: 84
+Total number: 91614
+Snimok: 85
+Total number: 91608
+Snimok: 86
+Total number: 91667
+Snimok: 87
+Total number: 91770
+Snimok: 88
+Total number: 91787
+Snimok: 89
+Total number: 91701
+Snimok: 90
+Total number: 91589
+Snimok: 91
+Total number: 91758
+Snimok: 92
+Total number: 91764
+Snimok: 93
+Total number: 91734
+Snimok: 94
+Total number: 91821
+Snimok: 95
+Total number: 91765
+Snimok: 96
+Total number: 91767
+Snimok: 97
+Total number: 91850
+Snimok: 98
+Total number: 91734
+Snimok: 99
+Total number: 91695
+Snimok: 100
+Total number: 91707
+Snimok: 101
+Total number: 91750
+Snimok: 102
+Total number: 91740
+Snimok: 103
+Total number: 91660
+Snimok: 104
+Total number: 91677
+Snimok: 105
+Total number: 91624
+Snimok: 106
+Total number: 91644
+Snimok: 107
+Total number: 91628
+Snimok: 108
+Total number: 91669
+Snimok: 109
+Total number: 91658
+Snimok: 110
+Total number: 91834
+Snimok: 111
+Total number: 92002
+Snimok: 112
+Total number: 91840
+Snimok: 113
+Total number: 91810
+Snimok: 114
+Total number: 91850
+Snimok: 115
+Total number: 91681
+Snimok: 116
+Total number: 91789
+Snimok: 117
+Total number: 91732
+Snimok: 118
+Total number: 91623
+Snimok: 119
+Total number: 91494
+Snimok: 120
+Total number: 91371
+Snimok: 121
+Total number: 91748
+Snimok: 122
+Total number: 91544
+Snimok: 123
+Total number: 91562
+Snimok: 124
+Total number: 91491
+Snimok: 125
+Total number: 91595
+Snimok: 126
+Total number: 91484
+Snimok: 127
+Total number: 91472
+Snimok: 128
+Total number: 91418
+Snimok: 129
+Total number: 91445
+Snimok: 130
+Total number: 91346
+Snimok: 131
+Total number: 91267
+Snimok: 132
+Total number: 91123
+Snimok: 133
+Total number: 91142
+Snimok: 134
+Total number: 91310
+Snimok: 135
+Total number: 90796
+Snimok: 136
+Total number: 91222
+Snimok: 137
+Total number: 91287
+Snimok: 138
+Total number: 90851
+Snimok: 139
+Total number: 91010
+Snimok: 140
+Total number: 91036
+Snimok: 141
+Total number: 91028
+Snimok: 142
+Total number: 91569
+Snimok: 143
+Total number: 91912
+Snimok: 144
+Total number: 92860
+Snimok: 145
+Total number: 93201
+Snimok: 146
+Total number: 94336
+Snimok: 147
+Total number: 94343
+Snimok: 148
+Total number: 94930
+Snimok: 149
+Total number: 95398
+Snimok: 150
+Total number: 95622
+Snimok: 151
+Total number: 95811
+Snimok: 152
+Total number: 96050
+Snimok: 153
+Total number: 96671
+Snimok: 154
+Total number: 96208
+Snimok: 155
+Total number: 97935
+Snimok: 156
+Total number: 97645
+Snimok: 157
+Total number: 98358
+Snimok: 158
+Total number: 98418
+Snimok: 159
+Total number: 99601
+Snimok: 160
+Total number: 100063
+Snimok: 161
+Total number: 101215
+Snimok: 162
+Total number: 103574
+Snimok: 163
+Total number: 106094
+Snimok: 164
+Total number: 108111
+Snimok: 165
+Total number: 108786
+Snimok: 166
+Total number: 110244
+Snimok: 167
+Total number: 111229
+Snimok: 168
+Total number: 111856
+Snimok: 169
+Total number: 114474
+Snimok: 170
+Total number: 116235
+Snimok: 171
+Total number: 118670
+Snimok: 172
+Total number: 121937
+Snimok: 173
+Total number: 125136
+Snimok: 174
+Total number: 126200
+Snimok: 175
+Total number: 131265
+Snimok: 176
+Total number: 132664
+Snimok: 177
+Total number: 133147
+Snimok: 178
+Total number: 133207
+Snimok: 179
+Total number: 133213
+Snimok: 180
+Total number: 131612
+Snimok: 181
+Total number: 131622
+Snimok: 182
+Total number: 130199
+Snimok: 183
+Total number: 129596
+Snimok: 184
+Total number: 128616
+Snimok: 185
+Total number: 129090
+Snimok: 186
+Total number: 127416
+Snimok: 187
+Total number: 126531
+Snimok: 188
+Total number: 124474
+Snimok: 189
+Total number: 123665
+Snimok: 190
+Total number: 121150
+Snimok: 191
+Total number: 120077
+Snimok: 192
+Total number: 117964
+Snimok: 193
+Total number: 117091
+Snimok: 194
+Total number: 116536
+Snimok: 195
+Total number: 115213
+Snimok: 196
+Total number: 115571
+Snimok: 197
+Total number: 116722
+Snimok: 198
+Total number: 118783
+Snimok: 199
+Total number: 127751
+Snimok: 200
+Total number: 133987
+Snimok: 201
+Total number: 135345
+Snimok: 202
+Total number: 133199
+Snimok: 203
+Total number: 131348
+Snimok: 204
+Total number: 128093
+Snimok: 205
+Total number: 128876
+Snimok: 206
+Total number: 129644
+Snimok: 207
+Total number: 129446
+Snimok: 208
+Total number: 130810
+Snimok: 209
+Total number: 134276
+Snimok: 210
+Total number: 130194
+Snimok: 211
+Total number: 134150
+Snimok: 212
+Total number: 141182
+Snimok: 213
+Total number: 143063
+Snimok: 214
+Total number: 147100
+Snimok: 215
+Total number: 149604
+Snimok: 216
+Total number: 152030
+Snimok: 217
+Total number: 153547
+Snimok: 218
+Total number: 154793
+Snimok: 219
+Total number: 156666
+Snimok: 220
+Total number: 164509
+Snimok: 221
+Total number: 166496
+Snimok: 222
+Total number: 163295
+Snimok: 223
+Total number: 161298
+Snimok: 224
+Total number: 160149
+Snimok: 225
+Total number: 160278
+Snimok: 226
+Total number: 160826
+Snimok: 227
+Total number: 161240
+Snimok: 228
+Total number: 161303
+Snimok: 229
+Total number: 165568
+Snimok: 230
+Total number: 169393
+Snimok: 231
+Total number: 171456
+Snimok: 232
+Total number: 175169
+Snimok: 233
+Total number: 177216
+Snimok: 234
+Total number: 178041
+Snimok: 235
+Total number: 178634
+Snimok: 236
+Total number: 178515
+Snimok: 237
+Total number: 177670
+Snimok: 238
+Total number: 176796
+Snimok: 239
+Total number: 176800
+Snimok: 240
+Total number: 176319
+Snimok: 241
+Total number: 175815
+Snimok: 242
+Total number: 175275
+Snimok: 243
+Total number: 175858
+Snimok: 244
+Total number: 176773
+Snimok: 245
+Total number: 178459
+Snimok: 246
+Total number: 179013
+Snimok: 247
+Total number: 180500
+Snimok: 248
+Total number: 181680
+Snimok: 249
+Total number: 183108
+Snimok: 250
+Total number: 184433
+Snimok: 251
+Total number: 185727
+Snimok: 252
+Total number: 185968
+Snimok: 253
+Total number: 186728
+Snimok: 254
+Total number: 187567
+Snimok: 255
+Total number: 188420
+Snimok: 256
+Total number: 188515
+Snimok: 257
+Total number: 189109
+Snimok: 258
+Total number: 190620
+Snimok: 259
+Total number: 192201
+Snimok: 260
+Total number: 193098
+Snimok: 261
+Total number: 194271
+Snimok: 262
+Total number: 196031
+Snimok: 263
+Total number: 194925
+Snimok: 264
+Total number: 195027
+Snimok: 265
+Total number: 195021
+Snimok: 266
+Total number: 194907
+Snimok: 267
+Total number: 194462
+Snimok: 268
+Total number: 194989
+Snimok: 269
+Total number: 195238
+Snimok: 270
+Total number: 194536
+Snimok: 271
+Total number: 195689
+Snimok: 272
+Total number: 195180
+Snimok: 273
+Total number: 194972
+Snimok: 274
+Total number: 195314
+Snimok: 275
+Total number: 195661
+Snimok: 276
+Total number: 195744
+Snimok: 277
+Total number: 195158
+Snimok: 278
+Total number: 193844
+Snimok: 279
+Total number: 191454
+Snimok: 280
+Total number: 190005
+Snimok: 281
+Total number: 188624
+Snimok: 282
+Total number: 188066
+Snimok: 283
+Total number: 188347
+Snimok: 284
+Total number: 189061
+Snimok: 285
+Total number: 189330
+Snimok: 286
+Total number: 189568
+Snimok: 287
+Total number: 190359
+Snimok: 288
+Total number: 191418
+Snimok: 289
+Total number: 191711
+Snimok: 290
+Total number: 192754
+Snimok: 291
+Total number: 193096
+Snimok: 292
+Total number: 193926
+Snimok: 293
+Total number: 194733
+Snimok: 294
+Total number: 195174
+Snimok: 295
+Total number: 195374
+Snimok: 296
+Total number: 196907
+Snimok: 297
+Total number: 198104
+Snimok: 298
+Total number: 199555
+Snimok: 299
+Total number: 201064
+Snimok: 300
+Total number: 202550
+Snimok: 301
+Total number: 204079
+Snimok: 302
+Total number: 205232
+Snimok: 303
+Total number: 206815
+Snimok: 304
+Total number: 208310
+Snimok: 305
+Total number: 209580
+Snimok: 306
+Total number: 211290
+Snimok: 307
+Total number: 212545
+Snimok: 308
+Total number: 213521
+Snimok: 309
+Total number: 214229
+Snimok: 310
+Total number: 215576
+Snimok: 311
+Total number: 216624
+Snimok: 312
+Total number: 217607
+Snimok: 313
+Total number: 218484
+Snimok: 314
+Total number: 218986
+Snimok: 315
+Total number: 219805
+Snimok: 316
+Total number: 220634
+Snimok: 317
+Total number: 221183
+Snimok: 318
+Total number: 221707
+Snimok: 319
+Total number: 222426
+Snimok: 320
+Total number: 223564
+Snimok: 321
+Total number: 224264
+Snimok: 322
+Total number: 225792
+Snimok: 323
+Total number: 226258
+Snimok: 324
+Total number: 225824
+Snimok: 325
+Total number: 225909
+Snimok: 326
+Total number: 225910
+Snimok: 327
+Total number: 225719
+Snimok: 328
+Total number: 225473
+Snimok: 329
+Total number: 225084
+Snimok: 330
+Total number: 224714
+Snimok: 331
+Total number: 224956
+Snimok: 332
+Total number: 224715
+Snimok: 333
+Total number: 224812
+Snimok: 334
+Total number: 224928
+Snimok: 335
+Total number: 224487
+Snimok: 336
+Total number: 224113
+Snimok: 337
+Total number: 223280
+Snimok: 338
+Total number: 222884
+Snimok: 339
+Total number: 222510
+Snimok: 340
+Total number: 222026
+Snimok: 341
+Total number: 222046
+Snimok: 342
+Total number: 221965
+Snimok: 343
+Total number: 221428
+Snimok: 344
+Total number: 219844
+Snimok: 345
+Total number: 218451
+Snimok: 346
+Total number: 217818
+Snimok: 347
+Total number: 217841
+Snimok: 348
+Total number: 217990
+Snimok: 349
+Total number: 217516
+Snimok: 350
+Total number: 217600
+Snimok: 351
+Total number: 217802
+Snimok: 352
+Total number: 217278
+Snimok: 353
+Total number: 216936
+Snimok: 354
+Total number: 216525
+Snimok: 355
+Total number: 216480
+Snimok: 356
+Total number: 213151
+Snimok: 357
+Total number: 211583
+Snimok: 358
+Total number: 208160
+Snimok: 359
+Total number: 203026
+Snimok: 360
+Total number: 199231
+Snimok: 361
+Total number: 197139
+Snimok: 362
+Total number: 196006
+Snimok: 363
+Total number: 197447
+Snimok: 364
+Total number: 199171
+Snimok: 365
+Total number: 200455
+Snimok: 366
+Total number: 202403
+Snimok: 367
+Total number: 205636
+Snimok: 368
+Total number: 208491
+Snimok: 369
+Total number: 210802
+Snimok: 370
+Total number: 213852
+Snimok: 371
+Total number: 214413
+Snimok: 372
+Total number: 215243
+Snimok: 373
+Total number: 216151
+Snimok: 374
+Total number: 217067
+Snimok: 375
+Total number: 217537
+Snimok: 376
+Total number: 217863
+Snimok: 377
+Total number: 218186
+Snimok: 378
+Total number: 218574
+Snimok: 379
+Total number: 218581
+Snimok: 380
+Total number: 218929
+Snimok: 381
+Total number: 219143
+Snimok: 382
+Total number: 219802
+Snimok: 383
+Total number: 220408
+Snimok: 384
+Total number: 220410
+Snimok: 385
+Total number: 220532
+Snimok: 386
+Total number: 220569
+Snimok: 387
+Total number: 220721
+Snimok: 388
+Total number: 221125
+Snimok: 389
+Total number: 221184
+Snimok: 390
+Total number: 220710
+Snimok: 391
+Total number: 221230
+Snimok: 392
+Total number: 221591
+Snimok: 393
+Total number: 221823
+Snimok: 394
+Total number: 223964
+Snimok: 395
+Total number: 224801
+Snimok: 396
+Total number: 225096
+Snimok: 397
+Total number: 224969
+Snimok: 398
+Total number: 224853
+Snimok: 399
+Total number: 224607
+Snimok: 400
+Total number: 224216
+Snimok: 401
+Total number: 224158
+Snimok: 402
+Total number: 224168
+Snimok: 403
+Total number: 224081
+Snimok: 404
+Total number: 224132
+Snimok: 405
+Total number: 223760
+Snimok: 406
+Total number: 223220
+Snimok: 407
+Total number: 223655
+Snimok: 408
+Total number: 224062
+Snimok: 409
+Total number: 224253
+Snimok: 410
+Total number: 224214
+Snimok: 411
+Total number: 224217
+Snimok: 412
+Total number: 224371
+Snimok: 413
+Total number: 224342
+Snimok: 414
+Total number: 223860
+Snimok: 415
+Total number: 223039
+Snimok: 416
+Total number: 222253
+Snimok: 417
+Total number: 221663
+Snimok: 418
+Total number: 222037
+Snimok: 419
+Total number: 222461
+Snimok: 420
+Total number: 222856
+Snimok: 421
+Total number: 223061
+Snimok: 422
+Total number: 223134
+Snimok: 423
+Total number: 223624
+Snimok: 424
+Total number: 224007
+Snimok: 425
+Total number: 224642
+Snimok: 426
+Total number: 225306
+Snimok: 427
+Total number: 225742
+Snimok: 428
+Total number: 225740
+Snimok: 429
+Total number: 226316
+Snimok: 430
+Total number: 226045
+Snimok: 431
+Total number: 225089
+Snimok: 432
+Total number: 223368
+Snimok: 433
+Total number: 221623
+Snimok: 434
+Total number: 220879
+Snimok: 435
+Total number: 220921
+Snimok: 436
+Total number: 221991
+Snimok: 437
+Total number: 221036
+Snimok: 438
+Total number: 221879
+Snimok: 439
+Total number: 223199
+Snimok: 440
+Total number: 223038
+Snimok: 441
+Total number: 224141
+Snimok: 442
+Total number: 224729
+Snimok: 443
+Total number: 225216
+Snimok: 444
+Total number: 225529
+Snimok: 445
+Total number: 225344
+Snimok: 446
+Total number: 225928
+Snimok: 447
+Total number: 226140
+Snimok: 448
+Total number: 226245
+Snimok: 449
+Total number: 226275
+Snimok: 450
+Total number: 226162
+Snimok: 451
+Total number: 225751
+Snimok: 452
+Total number: 225588
+Snimok: 453
+Total number: 225413
+Snimok: 454
+Total number: 225170
+Snimok: 455
+Total number: 225373
+Snimok: 456
+Total number: 225684
+[Hra] Prijmam  vstupy FrameData(vstup: ( ModulVykreslovaniaIn(image: Image(frame:456), command: UP, )); ), deltaTime: 0.017, ));
+Snimok: 457
+Prepinam stav na hraje hru.
+Neprisiel mi snimok z videa, preskakujem nastavenie textury.
+Total number: 226902
+Snimok: 458
+Total number: 226887
+Snimok: 459
+Total number: 226854
+Snimok: 460
+Total number: 227325
+Snimok: 461
+Total number: 227237
+Snimok: 462
+Total number: 227505
+Snimok: 463
+[Hra] Prijmam  vstupy FrameData(vstup: ( ModulVykreslovaniaIn(image: Image(frame:462), command: UP, )); ), deltaTime: 0.612, ));
+Nastavujem texturu z videa.
+W
+[Hra] Prijmam  vstupy FrameData(vstup: ( ModulVykreslovaniaIn(image: Image(frame:461), command: UP, )); ), deltaTime: 0.009, ));
+Total number: 227505
+Nastavujem texturu z videa.
+printf: 0.638
+Prepinam stav na obrazovku prehral.
+W
+Snimok: 464
+Total number: 227404
+Snimok: 465
+Total number: 226264
+Snimok: 466
+Total number: 224464
+Snimok: 467
+Total number: 223353
+Snimok: 468
+Total number: 223301
+Snimok: 469
+Total number: 226592
+Snimok: 470
+Total number: 227057
+Snimok: 471
+Total number: 227555
+Snimok: 472
+Total number: 227541
+Snimok: 473
+Total number: 227173
+Snimok: 474
+Total number: 227321
+Snimok: 475
+Total number: 227380
+Snimok: 476
+Total number: 227428
+Snimok: 477
+Total number: 227614
+Snimok: 478
+Total number: 227902
+Snimok: 479
+Total number: 228452
+Snimok: 480
+Total number: 228631
+Snimok: 481
+Total number: 228202
+Snimok: 482
+Total number: 228233
+Snimok: 483
+Total number: 227977
+Snimok: 484
+Total number: 227874
+Snimok: 485
+Total number: 228034
+Snimok: 486
+Total number: 227861
+Snimok: 487
+Total number: 227566
+Snimok: 488
+Total number: 227421
+Snimok: 489
+Total number: 227440
+Snimok: 490
+Total number: 227039
+Snimok: 491
+Total number: 226707
+Snimok: 492
+Total number: 226759
+Snimok: 493
+Total number: 226529
+Snimok: 494
+Total number: 226309
+Snimok: 495
+Total number: 226459
+Snimok: 496
+Total number: 225947
+Snimok: 497
+Total number: 224549
+Snimok: 498
+Total number: 217627
+Snimok: 499
+Total number: 211310
+Snimok: 500
+Total number: 207939
+Snimok: 501
+Total number: 203655
+Snimok: 502
+Total number: 198605
+Snimok: 503
+Total number: 196059
+Snimok: 504
+Total number: 195193
+Snimok: 505
+Total number: 197253
+Prepinam stav na obrazovku skore.
+Snimok: 506
+Total number: 195539
+Snimok: 507
+Total number: 195028
+Snimok: 508
+Total number: 195614
+Snimok: 509
+Total number: 198264
+Snimok: 510
+Total number: 204041
+Snimok: 511
+Total number: 210334
+Snimok: 512
+Total number: 210882
+Snimok: 513
+Total number: 210125
+Snimok: 514
+Total number: 214660
+Snimok: 515
+Total number: 215021
+Snimok: 516
+Total number: 217529
+Snimok: 517
+Total number: 223768
+Snimok: 518
+Total number: 224236
+Snimok: 519
+Total number: 224408
+Snimok: 520
+Total number: 224710
+Snimok: 521
+Total number: 225021
+Snimok: 522
+Total number: 225093
+Snimok: 523
+Total number: 224618
+Snimok: 524
+Total number: 220464
+Snimok: 525
+Total number: 219109
+Snimok: 526
+Total number: 214104
+Snimok: 527
+Total number: 204544
+Snimok: 528
+Total number: 199124
+Snimok: 529
+Total number: 198190
+Snimok: 530
+Total number: 202007
+Snimok: 531
+Total number: 205172
+Snimok: 532
+Total number: 209935
+Snimok: 533
+Total number: 214126
+Snimok: 534
+Total number: 222071
+Snimok: 535
+Total number: 223510
+Snimok: 536
+Total number: 223420
+Snimok: 537
+Total number: 223454
+Snimok: 538
+Total number: 222876
+Snimok: 539
+Total number: 222860
+Snimok: 540
+Total number: 222949
+Snimok: 541
+Total number: 222878
+Snimok: 542
+Total number: 222742
+Snimok: 543
+Total number: 222750
+Snimok: 544
+Total number: 222909
+Snimok: 545
+Total number: 222714
+Snimok: 546
+Total number: 220657
+Snimok: 547
+Total number: 215733
+Snimok: 548
+Total number: 212389
+Snimok: 549
+Total number: 211800
+Snimok: 550
+Total number: 210966
+Snimok: 551
+Total number: 212767
+Snimok: 552
+Total number: 213940
+Snimok: 553
+Total number: 217033
+Snimok: 554
+Total number: 216462
+Snimok: 555
+Total number: 219789
+Snimok: 556
+Total number: 222022
+Snimok: 557
+Total number: 222485
+Snimok: 558
+Total number: 222998
+Snimok: 559
+Total number: 220656
+Snimok: 560
+Total number: 214578
+Snimok: 561
+Total number: 207553
+Snimok: 562
+Total number: 203860
+Snimok: 563
+Total number: 199616
+Snimok: 564
+Total number: 202598
+Snimok: 565

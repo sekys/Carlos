@@ -60,5 +60,6 @@ public:
 	virtual void getRGB();
 	//virtual void *rgb_cb(freenect_device *dev, void *rgb, uint32_t timestamp);
 	//virtual void *depth_cb(freenect_device *dev, void *v_depth, uint32_t timestamp);
+	virtual bool isThreaded() { return true; }
 };
 
